@@ -1,84 +1,70 @@
+import React from 'react';
+import { View, Text, TouchableOpacity, Image, TouchableHighlight } from 'react-native';
 
-import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Platform,
-  ListView,
-  Alert,
-  ActivityIndicator
-} from 'react-native';
+const CustomChildren = (props) => (
+  <TouchableOpacity onPress={props.onPress}>
+    <View
+      style={{ height: 36, paddingLeft: 15, flexDirection: 'row', alignItems: 'center' }}
+    >
+      <Text style={{ flex: 1 }}>{props.children}</Text>
+      <Text style={{ textAlign: 'right', color: '#888', marginRight: 15 }}>{props.extra}</Text>
+    </View>
+  </TouchableOpacity>
+);
 
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as newsActions from '../../util/redux/action/user';
-
-class Main extends Component {
-
+@insertStyle('TabbarMineStyle')
+export default class PopupExample extends React.Component {
   constructor(props) {
     super(props);
-    // this.handleClick= this.handleClick.bind(this)
-    var ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
-      dataSource: ds.cloneWithRows(['row 1', 'row 2','row 1','row 1','row 1','row 1','row 1']),
+      data: '',
+      value: [],
+      pickerValue: [],
     };
   }
 
-  handleClick = () => {
-    if (Platform.OS === 'ios') {
-      Alert.alert('测试当前平台', 'iOS平台');
-    } else if (Platform.OS === 'android') {
-      Alert.alert('测试当前平台', 'Android平台');
-    }
+  onChange = (value) => {
+    console.log(value)
+    this.setState({ value });
   }
-
   render() {
     return (
-      <View>
-        <Text>这是第3页。</Text>
+      <View style="container">
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('Setting')}>
 
-        <ListView
-          dataSource={this.state.dataSource}
-          renderRow={(rowData) => <Text>{rowData}</Text>}
-        />
-        {/* <ActivityIndicator></ActivityIndicator> */}
+        <View style={["h90", "flexrowbet"]} onPress={() => this.props.navigation.navigate('handleReport')}>
+          <Image source={require('../../assets/image/img/我的 copy.png')} style="imgsize" />
+          <Text style="phone">151 **** 1798</Text>
+        </View>
+        </TouchableHighlight>
+        <View style="border60h" />
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('Setting')}>
+
+        <View style={["h45", "flexrowbet"]} onPress={() => this.props.navigation.navigate('handleReport')}>
+          <Image source={require('../../assets/image/img/门店信息.png')} style="imgsizeM" />
+          <Text style={["flex1", "f16", "mal8", "fblock3"]}>门店信息</Text>
+          <Image source={require('../../assets/image/img/更多.png')} style="imgsizeM" /></View>
+
+          </TouchableHighlight>
+        <View style="border10h" />
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('Setting')}>
+
+        <View style={["h45", "flexrowbet"]} onPress={() => this.props.navigation.navigate('handleReport')}>
+          <Image source={require('../../assets/image/img/必赢信息.png')} style="imgsizeM" />
+          <Text style={["flex1", "f16", "mal8", "fblock3"]}>必赢信息</Text>
+          <Image source={require('../../assets/image/img/更多.png')} style="imgsizeM" /></View>
+</TouchableHighlight>
+
+        <View style="border10h" />
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('Setting')}>
+          <View style={["h45", "flexrowbet"]} >
+            <Image source={require('../../assets/image/img/设置.png')} style="imgsizeM" />
+            <Text style={["flex1", "f16", "mal8", "fblock3"]} >设置</Text>
+            <Image source={require('../../assets/image/img/更多.png')} style="imgsizeM" />
+          </View>
+        </TouchableHighlight>
+        <View style="border10h" />
       </View>
     );
   }
-
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-  tabContent: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  tabText: {
-    color: 'white',
-    margin: 50,
-  },
-});
-
-export default connect(
-  state => ({
-      news: state.news
-  }),
-  dispatch => bindActionCreators(newsActions, dispatch)
-)(Main);

@@ -72,7 +72,7 @@ export default class Main extends Component {
         textStyle={{fontSize:16}}
           icon={{ name: 'cached' }}
           title='登录' 
-          onPress={() => this.props.navigation.navigate('Page4')}/>
+          onPress={() => this.props.navigation.navigate('Tabbar')}/>
       </View>
     );
   }

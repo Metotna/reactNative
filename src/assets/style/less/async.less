@@ -1,0 +1,313 @@
+@import '../param';
+rn-config {
+  arguments: containerMargin
+}
+
+loginStyle {
+  .inputCon {
+    flex-direction: row;
+    background-color: #fff;
+    padding: 5;
+    height: 50;
+    width: 375;
+    .describe {
+      width: 100;
+      font-size: 16;
+      color: #333;
+      height: 40;
+      line-height: 35;
+      text-align: center;
+    }
+    .ic_input {
+      height: 40;
+      color: #000;
+      flex: 1;
+      border-width: 0;
+    }
+    .des_btn {
+      width: 100;
+      font-size: 16;
+      color: #666;
+      height: 40;
+      margin-left: 10;
+      margin-right: 10;
+      line-height: 35;
+      text-align: center;
+    }
+  }
+  .inputBtn {
+    height: 70; // background-color: #fff;
+  }
+}
+
+TabbarHomeStyle {
+  .container {
+    flex: 1;
+    flex-direction: column;
+    background-color: @borderColor;
+  }
+  .listView {
+    flex: 1;
+  }
+  .tab_list {
+    flex: 1;
+    padding-top: 10;
+  }
+  .total {
+    margin-top: 6;
+    background-color: #fff;
+    margin-bottom: 10;
+  }
+  .total_title {
+    padding: 5 10 5 10;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .total_text {
+    line-height: 25;
+    font-size: 13;
+  }
+}
+
+HomeComTable {
+  .title {
+    padding: 10 10 10 10;
+    flex-direction: row;
+    justify-content: space-between;
+    border-bottom: 1 #f2f3f5;
+    .t_name {
+      font-size: 18;
+      line-height: 25;
+    }
+  }
+  .month {
+    .month_t {
+      padding-top: 6;
+      color: @block6;
+      border-bottom: 1 @borderColor;
+    }
+    .month_a {
+      padding-top: 8;
+      color: @block3;
+    }
+    .month_b {
+      padding-top: 3;
+      color: @red;
+    }
+  }
+  .child {
+    .child_t {
+      line-height: 20;
+      color: @block6;
+    }
+    .child_a {
+      padding-top: 4;
+    }
+  }
+  .table {
+    flex: 1;
+    flex-direction: row;
+  }
+  .table_td {
+    flex: 1;
+  }
+  .table_width {
+    width: 152;
+  }
+  .tr {
+    text-align: center;
+  }
+  .updata {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+HandleReport {
+  .container {
+    flex: 1;
+    flex-direction: column;
+    background-color: @borderColor;
+  }
+  .tab_list {
+    flex: 1;
+    background-color: #fff;
+  }
+  .bottom_btn {
+    height: 70;
+    padding: 15 12 15 12;
+  }
+  .bottom_btn2 {
+    height: 48;
+    background-color: @primary;
+    .bb2_text{
+      line-height: 48;
+      font-size: 17;
+      color: #FFFFFF;
+      text-align: center;
+    }
+  }
+  .title_warn {
+    height: 30;
+    line-height: 30;
+    color: #592A00;
+    background-color: #FFF7DE;
+    text-align: center;
+  }
+  .btnView {
+    border: 1 @primary;
+    flex: 1;
+    height: 40;
+    background-color: #fff;
+    flex-direction: row;
+    border-radius: 5;
+    padding: 0 5 0 5;
+    .btns {
+      flex: 1;
+      text-align: center;
+      line-height: 38;
+      font-size: 14;
+      color: @primary;
+    }
+    .border10_b {
+      width: 1;
+      background-color: @primary;
+    }
+  }
+  .content_imga {
+    height: 220;
+    background-color: @green;
+  }
+  .cont_bor {
+    padding: 12 10 12 10;
+  }
+  .text_left {
+    width: 90;
+  }
+  .text_left2 {
+    width: 110;
+  }
+  .text_left3 {
+    width: 135;
+  }
+  .up_title {
+    padding: 10 18 11 18;
+    flex-direction: row;
+    height: 37;
+    justify-content: space-between;
+    background-color: #F3F3F3 ;
+    .up_text {
+      font-size: 16;
+      line-height: 16;
+      color: #333333;
+    }
+    .up_list{
+      padding: 10 20 10 20;
+        line-height: 22;
+        font-size: 16;
+    
+    }
+  }
+}
+
+netBarDetail {
+  .container {
+    flex: 1;
+    flex-direction: column;
+    background-color:#fff;
+  }
+  .content{
+    flex: 0;
+    height: 30;
+    padding-left: 12;
+    padding-right: 12;
+    background-color: #fff;
+  }
+  .odd_bgc{
+    background-color: #ffffff;
+  }
+  .even_bgc{
+    background-color: #F3F3F3  ;
+  }
+
+}
+netBarDay{
+  .container {
+    flex: 1;
+    flex-direction: column;
+    background-color:@borderColor;
+  }
+  .list{
+    padding: 16 14 14 12;
+    height: 44;
+    background-color: #ffffff;
+
+  }
+}
+
+TabbarMineStyle {
+  .phone{
+    font-size: 20;
+    line-height: 60;
+  }
+  .h90{
+    height: 90;
+    background-color: #fff;
+    padding: 15;
+  }
+  .imgsize{
+    width: 60;
+    height: 60;
+  }
+  .h45{
+    background-color: #fff;
+    padding: 12 15;
+  }
+  .imgsizeM{
+    height: 20;
+    width: 20;
+  }
+  .mal8{
+    margin-left: 8;
+    line-height: 18;
+  }
+  .outBtn{
+    padding: 10;
+  }
+}
+
+TabbarReportStyle{
+
+}
+ReportInfo{
+  .rtitle{
+    height: 35;
+    font-size: 16;
+    padding: 8 18 11 18;
+  }
+  .rbgc{
+    background-color: #DBDBDB;
+    padding: 6 12;
+    .rt_id{
+      line-height: 25;
+    }
+  }
+  .rinfo{
+    background-color: #fff;
+    .ri_cot{
+      padding: 12 6;
+    }
+  }
+
+  .border10_f{
+    height: 1;
+    background-color: #f3f3f3;
+  }
+}

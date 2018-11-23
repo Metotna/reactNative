@@ -7,14 +7,15 @@
     "test": "jest"
   },
   "dependencies": {
+    "antd-mobile-demo-data": "^0.2.0",
     "antd-mobile-rn": "^2.3.1",
     "query-string": "^6.2.0",
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.3",
     "react-native-checkbox-master": "^1.1.2",
     "react-native-elements": "^0.12.1",
-    "react-native-vector-icons": "4.1.1",
     "react-native-image-picker": "^0.27.1",
+    "react-native-vector-icons": "4.1.1",
     "react-navigation": "^2.18.2",
     "react-redux": "^5.1.1",
     "redux": "^4.0.1",

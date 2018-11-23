@@ -1,3 +1,7 @@
+/**
+ * 相机组件使用方法
+ * <CameraButton onFileUpload={function(file, fileName)} />
+ */
 import React from 'react'
 import {
     TouchableOpacity,
@@ -5,22 +9,22 @@ import {
     Platform,
     Image,
     View,
-    Text,
-    ToastAndroid
+    Text
 } from 'react-native'
 
 var ImagePicker = require('react-native-image-picker');
 import Icon from 'react-native-vector-icons/Ionicons';
 
+//参数具体文档：https://github.com/react-community/react-native-image-picker/blob/HEAD/docs/Reference.md
 const options = {
     title: '选择图片',
     cancelButtonTitle: '取消',
     takePhotoButtonTitle: '拍照',
     chooseFromLibraryButtonTitle: '图片库',
-    cameraType: 'back',
-    mediaType: 'photo',
+    cameraType: 'back',//前后摄像头：back--后，front--前
+    mediaType: 'photo',//'photo', 'video', or 'mixed' on iOS, 'photo' or 'video' on Android
     videoQuality: 'high',
-    durationLimit: 10,
+    durationLimit: 10,//最长录制时间/s
     maxWidth: 600,
     maxHeight: 600,
     aspectX: 2,
@@ -40,26 +44,28 @@ class CameraButton extends React.Component {
         super(props);
         this.state = {
             loading:false,
-            photoslen:0
+            avatarSource:''//图片地址
         }
     }
     render() {
         const {type} = this.props;
         let conText;
         if(this.state.photoslen > 0){
-            conText = (<View style={styles.countBox}>
-                <Image source={this.state.avatarSource} style={css.image}/>
-            </View>);
+
         }
         return (
-            <TouchableOpacity
-                onPress={this.showImagePicker.bind(this)}
-                style={[this.props.style,styles.cameraBtn]}>
+            <View>
+                <TouchableOpacity
+                    onPress={this.showImagePicker.bind(this)}
+                    style={[this.props.style,styles.cameraBtn]}>
+                    <View>
+                        <Icon name="md-camera" color="#aaa" size={34}/>
+                    </View>
+                </TouchableOpacity>
                 <View>
-                    <Icon name="md-camera" color="#aaa" size={34}/>
-                    {conText}
+                    <Image style={styles.image} source={this.state.avatarSource} />
                 </View>
-            </TouchableOpacity>
+            </View>
         )
     }
 
@@ -70,9 +76,7 @@ class CameraButton extends React.Component {
             }
             else if (response.error) {
                 console.log('ImagePicker Error: ', response.error);
-            }
-
-            else {
+            } else {
 
                 let source;
 
@@ -91,12 +95,12 @@ class CameraButton extends React.Component {
                 }else {
                     file = response.uri.replace('file://', '')
                 }
-
-
                 this.setState({
                     loading:true,
-                    photoslen:this.state.photoslen + 1
+                    photoslen:this.state.photoslen + 1,
+                    avatarSource:source
                 });
+                this.props.onFileUpload(file,response.fileName||'未命名文件.jpg')
             }
         });
     }

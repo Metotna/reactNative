@@ -1,36 +1,72 @@
 
 import React, { Component } from 'react';
 import {
-  StyleSheet,
   Text,
   View,
   Platform,
   ListView,
-  Picker,
   Alert,
-  Button,
-  ActivityIndicator
+  StyleSheet,
+  TextInput,
 } from 'react-native';
-import { WhiteSpace, WingBlank, Checkbox, DatePicker, List } from 'antd-mobile-rn'
+import { WhiteSpace, WingBlank, Checkbox, DatePicker, List,   Button,} from 'antd-mobile-rn'
 import rn_Less from 'rn-less/src/runtime';
-import style from '../../assets/style/script/test_less'
+import style from '../../assets/style/script/async_less'
 
-Storage.save('token', '14854786')
-
-@rn_Less.rnLess(style({}).CardExampleStyle)
-class Main extends Component {
+@rn_Less.rnLess(style({}).loginStyle)
+export default class Main extends Component {
   constructor(props) {
     super(props);
-    // this.handleClick= this.handleClick.bind(this)
-    var ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
-      language: '',
-      checked: true,
-      value: '',
-      dataSource: ds.cloneWithRows(['row 1', 'row 2', 'row 1', 'row 1', 'row 1', 'row 1', 'row 1']),
+      userName:'',
+      authCode:'',
+      getText:'获取验证码',
+      countDown:false,
+
     };
   }
+  render() {
+    return (
+      <View >
+        <View style='inputCon'>
+          <Text style="describe">手机号</Text>
+          <TextInput style="ic_input" onChangeText={(userName) => this.setState({ userName })}
+            underlineColorAndroid="transparent" 
+            value={this.state.userName} placeholder="请输入账号"
+          />
+        </View>
+        <View style='inputCon'>
+          <Text style="describe">验证码</Text>
+          <TextInput style="ic_input" onChangeText={(authCode) => this.setState({ authCode })}
+            underlineColorAndroid="transparent" 
+            value={this.state.authCode} placeholder="请输入验证码"
+          />
+           <Text style="des_btn" onPress={this._getAuthCode}>{this.state.getText}</Text>
+        </View>
 
+        {/* <Button style="inputBtn" onPress={this._btnPress} title="下一步" /> */}
+        <Button style={styles.inputBtn} onPressIn={() => this.props.navigation.navigate('setPassword')}>下一步</Button>
+
+      </View>
+    );
+  }
+  _getAuthCode=()=>{
+    if(this.state.countDown) return
+    if((Math.random()*10)>5){
+      this.setState({countDown:true})
+      let c = 20;
+      var cDInt= setInterval(()=>{
+        if(c==0){
+          clearInterval(cDInt)
+          this.setState({getText:'获取验证码'})
+          return
+        }else {
+          this.setState({getText:`${c} 秒`})
+          c--;
+        }
+      },1000)
+    }
+  }
   handleClick = () => {
     if (Platform.OS === 'ios') {
       Alert.alert('测试当前平台', 'iOS平台');
@@ -49,42 +85,12 @@ class Main extends Component {
       // console.log(1,tags)
     });
   }
-  render() {
-    return (
-      <View style={styles.container}>
-      <Text style="temptext">123123123213</Text>
-        <List>
-          <DatePicker
-            value={this.state.value}
-            mode="date"
-            minDate={new Date(2015, 7, 6)}
-            maxDate={new Date(2026, 11, 3)}
-            onChange={this.onChange}
-            format="YYYY-MM-DD"
-          >
-            <List.Item arrow="horizontal">Select Date</List.Item>
-          </DatePicker>
-        </List>
-        <WingBlank>
-          <WhiteSpace />
-          <Button onPress={this._btnPress} title="Press Me" />
-          <WhiteSpace />
-          <WhiteSpace />
-        </WingBlank>
-      </View>
-    );
-  }
+
 
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // justifyContent: 'center',
-    // flexDirection: 'row',
-    // alignItems: 'flex-start',
-    backgroundColor: '#F5FCFF',
-  },
-
-});
-export default Main
+  inputBtn:{
+    margin:10,
+  }
+})

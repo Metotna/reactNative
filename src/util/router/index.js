@@ -2,17 +2,24 @@
 import React, { Component } from 'react';
 import { createStackNavigator, TabNavigator, TabBarBottom, createBottomTabNavigator, StackNavigator } from 'react-navigation';
 import { Text, View, StyleSheet, Image } from 'react-native';
-
+import insertStyle from '../../assets/style'
 import Storage from '../asyncStorage'
 import HomeScreen from '../../component/Tabbar/home'
-import detailScreen from '../../component/Tabbar/detail'
-import mineScreen from '../../component/Tabbar/mine'
-import Page4 from '../../component/order'
-import forgetPwd from '../../component/login/forget'
+import storeScreen from '../../component/Tabbar/store'
+import mineScreen from "../../component/Tabbar/mine";
+import reportScreen from '../../component/Tabbar/report'
 
-import login from '../../component/login'
+import { rpartA, defaultRouter } from './rPartA'
+import rpartB from './rPartB'
 
 // tabbar路由配置
+const headerStyleB={
+  backgroundColor: '#2073D3',
+}
+const headerTitleStyleB={
+  color: '#fff'
+}
+
 const Tabbar = createBottomTabNavigator({
   /**
       screen：和导航的功能是一样的，对应界面名称，可以在其他页面通过这个screen传值和跳转。  
@@ -23,82 +30,121 @@ const Tabbar = createBottomTabNavigator({
       tabBarLabel：设置标签栏的title。推荐  
    */
   Home: {
-    screen: HomeScreen,
+    screen: createStackNavigator({
+      HomeScreen: {
+        screen: HomeScreen,
+        navigationOptions: {
+          title: '首页',
+          headerStyle: headerStyleB,
+          headerTitleStyle: headerTitleStyleB,
+        }
+      }
+    }),
     navigationOptions: ({ navigation }) => ({
-      /**
-       * tabBarLabel tabbar名称
-       */
-      tabBarLabel: '',
+      tabBarLabel: '首页',
       tabBarIcon: ({ focused, tintColor }) => (
-        focused ? <Image style={styles.icon} source={require('../../assets/image/tab_btn_home_hl.png')} /> : <Image style={styles.icon} source={require('../../assets/image/tab_btn_home.png')} />
+        focused ? <Image style={styles.icon} source={require('../../assets/image/img/首页-选中.png')} /> : <Image style={styles.icon} source={require('../../assets/image/img/首页-未选中.png')} />
       )
     })
   },
-  Detail: {
-    screen: detailScreen,
+  Store: {
+    screen: createStackNavigator({
+        storeScreen: {
+            screen: storeScreen,
+            navigationOptions: {
+                title: '门店',
+                headerStyle: headerStyleB,
+                headerTitleStyle: headerTitleStyleB,
+            }
+        }
+    }),
+    navigationOptions: ({ navigation }) => ({
+      tabBarLabel: '门店',
+      tabBarIcon: ({ focused, tintColor }) => (
+        focused ? <Image style={styles.icon} source={require('../../assets/image/img/门店-选中.png')} /> : <Image style={styles.icon} source={require('../../assets/image/img/门店-未选中.png')} />
+      )
+    })
+  },
+  Report: {
+    screen: createStackNavigator({
+      reportScreen: {
+        screen: reportScreen,
+        navigationOptions: {
+          title: '报表管理',
+          headerStyle: headerStyleB,
+          headerTitleStyle: headerTitleStyleB,
+        }
+      }
+    }),
     navigationOptions: ({ navigation }) => ({
       tabBarLabel: '',
       tabBarIcon: ({ focused, tintColor }) => (
-        focused ? <Image style={styles.icon} source={require('../../assets/image/tab_btn_classification_hl.png')} /> : <Image style={styles.icon} source={require('../../assets/image/tab_btn_classification.png')} />
+        focused ? <Image style={styles.icon} source={require('../../assets/image/img/报表-选中.png')} /> : <Image style={styles.icon} source={require('../../assets/image/img/报表-未选中.png')} />
       )
     })
   },
   Mine: {
-    screen: mineScreen,
+    screen: createStackNavigator({
+      mineScreen: {
+        screen: mineScreen,
+        navigationOptions: {
+          title: '我的',
+          headerStyle: headerStyleB,
+          headerTitleStyle: headerTitleStyleB,
+        }
+      }
+    }),
     navigationOptions: ({ navigation }) => ({
       tabBarLabel: '',
       tabBarIcon: ({ focused, tintColor }) => (
-        focused ? <Image style={styles.icon} source={require('../../assets/image/tab_btn_user_hl.png')} /> : <Image style={styles.icon} source={require('../../assets/image/tab_btn_user.png')} />
+        focused ? <Image style={styles.icon} source={require('../../assets/image/img/我的-选中.png')} /> : <Image style={styles.icon} source={require('../../assets/image/img/我的-未选中.png')} />
       )
     })
   },
-},{
-  initialRouteName: 'Home'
-})
-
-const RouteConfigs = {
-  Tabbar: {
-    screen: Tabbar,
-    navigationOptions: ({ navigation }) => ({
-      header: null,
-      headerBackTitle: 'A much too long text for back button from B to A',
-      headerTruncatedBackTitle: `back`,
-    })
-  },
-  Page4: {
-    screen: Page4,
-    navigationOptions: ({ navigation }) => ({
-      title: 'Page4页面',
-      headerTintColor: '#333',
-      headerTruncatedBackTitle: "返回",
-    }),
-  },
-  forgetPassword: {
-    screen: forgetPwd,
-    navigationOptions: ({ navigation }) => ({
-      title: '忘记密码',
-      headerTintColor: '#333',
-    }),
-  },
-  login: {
-    screen: login,
-    navigationOptions: ({ navigation }) => ({
-      header: null
-    }),
+}, {
+    initialRouteName: 'Report',
+    lazy: true,
+    tabBarOptions: {
+      // inactiveTintColor: "#8F8F8F",
+      // activeTintColor: "#ED5601",
+      labelStyle: {
+        //  fontSize: 11
+      }
+    }
   }
 
+)
+const RouteConfigsA = {
+  Tabbar: {
+    screen: Tabbar,
+    navigationOptions: ({ navigation }) => (
+      {
+        // title: navigation.state.routeName,
+        header: null,
+        headerBackTitle: 'A much too long text for back button from B to A',
+        headerTruncatedBackTitle: ` `,
+      })
+  },
 }
-
+const RouteConfigs = Object.assign({}, RouteConfigsA, rpartA, rpartB)
+const initialRouteName = "Tabbar"
+// defaultRouter
 export default StackNavigator(
   RouteConfigs,
   {
-    initialRouteName: 'forgetPassword',
+    initialRouteName: initialRouteName,
   }
 );
 const styles = StyleSheet.create({
   icon: {
     width: 20,
     height: 20
+  },
+  bgc:{
+    backgroundColor: '#2073D3',
+  },
+  bgcfc:{
+    color:'#fff',
   }
 })
 
