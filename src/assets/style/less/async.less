@@ -41,10 +41,13 @@ loginStyle {
 }
 
 TabbarHomeStyle {
+  .borders{
+    border: 1 #fff;
+  }
   .container {
     flex: 1;
     flex-direction: column;
-    background-color: @borderColor;
+    background-color: @backgroundColor;
   }
   .listView {
     flex: 1;
@@ -56,7 +59,7 @@ TabbarHomeStyle {
   .total {
     margin-top: 6;
     background-color: #fff;
-    margin-bottom: 10;
+    margin-bottom: 6;
   }
   .total_title {
     padding: 5 10 5 10;
@@ -71,12 +74,12 @@ TabbarHomeStyle {
 
 HomeComTable {
   .title {
-    padding: 10 10 10 10;
+    padding: 5 12;
     flex-direction: row;
     justify-content: space-between;
     border-bottom: 1 #f2f3f5;
     .t_name {
-      font-size: 18;
+      font-size: 16;
       line-height: 25;
     }
   }
@@ -127,7 +130,13 @@ HomeComTable {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    .f16h20{
+      font-size: 16;
+      line-height: 20;
+      color: #E7505A;
+    }
   }
+
 }
 
 HandleReport {
@@ -147,7 +156,7 @@ HandleReport {
   .bottom_btn2 {
     height: 48;
     background-color: @primary;
-    .bb2_text{
+    .bb2_text {
       line-height: 48;
       font-size: 17;
       color: #FFFFFF;
@@ -202,17 +211,16 @@ HandleReport {
     flex-direction: row;
     height: 37;
     justify-content: space-between;
-    background-color: #F3F3F3 ;
+    background-color: #F3F3F3;
     .up_text {
       font-size: 16;
       line-height: 16;
       color: #333333;
     }
-    .up_list{
+    .up_list {
       padding: 10 20 10 20;
-        line-height: 22;
-        font-size: 16;
-    
+      line-height: 22;
+      font-size: 16;
     }
   }
 }
@@ -221,92 +229,96 @@ netBarDetail {
   .container {
     flex: 1;
     flex-direction: column;
-    background-color:#fff;
+    background-color: #fff;
   }
-  .content{
+  .content {
     flex: 0;
     height: 30;
     padding-left: 12;
     padding-right: 12;
     background-color: #fff;
   }
-  .odd_bgc{
+  .odd_bgc {
     background-color: #ffffff;
   }
-  .even_bgc{
-    background-color: #F3F3F3  ;
+  .even_bgc {
+    background-color: #F3F3F3;
   }
-
 }
-netBarDay{
+
+netBarDay {
   .container {
     flex: 1;
     flex-direction: column;
-    background-color:@borderColor;
+    background-color: @borderColor;
   }
-  .list{
+  .list {
     padding: 16 14 14 12;
     height: 44;
     background-color: #ffffff;
-
   }
 }
 
 TabbarMineStyle {
-  .phone{
+  .phone {
     font-size: 20;
     line-height: 60;
   }
-  .h90{
+  .h90 {
     height: 90;
     background-color: #fff;
     padding: 15;
   }
-  .imgsize{
+  .imgsize {
     width: 60;
     height: 60;
   }
-  .h45{
+  .h45 {
     background-color: #fff;
     padding: 12 15;
   }
-  .imgsizeM{
+  .imgsizeM {
     height: 20;
     width: 20;
   }
-  .mal8{
+  .mal8 {
     margin-left: 8;
     line-height: 18;
   }
-  .outBtn{
+  .outBtn {
     padding: 10;
+  }
+  .netBarTitle {
+    padding: 10 12;
+    font-size: 14;
+    color: #666666;
+    line-height: 14;
+    background-color: @borderColor;
   }
 }
 
-TabbarReportStyle{
+TabbarReportStyle {}
 
-}
-ReportInfo{
-  .rtitle{
+ReportInfo {
+  .rtitle {
     height: 35;
     font-size: 16;
     padding: 8 18 11 18;
   }
-  .rbgc{
+  .rbgc {
     background-color: #DBDBDB;
     padding: 6 12;
-    .rt_id{
+    .rt_id {
       line-height: 25;
     }
   }
-  .rinfo{
+  .rinfo {
     background-color: #fff;
-    .ri_cot{
+    .ri_cot {
       padding: 12 6;
     }
   }
-
-  .border10_f{
+  .border10_f {
     height: 1;
     background-color: #f3f3f3;
   }

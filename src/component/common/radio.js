@@ -80,12 +80,12 @@ class Raio2 extends Component{
         }
     }
     render(){
-        imgUrl=this.props.hightlight?this.props.seledImg||require('../../assets/image/img/selted.png'):this.props.selImg||require('../../assets/image/img/selt.png');
-        imgUrlNone=this.props.selnoneImg||require('../../assets/image/img/seltnone.png');
+        let imgUrl=this.props.hightlight?this.props.seledImg||require('../../assets/image/img/selted.png'):this.props.selImg||require('../../assets/image/img/selt.png');
+        let imgUrlNone=this.props.selnoneImg||require('../../assets/image/img/seltnone.png');
         return(
             <TouchableHighlight
                 underlayColor='transparent'
-                style={[{marginRight:15,width:(width-240)/2,height:24},this.props.initStyle]}
+                style={[{marginRight:15,width:(width-230)/2,height:24},this.props.initStyle]}
                 onPress={this.click.bind(this,this.props.value,this.props.child)}>
                 <View  style={{flex:1,flexDirection:'row',alignItems:'center'}} >
                     {this.props.disabled&&!this.props.hightlight&&<Image source={imgUrlNone} style={{width:14,height:14,marginRight:7}}/>}

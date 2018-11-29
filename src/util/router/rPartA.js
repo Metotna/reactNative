@@ -12,10 +12,14 @@ import hNetBarDay from '../../component/tabbarHome/netBarDay'
 
 import mSetting from '../../component/tabbarMine/setting'
 import mReseting from '../../component/tabbarMine/resetting'
+import mStoreInfo from '../../component/tabbarMine/storeInfo'
+import mCompanyInfo from '../../component/tabbarMine/companyInfo'
+
 
 import rExamine from '../../component/tabbarReport/examineReport'
+import uploadreport from '../../component/tabbarReport/uploadreport'
 
-export const defaultRouter ='NetBarDetail'
+export const defaultRouter ='handleReport'
 const headerStyleB={
   backgroundColor: '#2073D3',
 }
@@ -98,7 +102,37 @@ export const rpartA = {
       headerBackTitle: ' ',
     }),
   },
-
+  StoreInfo:{
+    screen: mStoreInfo,
+    navigationOptions: ({ navigation }) => ({
+      title: '门店信息',
+      headerStyle: headerStyleB,
+      headerTitleStyle: headerTitleStyleB,
+      headerBackImage:Backicon,
+      headerBackTitle: ' ',
+    }),
+  },
+  CompanyInfo:{
+    screen: mCompanyInfo,
+    navigationOptions: ({ navigation }) => ({
+      title: '必赢信息',
+      headerStyle: headerStyleB,
+      headerTitleStyle: headerTitleStyleB,
+      headerBackImage:Backicon,
+      headerBackTitle: ' ',
+    }),
+  },
+   /* 上传销售报表 */
+    uploadreport:{
+        screen: uploadreport,
+        navigationOptions: ({ navigation }) => ({
+            title: '上传销售报表',
+            headerStyle: headerStyleB,
+            headerTitleStyle: headerTitleStyleB,
+            headerBackImage:Backicon,
+            headerBackTitle: ' ',
+        }),
+    },
   /* tabarReport */
   Examine:{
     screen: rExamine,

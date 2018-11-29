@@ -1,17 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableHighlight, Image } from 'react-native';
-import { Button, Tabs } from 'antd-mobile-rn'
-const CustomChildren = (props) => (
-  <TouchableOpacity onPress={props.onPress}>
-    <View
-      style={{ height: 36, paddingLeft: 15, flexDirection: 'row', alignItems: 'center' }}
-    >
-      <Text style={{ flex: 1 }}>{props.children}</Text>
-      <Text style={{ textAlign: 'right', color: '#888', marginRight: 15 }}>{props.extra}</Text>
-    </View>
-  </TouchableOpacity>
-);
-
+// import { Button, Tabs } from 'antd-mobile-rn'
+import Button from '../common/button'
 @insertStyle('TabbarMineStyle')
 export default class PopupExample extends React.Component {
   constructor(props) {
@@ -40,7 +30,7 @@ export default class PopupExample extends React.Component {
           <View style="border10h" />
         </View>
         <View style="outBtn">
-          <Button type="primary" onPressIn={() => this.props.navigation.navigate('login')} >退出登录</Button>
+          <Button  onPress={() => this.props.navigation.navigate('login')} textStyle={{fontSize:16,lineHeight:28,}}  title={'退出登录'}/>
         </View>
       </View>
     );

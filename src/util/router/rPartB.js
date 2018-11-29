@@ -2,6 +2,7 @@
 import Backicon from "../../component/common/backicon";
 import cpjmanagement from '../../component/store/cpjmanagement';//彩票机管理
 import idmanagement from '../../component/store/idmanagement';//账号管理
+import idjoin from '../../component/store/idjoin';//新增账号
 import revampstore from '../../component/store/revampstore';//修改门店信息
 import joinstore from '../../component/store/joinstore';//新增门店
 import joincpj from '../../component/store/joincpj';//新增彩票机
@@ -35,6 +36,16 @@ module.exports = {
             headerBackTitle: '',
         }),
     },
+    idjoin: {
+        screen: idjoin,
+        navigationOptions: ({ navigation }) => ({
+            title: '新增账号',
+            headerStyle: headerStyleB,
+            headerTitleStyle: headerTitleStyleB,
+            headerBackImage:Backicon,
+            headerBackTitle: '',
+        }),
+    },
     joinstore: {
         screen: joinstore,
         navigationOptions: ({ navigation }) => ({
@@ -58,7 +69,7 @@ module.exports = {
     joincpj: {
         screen: joincpj,
         navigationOptions: ({ navigation }) => ({
-            title: '新增彩票机',
+            title: '添加彩票机',
             headerStyle: headerStyleB,
             headerTitleStyle: headerTitleStyleB,
             headerBackImage:Backicon,

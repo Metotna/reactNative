@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import { Text, View, Alert, StyleSheet, TextInput, } from 'react-native';
-import { Button, } from 'antd-mobile-rn'
+import  Button from '../common/button'
 
 @insertStyle('loginStyle')
 export default class Main extends Component {
@@ -43,8 +43,8 @@ export default class Main extends Component {
             value={this.state.passwordAgain} placeholder="请再次输入新密码"
           />
         </View>
+        <Button  onPressIn={() => this.props.navigation.navigate('login')} style={{marginTop:15,marginRight:12,marginLeft:12}}  textStyle={{fontSize:16,lineHeight:28,}}  title={'确定'}/>
 
-        <Button type="primary" style={{margin:10,marginTop:20}} onPressIn={() => this.props.navigation.navigate('login')}>确定</Button>
 
       </View>
     );

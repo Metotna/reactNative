@@ -55,16 +55,28 @@ class CameraButton extends React.Component {
         }
         return (
             <View>
-                <TouchableOpacity
-                    onPress={this.showImagePicker.bind(this)}
-                    style={[this.props.style,styles.cameraBtn]}>
-                    <View>
-                        <Icon name="md-camera" color="#aaa" size={34}/>
-                    </View>
-                </TouchableOpacity>
-                <View>
-                    <Image style={styles.image} source={this.state.avatarSource} />
-                </View>
+                {
+                    this.state.avatarSource ?
+                        <TouchableOpacity
+                            onPress={this.showImagePicker.bind(this)}
+                            style={[this.props.style,styles.cameraBtn]}>
+                            <View>
+                                <Image style={styles.image} source={this.state.avatarSource} />
+                            </View>
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity
+                            onPress={this.showImagePicker.bind(this)}
+                            style={[this.props.style,styles.cameraBtn]}>
+                            <View>
+                                {/*<Icon name="md-camera" color="#aaa" size={34}/>*/}
+                                <Image
+                                    style={{height:130,width:130}}
+                                    source={require('../../assets/image/icon2/paizhao.png')}
+                                />
+                            </View>
+                        </TouchableOpacity>
+                }
             </View>
         )
     }

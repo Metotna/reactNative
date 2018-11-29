@@ -2,22 +2,48 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Platform, TextInput, Dimensions, Image } from 'react-native';
 import { Button, CheckBox } from 'react-native-elements';
+import {NavigationActions} from 'react-navigation';
+
+const resetAction =(routerName)=> NavigationActions.reset({
+  index: 0,
+  actions: [
+      NavigationActions.navigate(routerName),
+  ],
+});
 
 export default class Main extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      user: '',
-      pwd: '',
+      user: '13429122711',
+      pwd: '123456',
       checked: false,
     };
+    // console.log(this.props.navigation)
   }
 
   handleChoose = () => {
     console.log(this.state.checked)
     this.setState({
       checked: !this.state.checked
+    })
+  }
+  _handleLogin=()=>{
+    http.post('/user/login',{
+      username:this.state.user,
+      password:this.state.pwd,
+    },true).then(res=>{
+      console.log(res)
+      Storage.saveObj({
+        user:res.data.token,
+        token:res.data.token
+      })
+      this.props.navigation.navigate('TabbarS')
+      this.props.navigation.dispatch(resetAction)
+
+    }).catch(err=>{
+      console.log(err)
     })
   }
 
@@ -72,8 +98,9 @@ export default class Main extends Component {
         textStyle={{fontSize:16}}
           icon={{ name: 'cached' }}
           title='登录' 
-          onPress={() => this.props.navigation.navigate('Tabbar')}/>
+          onPress={this._handleLogin}/>
       </View>
+
     );
   }
 

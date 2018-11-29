@@ -1,31 +1,85 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet, ListView } from 'react-native';
+import { Text, View, StyleSheet, ListView, RefreshControl, ActivityIndicator } from 'react-native';
+import { withNavigation } from 'react-navigation';
 
 
 @insertStyle('netBarDetail')
-export default class Main extends Component {
+class Main extends Component {
   constructor(props) {
     super(props);
     const { navigation } = this.props;
-    console.log(navigation.getParam('itemId', 'NO-ID'), 1111)
     var ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
-      data: ds.cloneWithRows(['2018-05-21', '2018-05-22', '2018-05-23', '2018-05-24', '2018-05-25', '2018-05-26', '2018-05-27']),
+      dataSource: ds,
+      refreshing: false,
+      listPage: 1,
+      listStatus: 'Loading',
+      listReqing: false,
     };
-    // this.handleClick= this.handleClick.bind(this)
+    this.shopId =navigation.getParam('itemId');
+    this.listPageSize = 20
+    this._dataSource = [];
   }
-  _hanleList = (rowData, index) => {
-    return (
-      <View style={index % 2 ? ss.listCotEven : ss.listCotOdd}>
-        <Text style={[ss.flexText, ss.tul]} onPress={() => this.props.navigation.navigate('NetBarDay', {
-          time: rowData,
-        })}>{rowData}</Text>
-        <Text style={[ss.flexText, ss.tAr, ss.tblue]}>77777.88</Text>
-        <Text style={[ss.flexText, ss.tAr, ss.tgreen]}>22222.22</Text>
-        <Text style={[ss.flexText, ss.tAr]}>99999.99</Text>
-      </View>
-    )
+
+  _EndListPush = () => {
+    if (this.state.listStatus == 'noMore' || this.state.listReqing) return false
+    if(!this._dataSource.length)return
+    this.setState({ listReqing: true })
+    http.post('/netbar/report/sellList', {
+      shopId: this.shopId,
+      timeLevel: 'day',
+      pageNumber: this.state.listPage + 1,
+      pageSize: this.listPageSize,
+    }).then(res => {
+      if (res && res.status == 200) {
+        var listStatus = this.state.listPage == res.data.totalPage ? "noMore" : "goOn";
+        this._dataSource = this._dataSource.concat(res.data.entitys);
+        this.setState({
+          listPage: res.data.pageNumber,
+          listStatus: listStatus,
+          listReqing: false,
+          dataSource: this.state.dataSource.cloneWithRows(this._dataSource)
+        })
+      }
+    }).catch(err => {
+      this.setState({ listReqing: false })
+    })
   }
+
+  _hanleFooter = () => {
+    if (this.state.listStatus == "Loading") {
+      // return <Text style={{ lineHeight: 35, textAlign: "center", color: "#666" }}>加载中...</Text>
+    } else if (this.state.listStatus == "noMore") {
+      return <Text style={{ lineHeight: 35, textAlign: "center", color: "#666", marginBottom: 6 }}>暂无更多数据</Text>
+    } else {
+      return <ActivityIndicator style={{ height: 35 }} />
+    }
+  }
+
+  _onRefresh = () => {
+    this.setState({
+      refreshing: true,
+      listPage: 1,
+    })
+    http.post('/netbar/report/sellList', {
+      shopId: this.shopId,
+      timeLevel: 'day',
+      pageNumber: 1,
+      pageSize: this.listPageSize,
+    }).then(res => {
+      console.log(res)
+      if (res && res.status == 200) {
+        var listStatus = this.state.listPage == res.data.totalPage ? "noMore" : "goOn";
+        this._dataSource = res.data.entitys;
+        this.setState({
+          refreshing: false,
+          listStatus: listStatus,
+          dataSource: this.state.dataSource.cloneWithRows(this._dataSource)
+        })
+      }
+    })
+  }
+
   render() {
     return (
       <View style="container">
@@ -37,27 +91,45 @@ export default class Main extends Component {
         </View>
         <View style="border10h" />
         <View style={["flex1",]}>
-          <ListView 
-          dataSource={this.state.data} 
-          removeClippedSubviews={false}
-          renderRow={(rowData, a, index) => (
-            <View style={index % 2 ? ss.listCotEven : ss.listCotOdd}>
-              <Text style={[ss.flexText, ss.tul]} onPress={() => this.props.navigation.navigate('NetBarDay', {
-                time: rowData,
-              })}>{rowData}</Text>
-              <Text style={[ss.flexText, ss.tAr, ss.tblue]}>77777.88</Text>
-              <Text style={[ss.flexText, ss.tAr, ss.tgreen]}>22222.22</Text>
-              <Text style={[ss.flexText, ss.tAr]}>99999.99</Text>
-            </View>
-          )} />
+          <ListView
+            dataSource={this.state.dataSource}
+            refreshControl={<RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+              tintColor="#666666"
+              title="Loading..."
+              titleColor="#666666"
+              colors={['#666666']}
+              progressBackgroundColor="#f2f3f5"
+            />}
+            onEndReachedThreshold={30}
+            onEndReached={this._EndListPush}
+            renderFooter={this._hanleFooter}
+            removeClippedSubviews={false}
+            enableEmptySections={true}
+            renderRow={(rowData, a, index) => (
+              <View style={index % 2 ? ss.listCotOdd : ss.listCotEven}>
+                <Text style={[ss.flexText, ss.tul]} onPress={() => this.props.navigation.navigate('NetBarDay',{
+                  time: rowData.dateMemo,
+                  shopId:this.shopId
+                })}>{rowData.dateMemo}</Text>
+                <Text style={[ss.flexText, ss.tAr, ss.tgreen]}>{rowData.onlineSell}</Text>
+                <Text style={[ss.flexText, ss.tAr, ss.tblue]}>{rowData.offlineSell}</Text>
+                <Text style={[ss.flexText, ss.tAr]}>{rowData.allSell}</Text>
+              </View>
+            )} />
           <View style="border10h" />
 
         </View>
       </View>
     )
   }
+  componentWillMount() {
+    this._onRefresh()
+  }
+  componentDidMount() { }
 }
-
+export default withNavigation(Main)
 const ss = StyleSheet.create({
   icon: {
     marginLeft: 5,

@@ -26,36 +26,35 @@ export default class PopupExample extends React.Component {
   onChange = (value) => {
     console.log(value)
     this.setState({ value });
+    // onPress={() => this.props.navigation.navigate('Setting')
   }
   render() {
     return (
       <View style="container">
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('Setting')}>
-
-        <View style={["h90", "flexrowbet"]} onPress={() => this.props.navigation.navigate('handleReport')}>
-          <Image source={require('../../assets/image/img/我的 copy.png')} style="imgsize" />
-          <Text style="phone">151 **** 1798</Text>
-        </View>
+        <TouchableHighlight >
+          <View style={["h90", "flexrowbet"]} >
+            <Image source={require('../../assets/image/img/我的 copy.png')} style="imgsize" />
+            <Text style="phone">151 **** 1798</Text>
+          </View>
         </TouchableHighlight>
         <View style="border60h" />
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('Setting')}>
 
-        <View style={["h45", "flexrowbet"]} onPress={() => this.props.navigation.navigate('handleReport')}>
-          <Image source={require('../../assets/image/img/门店信息.png')} style="imgsizeM" />
-          <Text style={["flex1", "f16", "mal8", "fblock3"]}>门店信息</Text>
-          <Image source={require('../../assets/image/img/更多.png')} style="imgsizeM" /></View>
-
-          </TouchableHighlight>
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('StoreInfo')}>
+          <View style={["h45", "flexrowbet"]} >
+            <Image source={require('../../assets/image/img/门店信息.png')} style="imgsizeM" />
+            <Text style={["flex1", "f16", "mal8", "fblock3"]}>门店信息</Text>
+            <Image source={require('../../assets/image/img/更多.png')} style="imgsizeM" /></View>
+        </TouchableHighlight>
         <View style="border10h" />
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('Setting')}>
 
-        <View style={["h45", "flexrowbet"]} onPress={() => this.props.navigation.navigate('handleReport')}>
-          <Image source={require('../../assets/image/img/必赢信息.png')} style="imgsizeM" />
-          <Text style={["flex1", "f16", "mal8", "fblock3"]}>必赢信息</Text>
-          <Image source={require('../../assets/image/img/更多.png')} style="imgsizeM" /></View>
-</TouchableHighlight>
-
+        <TouchableHighlight onPress={() => this.props.navigation.navigate('CompanyInfo')}>
+          <View style={["h45", "flexrowbet"]} >
+            <Image source={require('../../assets/image/img/必赢信息.png')} style="imgsizeM" />
+            <Text style={["flex1", "f16", "mal8", "fblock3"]}>必赢信息</Text>
+            <Image source={require('../../assets/image/img/更多.png')} style="imgsizeM" /></View>
+        </TouchableHighlight>
         <View style="border10h" />
+
         <TouchableHighlight onPress={() => this.props.navigation.navigate('Setting')}>
           <View style={["h45", "flexrowbet"]} >
             <Image source={require('../../assets/image/img/设置.png')} style="imgsizeM" />

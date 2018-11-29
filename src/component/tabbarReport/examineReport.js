@@ -28,7 +28,6 @@ class Main extends Component {
   render() {
     return (
       <View style='container'>
-
         <View style='tab_list'>
           <ScrollView style='tab_list'>
             <View style="content_imga" />
