@@ -6,10 +6,9 @@ import {
     View,
     Platform,
     ScrollView,
-    Alert,
     TextInput
 } from 'react-native';
-import {List, DatePicker} from 'antd-mobile-rn'
+import {List, DatePicker,Toast} from 'antd-mobile-rn'
 
 import rn_Less from 'rn-less/src/runtime';
 import style from '../../assets/style/script/style_less'
@@ -51,8 +50,8 @@ export default class Main extends Component {
     checkdata =(obj)=>{
         for (var prop in obj) {
             if(!obj[prop]){
-                console.log(prop)
-                Alert.alert('请补充完整数据提交');
+                //console.log(prop)
+                Toast.show('请补充完整数据提交');
                 return false;
             }
         }
@@ -89,25 +88,23 @@ export default class Main extends Component {
             return false;
         }
         this.state.data.withdrawal = this.selwithdrawal(this.state.data.withdrawal);
-        http.post('/netbar/machine/edit',this.state.data).then(res=>{
-            /* Storage.saveObj({
-                 user:res.data.token,
-                 token:res.data.token
-             })*/
+        http.loadingPost('/netbar/machine/edit',this.state.data).then(res=>{
             console.log(res)
             if(res.status == '200'){
-                Alert.alert(res.msg);
+                Toast.show(res.msg);
+                this.props.navigation.state.params.dopost();
                 this.props.navigation.goBack();
+                //this.props.navigation.navigate('cpjmanagement',{id:this.state.data.shopId});
             }
         }).catch(err=>{
             console.log(err)
         })
-        console.log(this.state.data)
+        //console.log(this.state.data)
     }
 
     //rende之后调用
     componentDidMount(){
-        console.log(this.props.navigation.getParam('shopid'))
+
     }
 
     //checkbox选择器
@@ -132,7 +129,9 @@ export default class Main extends Component {
             <View>
                 <View>
                     <View style={["bgfff","flexrow","ls_conbox"]}>
-                        <Text style={["col999","text","fontsize14"]}>机器编号：</Text>
+                        <View style={["textv"]}>
+                            <Text style={["text"]}>机器编号：</Text>
+                        </View>
                         <View>
                             <TextInput
                                 style={["inputbox"]}
@@ -147,7 +146,9 @@ export default class Main extends Component {
                         </View>
                     </View>
                     <View style={["bgfff","flexrow","ls_conbox"]}>
-                        <Text style={["col999","text","fontsize14"]}>在售彩种：</Text>
+                        <View style={["textv"]}>
+                            <Text style={["text"]}>在售彩种：</Text>
+                        </View>
                         <View style={["flexrow"]}>
                             {this.state.Change.map((i,id) => (
                                 <CheckBox
@@ -162,11 +163,14 @@ export default class Main extends Component {
                         </View>
                     </View>
                     <View style={["bgfff","flexrow","ls_conbox"]}>
-                        <Text style={["col999","text","fontsize14"]}>提现开通：</Text>
+                        <View style={["textv"]}>
+                            <Text style={["text"]}>提现开通：</Text>
+                        </View>
                         <Radio
                             selectedValue={this.state.data.withdrawal}
                             onValueChange={(id) => {
                                 this.state.data.withdrawal = id;
+                                console.log(this.state.data.withdrawal)
                             }}
                             style={{ flexDirection:'row',
                                 flexWrap:'wrap',

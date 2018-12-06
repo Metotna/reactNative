@@ -18,13 +18,27 @@ import mCompanyInfo from '../../component/tabbarMine/companyInfo'
 
 import rExamine from '../../component/tabbarReport/examineReport'
 import uploadreport from '../../component/tabbarReport/uploadreport'
+import ReportUpload_a from '../../component/tabbarReport/ReportUpload_a'
+import uploadreportT from '../../component/tabbarReport/uploadreportT'
+import ReportUpload_b from '../../component/tabbarReport/ReportUpload_b'
 
 export const defaultRouter ='handleReport'
 const headerStyleB={
   backgroundColor: '#2073D3',
 }
 const headerTitleStyleB={
-  color: '#fff'
+  color: '#fff',
+  textAlign:"center",
+
+}
+function comOption(title){
+return {
+  title: title,
+  headerStyle: headerStyleB,
+  headerTitleStyle: headerTitleStyleB,
+  headerBackImage:Backicon,
+  headerBackTitle: ' ',
+}
 }
 export const rpartA = {
   /* login  */
@@ -33,13 +47,19 @@ export const rpartA = {
     navigationOptions: ({ navigation }) => ({
       header: null,
       headerBackTitle: '返回',
+      headerStyle: headerStyleB,
+      headerTitleStyle: headerTitleStyleB,
+      headerBackImage:Backicon,
     }),
   },
   forgetPassword: {
     screen: forgetPwd,
     navigationOptions: ({ navigation }) => ({
       title: '忘记密码',
-      headerTintColor: '#333',
+      headerTintColor: '#fff',
+      headerStyle: headerStyleB,
+      headerTitleStyle: headerTitleStyleB,
+      headerBackImage:Backicon,
       headerBackTitle: '上一步',
     }),
   },
@@ -47,102 +67,66 @@ export const rpartA = {
     screen: setPwd,
     navigationOptions: ({ navigation }) => ({
       title: '设置密码',
-      headerTintColor: '#333',
+      headerTintColor: '#fff',
+      headerStyle: headerStyleB,
+      headerTitleStyle: headerTitleStyleB,
+      headerBackImage:Backicon,
     }),
   },
   /* tabarHome */
   handleReport:{
     screen: hReport,
-    navigationOptions: ({ navigation }) => ({
-      title: '报表管理',
-      headerStyle: headerStyleB,
-      headerTitleStyle: headerTitleStyleB,
-      headerBackImage:Backicon,
-      headerBackTitle: ' ',
-    }),
+    navigationOptions: ({ navigation }) => (comOption('报表管理')),
   },
   NetBarDetail:{
     screen: hNetBarDetail,
-    navigationOptions: ({ navigation }) => ({
-      title: navigation.getParam('title','xx网吧'),
-      headerStyle: headerStyleB,
-      headerTitleStyle: headerTitleStyleB,
-      headerBackImage:Backicon,
-      headerBackTitle: ' ',
-    }),
+    navigationOptions: ({ navigation }) => (comOption(navigation.getParam('title','xx网吧'))),
   },
   NetBarDay:{
     screen: hNetBarDay,
-    navigationOptions: ({ navigation }) => ({
-      title: navigation.getParam('title','每日明细'),
-      headerStyle: headerStyleB,
-      headerTitleStyle: headerTitleStyleB,
-      headerBackImage:Backicon,
-      headerBackTitle: ' ',
-    }),
+    navigationOptions: ({ navigation }) => (comOption(navigation.getParam('title','每日明细'))),
   },
   /* tabarMine */
   Setting:{
     screen: mSetting,
-    navigationOptions: ({ navigation }) => ({
-      title: '设置',
-      headerStyle: headerStyleB,
-      headerTitleStyle: headerTitleStyleB,
-      headerBackImage:Backicon,
-      headerBackTitle: ' ',
-    }),
+    navigationOptions: ({ navigation }) => (comOption('设置')),
   },
   Reseting:{
     screen: mReseting,
-    navigationOptions: ({ navigation }) => ({
-      title: '修改密码',
-      headerStyle: headerStyleB,
-      headerTitleStyle: headerTitleStyleB,
-      headerBackImage:Backicon,
-      headerBackTitle: ' ',
-    }),
+    navigationOptions: ({ navigation }) => (comOption('修改密码')),
   },
   StoreInfo:{
     screen: mStoreInfo,
-    navigationOptions: ({ navigation }) => ({
-      title: '门店信息',
-      headerStyle: headerStyleB,
-      headerTitleStyle: headerTitleStyleB,
-      headerBackImage:Backicon,
-      headerBackTitle: ' ',
-    }),
+    navigationOptions: ({ navigation }) => (comOption('门店信息'))
   },
   CompanyInfo:{
     screen: mCompanyInfo,
-    navigationOptions: ({ navigation }) => ({
-      title: '必赢信息',
-      headerStyle: headerStyleB,
-      headerTitleStyle: headerTitleStyleB,
-      headerBackImage:Backicon,
-      headerBackTitle: ' ',
-    }),
+    navigationOptions: ({ navigation }) => (comOption('必赢信息'))
   },
+
+  // (comOption('确认销售报表')),
    /* 上传销售报表 */
     uploadreport:{
         screen: uploadreport,
-        navigationOptions: ({ navigation }) => ({
-            title: '上传销售报表',
-            headerStyle: headerStyleB,
-            headerTitleStyle: headerTitleStyleB,
-            headerBackImage:Backicon,
-            headerBackTitle: ' ',
-        }),
+    },
+    /* 上传缴款报表 */
+    uploadreportT:{
+        screen: uploadreportT,
+    },
+    /* 确认销售报表 */
+    ReportUpload_a:{
+        screen: ReportUpload_a,
+        navigationOptions: ({ navigation }) => (comOption('确认销售报表')),
+    },
+    /* 确认缴款报表 */
+    ReportUpload_b:{
+        screen: ReportUpload_b,
+        navigationOptions: ({ navigation }) => (comOption('确认缴款报表')),
     },
   /* tabarReport */
   Examine:{
     screen: rExamine,
-    navigationOptions: ({ navigation }) => ({
-      title: '查看报表',
-      headerStyle: headerStyleB,
-      headerTitleStyle: headerTitleStyleB,
-      headerBackImage:Backicon,
-      headerBackTitle: ' ',
-    }),
+    navigationOptions: ({ navigation }) =>(comOption('查看报表')),
   },
   
 }

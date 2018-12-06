@@ -10,9 +10,7 @@ export default class button extends Component {
       under: this.props.underlayColor || "rgba(32,115,211,.8)",
     };
   }
-  _PressButton = () => {
-    console.log(`Press Button `)
-  }
+
   render() {
     return (
       <TouchableHighlight

@@ -1,13 +1,16 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Platform, TextInput, Dimensions, Image } from 'react-native';
+import { StyleSheet, Text, View, Platform, TextInput, Dimensions, Image ,ScrollView,KeyboardAvoidingView} from 'react-native';
 import { Button, CheckBox } from 'react-native-elements';
-import {NavigationActions} from 'react-navigation';
+import { StackActions, NavigationActions } from 'react-navigation';
+import { Toast } from 'antd-mobile-rn'
 
-const resetAction =(routerName)=> NavigationActions.reset({
+import Btn from '../common/buttonplat'
+import  KeyboardView from '../common/keyboard'
+const resetAction = (routerName) => NavigationActions.reset({
   index: 0,
   actions: [
-      NavigationActions.navigate(routerName),
+    NavigationActions.navigate(routerName),
   ],
 });
 
@@ -16,48 +19,73 @@ export default class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: '13429122711',
+      user: '',
       pwd: '123456',
       checked: false,
     };
+    this.user=''
+    Storage.get("user").then(res=>{
+      this.setState({user:res})
+
+    })
     // console.log(this.props.navigation)
   }
 
   handleChoose = () => {
-    console.log(this.state.checked)
+    // console.log(this.state.checked)
     this.setState({
       checked: !this.state.checked
     })
   }
-  _handleLogin=()=>{
-    http.post('/user/login',{
-      username:this.state.user,
-      password:this.state.pwd,
-    },true).then(res=>{
-      console.log(res)
-      Storage.saveObj({
-        user:res.data.token,
-        token:res.data.token
-      })
-      this.props.navigation.navigate('TabbarS')
-      this.props.navigation.dispatch(resetAction)
-
-    }).catch(err=>{
+  _handleLogin = () => {
+    if(!this.state.user || !this.state.pwd){
+      Toast.info('用户名或密码不能为空！', 1);
+      return 
+    }
+    http.loadingPost('/user/login', {
+      username: this.state.user,
+      password: this.state.pwd,
+      busId: "NETBAR"
+    }, true).then(res => {
+      if (res) {
+        if (res.status == 200) {
+          let rule = res.data.myInfo.roleVOS[0].key;
+          if (rule == 'ADMIN' || rule == "BUSM" || rule == "SHOPM") {
+            Storage.saveObj({
+              user: this.state.user,
+              token: res.data.token
+            })
+            var routeName = (rule == 'ADMIN' || rule == "BUSM") ? "TabbarManager" : "TabbarStore"
+            this.props.navigation.dispatch(StackActions.reset({
+              index: 0,
+              actions: [NavigationActions.navigate({ routeName })],
+            }))
+          } else {
+            Toast.fail('当前登录账号无效！', 1);
+          }
+        } else {
+          Toast.fail(res.msg, 1);
+        }
+      }
+    }).catch(err => {
       console.log(err)
     })
   }
-
+  _handleLogin2(){
+    console.log(111)
+  }
   render() {
     return (
-      <View style={css.container} >
+      <ScrollView style={css.container} >
         <Text style={{ height: (Platform.OS === 'ios') ? 20 : 0, }}></Text>
-        <Text style={css.titles}>必赢网吧管理管理系统</Text>
+        <Text style={css.titles}>必赢门店管理系统</Text>
         <View style={css.inputOut}>
           <Image
             style={css.inputIocn}
-            source={require('../../assets/image/tab_btn_user_hl.png')}
+            source={require('../../assets/image/img/username.png')}
           />
           <TextInput style={css.inputs}
+          value={this.state.user}
             placeholder="请输入账号"
             underlineColorAndroid="transparent"
             onChangeText={(text) => this.setState({ user: text })} />
@@ -65,18 +93,20 @@ export default class Main extends Component {
         <View style={css.inputOut}>
           <Image
             style={css.inputIocn}
-            source={require('../../assets/image/tab_btn_user_hl.png')}
+            source={require('../../assets/image/img/password.png')}
           />
           <TextInput style={css.inputs}
+          value={this.state.pwd}
+
             placeholder="请输入密码"
             secureTextEntry
             underlineColorAndroid="transparent"
             onChangeText={(text) => this.setState({ pwd: text })} />
         </View>
         <View style={css.checkboxFather}>
-          <CheckBox
+          {/* <CheckBox
             containerStyle={css.checkbox}
-            title='记住密码'
+            title='默认登录'
             left
             size={20}
             checked={this.state.checked}
@@ -88,19 +118,12 @@ export default class Main extends Component {
                 checked: !this.state.checked
               })
             }}
-          />
-          <Text style={css.checkText}  onPress={() => this.props.navigation.navigate('forgetPassword')}>忘记密码？</Text>
+          /> */}
+           <Text></Text>
+          <Text style={css.checkText} onPress={() => this.props.navigation.navigate('forgetPassword')}>忘记密码？</Text>
         </View>
-        <Button style={css.btns}
-        backgroundColor='#fff'
-        borderRadius={5}
-        color='#227ed8'
-        textStyle={{fontSize:16}}
-          icon={{ name: 'cached' }}
-          title='登录' 
-          onPress={this._handleLogin}/>
-      </View>
-
+          <Btn  title='登录' textStyle={{ fontSize: 16,color: '#2073D3', }} style={{height:40,backgroundColor:"#fff",}} onPress={this._handleLogin}/>
+      </ScrollView>
     );
   }
 
@@ -116,11 +139,12 @@ const css = StyleSheet.create({
     paddingTop: 80,
     paddingLeft: 20,
     paddingRight: 20,
+    paddingBottom:30,
   },
   titles: {
-    fontSize: 20,
+    fontSize: 30,
     color: '#FFF',
-    paddingBottom: 30,
+    paddingBottom: 60,
     textAlign: 'center'
   },
   inputOut: {
@@ -129,10 +153,10 @@ const css = StyleSheet.create({
   },
   inputIocn: {
     position: 'absolute',
-    left: 15,
-    top: 5,
-    width: 30,
-    height: 30,
+    left: 20,
+    top: 10,
+    width: 20,
+    height: 20,
     zIndex: 2,
   },
   inputs: {
@@ -143,7 +167,7 @@ const css = StyleSheet.create({
     marginBottom: 8,
     borderRadius: 5,
     paddingLeft: 60,
-    fontSize:15,
+    fontSize: 15,
   },
   checkboxFather: {
     justifyContent: 'space-between',
@@ -166,7 +190,7 @@ const css = StyleSheet.create({
     fontWeight: 'bold',
   },
   btns: {
-    marginLeft:-15,
-    marginRight:-15,
+    marginLeft: -15,
+    marginRight: -15,
   }
 });

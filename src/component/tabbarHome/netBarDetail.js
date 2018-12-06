@@ -7,7 +7,6 @@ import { withNavigation } from 'react-navigation';
 class Main extends Component {
   constructor(props) {
     super(props);
-    const { navigation } = this.props;
     var ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       dataSource: ds,
@@ -16,7 +15,9 @@ class Main extends Component {
       listStatus: 'Loading',
       listReqing: false,
     };
+    const { navigation } = this.props;
     this.shopId =navigation.getParam('itemId');
+    this.title=navigation.getParam('title');
     this.listPageSize = 20
     this._dataSource = [];
   }
@@ -48,9 +49,13 @@ class Main extends Component {
 
   _hanleFooter = () => {
     if (this.state.listStatus == "Loading") {
-      // return <Text style={{ lineHeight: 35, textAlign: "center", color: "#666" }}>加载中...</Text>
+    //   return <View style={{height:35,justifyContent:"center"}}>
+    //  <Text style={{  textAlign: "center", color: "#666" }}>加载中...</Text>
+    //   </View>
     } else if (this.state.listStatus == "noMore") {
-      return <Text style={{ lineHeight: 35, textAlign: "center", color: "#666", marginBottom: 6 }}>暂无更多数据</Text>
+      return <View style={{height:35,justifyContent:"center"}}>
+      <Text style={{  textAlign: "center", color: "#666" }}>暂无更多数据</Text>
+       </View>
     } else {
       return <ActivityIndicator style={{ height: 35 }} />
     }
@@ -111,6 +116,7 @@ class Main extends Component {
               <View style={index % 2 ? ss.listCotOdd : ss.listCotEven}>
                 <Text style={[ss.flexText, ss.tul]} onPress={() => this.props.navigation.navigate('NetBarDay',{
                   time: rowData.dateMemo,
+                  title:this.title,
                   shopId:this.shopId
                 })}>{rowData.dateMemo}</Text>
                 <Text style={[ss.flexText, ss.tAr, ss.tgreen]}>{rowData.onlineSell}</Text>
@@ -127,7 +133,11 @@ class Main extends Component {
   componentWillMount() {
     this._onRefresh()
   }
-  componentDidMount() { }
+  componentWillReceiveProps(nextProps){
+    const { navigation } = this.props;
+    this.shopId =navigation.getParam('itemId');
+    this._onRefresh()
+  }
 }
 export default withNavigation(Main)
 const ss = StyleSheet.create({
@@ -139,6 +149,8 @@ const ss = StyleSheet.create({
     height: 30,
     paddingLeft: 12,
     paddingRight: 12,
+    paddingTop: 7,
+    paddingBottom: 7,
     backgroundColor: "#F3F3F3"
   },
   listCotEven: {
@@ -146,13 +158,14 @@ const ss = StyleSheet.create({
     height: 30,
     paddingLeft: 12,
     paddingRight: 12,
+    paddingTop: 7,
+    paddingBottom: 7,
     backgroundColor: "#ffffff"
   },
   flexText: {
     flex: 1,
     fontSize: 14,
     height: 30,
-    lineHeight: 30,
     color: '#333333',
   },
   tAr: {

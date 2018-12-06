@@ -18,6 +18,7 @@ detail {
   }
   .herderbox{
     width: 100%;
+    height: 74;
   }
   .searchbox{
     height: 44;
@@ -34,9 +35,10 @@ detail {
   .tit{
     height: 30;
     background-color: #FFF7DE;
+    flex-direction: column;
+    justify-content: center;
     .lh{
-      line-height: 30;
-      padding-left: 10
+      padding-left: 10px;
     }
   }
   .mdlist{
@@ -44,7 +46,10 @@ detail {
     background-color: #fff;
     margin-bottom: 6px;
     .ls_t{
-      padding: 15 12
+      padding: 0 12;
+      .hadtext{
+        line-height: 30;
+      }
     }
     .a_1{
       flex-direction: row;
@@ -52,6 +57,7 @@ detail {
     }
     .ls_con{
       padding: 0 0;
+      height: 65px;
       .c_box{
         padding: 4 12;
       }
@@ -60,7 +66,8 @@ detail {
       border-color: #eee;
       border-width: 1 0 0 0;
       flex-direction: row-reverse;
-      padding: 3px 0;
+      padding-top: 5px;
+      height: 35px;
       .but{
         width: 65;
         height: 24;
@@ -86,27 +93,34 @@ cpjmanagement{
     .ls_box{
       margin-bottom: 6;
     }
+    .textv{
+      justify-content: center;
+      height: 44;
+    }
     .hardebox{
       background-color: #fff;
       margin-bottom: 6;
       width: 100%;
+      height: 44;
+      flex-direction: row;
       .icon{
+        width: 30px;
         margin-top: 6;
+        margin-right: 5px;
       }
     }
     .tjbut{
       font-size: 16;
       color: #114FCD;
-      height: 44;
-      line-height: 44;
     }
     .ls_conbox{
       height: 44;
       border-bottom: 1 solid #eee;
       padding: 0 12;
+      justify-content: flex-start;
+      align-items: center;
       .text{
         min-width: 72;
-        line-height: 44;
       }
     }
     .bt_bot{
@@ -131,6 +145,10 @@ cpjmanagement{
 }
 /*新增账号*/
 idjoin{
+  .txetv{
+    height: 44px;
+    justify-content: center;
+  }
   .ls_box{
     margin-bottom: 6;
   }
@@ -140,7 +158,6 @@ idjoin{
     padding: 0 12;
     .text{
       min-width: 75;
-      line-height: 44;
       text-align: left;
     }
     .inputbox{
@@ -167,6 +184,12 @@ idjoin{
 /*修改门店信息*/
 revampstore{
   .revampstore{
+    .textv{
+      width: 95px;
+      height: 44px;
+      justify-content: center;
+      align-items: center;
+    }
 
     flex: 1;
     .ls_box{
@@ -182,9 +205,6 @@ revampstore{
       border-bottom: 1 solid #eee;
       padding: 0 12;
       .text{
-        width: 95;
-        line-height: 44;
-        text-align: left;
         color: #000;
         font-size: 17px;
       }
@@ -193,17 +213,14 @@ revampstore{
       height: 60;
       border-bottom: 1 solid #eee;
       padding: 6 12;
-      .text{
-        width: 95;
-        line-height: 44;
-        text-align: left;
-      }
+    }
+    .title2box{
+      justify-content: center;
+      height: 34;
+      background-color: #ddd;
     }
     .title2{
       color: #666;
-      background-color: #ddd;
-      height: 34;
-      line-height: 34;
       padding-left: 12;
     }
     .but{
@@ -218,7 +235,7 @@ revampstore{
       height: 48;
       line-height: 44;
       border-width: 0;
-      font-size: 12px;
+      font-size: 14px;
     }
     .martop{
       margin-top: 6;
@@ -238,16 +255,19 @@ revampstore{
   }
 }
 joincpj{
+  .textv{
+    justify-content: center;
+    align-items: center;
+    width: 75px;
+    height: 44px;
+  }
   .ls_conbox{
     height: 44;
     border-bottom: 1 solid #eee;
     padding: 0 12;
     .text{
-      width: 75;
-      line-height: 44;
-      text-align: left;
       color: #666;
-      font-size: 17px;
+      font-size: 14px;
     }
     .inputbox{
       width: 250;
@@ -295,7 +315,78 @@ uploadreport{
     align-items: center;
     .img{
       width: 130px;
-      height: 130px;
+      height: 120px;
+    }
+  }
+}
+ReportUpload{
+  .pagebox{
+    flex: 1;
+    flex-direction: column;
+  }
+  .topbox{
+    flex: 1;
+    width: 100%;
+  }
+  .bannerbox{
+    width: 300;
+    height: 220px;
+    margin-bottom: 6px;
+  }
+  .itembox{
+    flex-direction: row;
+    background-color: #fff;
+    padding: 0 12px;
+    .texta{
+      font-size: 16px;
+      color: #333;
+    }
+    .textb{
+      font-size: 16px;
+      color: #002000;
+      line-height: 32;
+    }
+  }
+  .ls_conbox{
+    height: 44;
+    border-bottom: 1 solid #eee;
+    padding: 0 12;
+    flex-direction: row;
+    justify-content: space-between;
+    .text{
+      font-size: 16;
+      color: #333333;
+      min-width: 75;
+      line-height: 40;
+      text-align: left;
+    }
+    .inputbox{
+      font-size: 16px;
+      width: 160px;
+      height: 25px;
+      line-height: 25;
+      font-size: 14px;
+      border: 1px solid #eee;
+      margin-top: 7;
+      text-align: right;
+      color: #666;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+  }
+  .butbox{
+    width: 100%;
+    height: 60px;
+    background-color: #fff;
+    padding: 10 12;
+    border-top: 1px solid #eee;
+    flex-direction: row;
+    justify-content: space-between;
+    .but{
+      height: 40;
+      background-color: @blue;
+      border-radius: 5;
+      border-width: 0;
     }
   }
 }

@@ -6,10 +6,10 @@ import {
     View,
     Platform,
     ScrollView,
-    Alert,
-    TextInput
+    TextInput,
+    DeviceEventEmitter
 } from 'react-native';
-import { TextareaItem ,Picker,List} from 'antd-mobile-rn'
+import {Picker, List, Toast} from 'antd-mobile-rn'
 
 
 import rn_Less from 'rn-less/src/runtime';
@@ -18,6 +18,7 @@ import styleP from '../../assets/style/script/public_less'
 import Radio from '../common/radio'
 import  Button from  '../common/button'
 import district from '../common/ssq'
+import Keyboard from '../common/keyboard'
 
 import qs from 'query-string'
 import Storage from "../../util/asyncStorage";
@@ -35,7 +36,7 @@ export default class Main extends Component {
             data:{
                 account:'',
                 address:'',
-                area:'',
+                area:JSON.stringify(["110000","110100","110108"]),
                 bank:'',
                 linkPhone:'',
                 linkman:'',
@@ -46,23 +47,86 @@ export default class Main extends Component {
                 pwd:'123456',
             },
             datab:{
-                linkman:'',
+                name:'',
                 bank:'',
-                account:''
+                cardno:'',
+                phone:'',
             },
             value: ["110000","110100","110108"],
             adddata: district,
             schedule:['0'],
-            scheduledata:[
-                {label:'请选择',value: ''},
-                {label:'提交建站申请',value: '1'},
-                {label:'实地勘察',value: '2'},
-                {label:'与网吧签合同',value: '3'},
-                {label:'装修',value: '4'},
-                {label:'签合同，申领机器，申请宽带',value: '5'},
-                {label:'培训',value: '6'},
-                {label:'正常营业',value: '7'},
-                {label:'建站失败',value: '100'},
+            scheduledata:[],
+            scheduledataA:[
+                {
+                    "label": "请选择",
+                    "value": ""
+                },
+                {
+                    "label": "提交建站申请",
+                    "value": "10"
+                },
+                {
+                    "label": "实地勘查",
+                    "value": "20"
+                },
+                {
+                    "label": "网吧签合同",
+                    "value": "30"
+                },
+                {
+                    "label": "与体彩签合同",
+                    "value": "40"
+                },
+                {
+                    "label": "装修",
+                    "value": "41"
+                },
+                {
+                    "label": "申领机器",
+                    "value": "42"
+                },
+                {
+                    "label": "培训",
+                    "value": "50"
+                },
+                {
+                    "label": "正常营业",
+                    "value": "60"
+                }
+            ],
+            scheduledataB:[
+                {
+                    "label": "请选择",
+                    "value": ""
+                },
+                {
+                    "label": "提交建站申请",
+                    "value": "10"
+                },
+                {
+                    "label": "实地勘查",
+                    "value": "20"
+                },
+                {
+                    "label": "网吧签合同",
+                    "value": "30"
+                },
+                {
+                    "label": "装修",
+                    "value": "40"
+                },
+                {
+                    "label": "福彩签合同",
+                    "value": "41"
+                },
+                {
+                    "label": "培训",
+                    "value": "50"
+                },
+                {
+                    "label": "正常营业",
+                    "value": "60"
+                }
             ]
         };
     }
@@ -77,9 +141,10 @@ export default class Main extends Component {
         this.setState({ value });
     }
 
-        //rende之后调用
+    //rende之后调用
     componentDidMount(){
-
+        this._setSchedule(this.state.data.lotOrg);
+        //console.log(this.props.navigation.state)
     }
 
     //非空检查
@@ -87,7 +152,7 @@ export default class Main extends Component {
         for (var prop in obj) {
             if(!obj[prop]){
                 console.log(prop)
-                Alert.alert('请补充完整数据提交');
+                Toast.show('请补充完整数据提交');
                 return false;
             }
         }
@@ -96,15 +161,42 @@ export default class Main extends Component {
     //进度数据转换
     scheduleCl=(str)=>{
         let data = [
-            {text:'请选择',value: ''},
-            {text:'提交建站申请',value: 1},
-            {text:'实地勘察',value: 2},
-            {text:'与网吧签合同',value: 3},
-            {text:'装修',value: 4},
-            {text:'签合同，申领机器，申请宽带',value: 5},
-            {text:'培训',value: 6},
-            {text:'正常营业',value: 7},
-            {text:'建站失败',value: 100},
+            {
+                "label": "请选择",
+                "value": ""
+            },
+            {
+                "label": "提交建站申请",
+                "value": "10"
+            },
+            {
+                "label": "实地勘查",
+                "value": "20"
+            },
+            {
+                "label": "网吧签合同",
+                "value": "30"
+            },
+            {
+                "label": "与体彩签合同",
+                "value": "40"
+            },
+            {
+                "label": "装修",
+                "value": "41"
+            },
+            {
+                "label": "申领机器",
+                "value": "42"
+            },
+            {
+                "label": "培训",
+                "value": "50"
+            },
+            {
+                "label": "正常营业",
+                "value": "60"
+            }
         ];
         data.map(x =>{
             if(x.text === str[0]){
@@ -116,7 +208,7 @@ export default class Main extends Component {
 
     dopost =()=> {
         this.state.data.account = this.state.data.linkPhone;
-        this.state.data.bank = qs.stringify(this.state.datab);
+        this.state.data.bank = JSON.stringify(this.state.datab);
         //this.scheduleCl(this.state.data.schedule);
         //console.log(this.state.data.schedule);
         if(!this.checkdata(this.state.data)){
@@ -126,263 +218,296 @@ export default class Main extends Component {
             return false;
         }
         http.post('/netbar/shop/edit',this.state.data).then(res=>{
-           /* Storage.saveObj({
-                user:res.data.token,
-                token:res.data.token
-            })*/
+            /* Storage.saveObj({
+                 user:res.data.token,
+                 token:res.data.token
+             })*/
             console.log(res)
             if(res.status == '200'){
-                this.props.navigation.navigate('Store')
+                DeviceEventEmitter.emit('refreshShopList', 'suc');//添加广播
+                this.props.navigation.goBack();
             }
         }).catch(err=>{
             console.log(err)
         })
-        console.log(this.state.data)
+        //console.log(this.state.data)
+    }
+
+
+    //设置进度模式-1体彩，2福彩
+    _setSchedule =(id) =>{
+        //console.log(id)
+        if(id == 1){
+            this.setState({
+                scheduledata:this.state.scheduledataA,
+                schedule:['0']
+            })
+        }else {
+            this.setState({
+                scheduledata:this.state.scheduledataB,
+                schedule:['0']
+            })
+        }
     }
 
     render() {
         return (
-            <View style={["revampstore"]}>
-                <ScrollView>
-                    <View style={{marginTop:6}}>
-                        <View style={["ls_box"]}>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text"]}>网吧名称：</Text>
-                                <View>
-                                    <TextInput
-                                        style={["inputbox"]}
-                                        placeholder={'请输入网吧名字'}
-                                        underlineColorAndroid="transparent"
-                                        onChangeText={(text) => {
+            <Keyboard>
+                <View style={["revampstore"]}>
+                    <ScrollView>
+                        <View style={{marginTop:6}}>
+                            <View style={["ls_box"]}>
+                                <View style={["bgfff","flexrow","ls_conbox"]}>
+                                    <View style={["textv"]}>
+                                        <Text style={["text"]}>网吧名称：</Text>
+                                    </View>
+                                    <View>
+                                        <TextInput
+                                            style={["inputbox"]}
+                                            placeholder={'请输入网吧名字'}
+                                            underlineColorAndroid="transparent"
+                                            onChangeText={(text) => {
+                                                this.setState({
+                                                    data: Object.assign({}, this.state.data, {shopName: text})
+                                                })
+                                            }}
+                                        />
+                                    </View>
+                                </View>
+                                <View style={["bgfff","flexrow","ls_conbox"]}>
+                                    <View style={["textv"]}>
+                                        <Text style={["text"]}>合作方式：</Text>
+                                    </View>
+                                    <Radio
+                                        selectedValue={this.state.initId}
+                                        onValueChange={(id) => {
                                             this.setState({
-                                                data: Object.assign({}, this.state.data, {shopName: text})
+                                                data: Object.assign({}, this.state.data, {workType: id})
                                             })
                                         }}
-                                    />
+                                        selectedValue = '1'
+                                        style={{ flexDirection:'row',
+                                            flexWrap:'wrap',
+                                            alignItems:'flex-start',
+                                            flex:1,
+                                            backgroundColor:'#ffffff',
+                                            paddingTop:10
+                                        }}
+                                    >
+                                        <Text value="1">自营</Text>
+                                        <Text value="2">联营</Text>
+                                    </Radio>
                                 </View>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text"]}>合作方式：</Text>
-                                <Radio
-                                    selectedValue={this.state.initId}
-                                    onValueChange={(id) => {
-                                        this.setState({
-                                            data: Object.assign({}, this.state.data, {workType: id})
-                                        })
-                                    }}
-                                    selectedValue = '1'
-                                    style={{ flexDirection:'row',
-                                        flexWrap:'wrap',
-                                        alignItems:'flex-start',
-                                        flex:1,
-                                        backgroundColor:'#ffffff',
-                                        paddingTop:10
-                                    }}
-                                >
-                                    <Text value="1">自营</Text>
-                                    <Text value="2">联营</Text>
-                                </Radio>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text"]}>网吧类型：</Text>
-                                <Radio
-                                    selectedValue={this.state.initId}
-                                    onValueChange={(id) => {
-                                        this.setState({
-                                            data: Object.assign({}, this.state.data, {lotOrg: id})
-                                        })
-                                    }}
-                                    selectedValue = '1'
-                                    style={{ flexDirection:'row',
-                                        flexWrap:'wrap',
-                                        alignItems:'flex-start',
-                                        flex:1,
-                                        backgroundColor:'#ffffff',
-                                        paddingTop:10
-                                    }}
-                                >
-                                    <Text value="1">体彩</Text>
-                                    <Text value="2">福彩</Text>
-                                </Radio>
-                            </View>
-                            <View style={["bgfff"]}>
-                                <View style={["pickerbox"]}>
-                                    <List>
-                                        <Picker
-                                            data={this.state.scheduledata}
-                                            cols={1}
-                                            value={this.state.schedule}
-                                            onChange={this.onSchedule}
-                                        >
-                                            <List.Item arrow="horizontal">
-                                                进度：
-                                            </List.Item>
-                                        </Picker>
-                                    </List>
-                                    {/*<Text style={["pickertext"]} onPress={this._show_Picker}>{this.state.data.schedule}</Text>*/}
-                                </View>
-                            </View>
-                            <View style={["bgfff"]}>
-                                <View>
-                                    <List>
-                                        <Picker
-                                            data={this.state.adddata}
-                                            cols={3}
-                                            value={this.state.value}
-                                            onChange={this.onChange}
-                                        >
-                                            <List.Item arrow="horizontal">
-                                                所在地区：
-                                            </List.Item>
-                                        </Picker>
-                                    </List>
-                                    {/*<TextInput
-                                        style={["inputbox"]}
-                                        placeholder={'请输入所在地区'}
-                                        underlineColorAndroid="transparent"
-                                        onChangeText={(text) => {
+                                <View style={["bgfff","flexrow","ls_conbox"]}>
+                                    <View style={["textv"]}>
+                                        <Text style={["text"]}>网吧类型：</Text>
+                                    </View>
+                                    <Radio
+                                        onValueChange={(id) => {
+                                            this._setSchedule(id);
                                             this.setState({
-                                                data: Object.assign({}, this.state.data, {area: text})
+                                                data: Object.assign({}, this.state.data, {lotOrg: id})
                                             })
                                         }}
-                                    />*/}
-                                </View>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conboxrw"]}>
-                                <Text style={["col999","text"]}>详细地址：</Text>
-                                <View>
-                                    <TextareaItem
-                                        autoHeight={'rows'}
-                                        rows={2}
-                                        placeholderTextColor={'#ccc'}
-                                        style={["textareaItem"]}
-                                        placeholder={'请输入详细地址信息，如道路、门牌号、小区、楼栋号、单元室等'}
-                                        underlineColorAndroid="transparent"
-                                        onChangeText={(text) => {
-                                            this.setState({
-                                                data: Object.assign({}, this.state.data, {address: text})
-                                            })
+                                        selectedValue = '1'
+                                        style={{ flexDirection:'row',
+                                            flexWrap:'wrap',
+                                            alignItems:'flex-start',
+                                            flex:1,
+                                            backgroundColor:'#ffffff',
+                                            paddingTop:10
                                         }}
-                                    />
+                                    >
+                                        <Text value="1">体彩</Text>
+                                        <Text value="2">福彩</Text>
+                                    </Radio>
                                 </View>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text"]}>联系人：</Text>
-                                <View>
-                                    <TextInput
-                                        style={["inputbox"]}
-                                        placeholder={'请输入联系人姓名'}
-                                        underlineColorAndroid="transparent"
-                                        onChangeText={(text) => {
-                                            this.setState({
-                                                data: Object.assign({}, this.state.data, {linkman: text})
-                                            })
-                                        }}
-                                    />
+                                <View style={["bgfff"]}>
+                                    <View style={["pickerbox"]}>
+                                        <List>
+                                            <Picker
+                                                data={this.state.scheduledata}
+                                                cols={1}
+                                                value={this.state.schedule}
+                                                onChange={this.onSchedule}
+                                            >
+                                                <List.Item arrow="horizontal">
+                                                    进度：
+                                                </List.Item>
+                                            </Picker>
+                                        </List>
+                                        {/*<Text style={["pickertext"]} onPress={this._show_Picker}>{this.state.data.schedule}</Text>*/}
+                                    </View>
                                 </View>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text"]}>联系方式：</Text>
-                                <View>
-                                    <TextInput
-                                        style={["inputbox"]}
-                                        placeholder={'请输入联系人手机号'}
-                                        underlineColorAndroid="transparent"
-                                        keyboardType="phone-pad"
-                                        onChangeText={(text) => {
-                                            this.setState({
-                                                data: Object.assign({}, this.state.data, {linkPhone: text})
-                                            })
-                                        }}
-                                    />
+                                <View style={["bgfff"]}>
+                                    <View>
+                                        <List>
+                                            <Picker
+                                                data={this.state.adddata}
+                                                cols={3}
+                                                value={this.state.value}
+                                                onChange={this.onChange}
+                                            >
+                                                <List.Item arrow="horizontal">
+                                                    所在地区：
+                                                </List.Item>
+                                            </Picker>
+                                        </List>
+                                    </View>
                                 </View>
-                            </View>
-                            <View>
-                                <Text style={"title2"}>请绑定门店结算账户信息</Text>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text"]}>持卡人：</Text>
-                                <View>
-                                    <TextInput
-                                        style={["inputbox"]}
-                                        placeholder={'请输入名称'}
-                                        underlineColorAndroid="transparent"
-                                        onChangeText={(text) => {
-                                            this.setState({
-                                                datab: Object.assign({}, this.state.datab, {linkman: text})
-                                            })
-                                        }}
-                                    />
+                                <View style={["bgfff","flexrow","ls_conboxrw"]}>
+                                    <View style={["textv"]}>
+                                        <Text style={["text"]}>详细地址：</Text>
+                                    </View>
+                                    <View>
+                                        <TextInput
+                                            autoHeight={'rows'}
+                                            placeholderTextColor={'#ccc'}
+                                            style={["textareaItem"]}
+                                            placeholder={'请输入详细地址信息，如道路、门牌号、单元室等'}
+                                            underlineColorAndroid="transparent"
+                                            onChangeText={(text) => {
+                                                this.setState({
+                                                    data: Object.assign({}, this.state.data, {address: text})
+                                                })
+                                            }}
+                                        />
+                                    </View>
                                 </View>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text"]}>银行账号：</Text>
-                                <View>
-                                    <TextInput
-                                        style={["inputbox"]}
-                                        placeholder={'请输入银行账号'}
-                                        underlineColorAndroid="transparent"
-                                        keyboardType="phone-pad"
-                                        onChangeText={(text) => {
-                                            this.setState({
-                                                datab: Object.assign({}, this.state.datab, {account: text})
-                                            })
-                                        }}
-                                    />
+                                <View style={["bgfff","flexrow","ls_conbox"]}>
+                                    <View style={["textv"]}>
+                                        <Text style={["text"]}>联系人：</Text>
+                                    </View>
+                                    <View>
+                                        <TextInput
+                                            style={["inputbox"]}
+                                            placeholder={'请输入联系人姓名'}
+                                            underlineColorAndroid="transparent"
+                                            onChangeText={(text) => {
+                                                this.setState({
+                                                    data: Object.assign({}, this.state.data, {linkman: text})
+                                                })
+                                            }}
+                                        />
+                                    </View>
                                 </View>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text"]}>银行名称：</Text>
-                                <View>
-                                    <TextInput
-                                        style={["inputbox"]}
-                                        placeholder={'请输入银行名称'}
-                                        underlineColorAndroid="transparent"
-                                        onChangeText={(text) => {
-                                            this.setState({
-                                                datab: Object.assign({}, this.state.datab, {bank: text})
-                                            })
-                                        }}
-                                    />
+                                <View style={["bgfff","flexrow","ls_conbox"]}>
+                                    <View style={["textv"]}>
+                                        <Text style={["text"]}>联系方式：</Text>
+                                    </View>
+                                    <View>
+                                        <TextInput
+                                            style={["inputbox"]}
+                                            placeholder={'请输入联系人手机号'}
+                                            underlineColorAndroid="transparent"
+                                            keyboardType="phone-pad"
+                                            onChangeText={(text) => {
+                                                this.setState({
+                                                    data: Object.assign({}, this.state.data, {linkPhone: text})
+                                                })
+                                            }}
+                                        />
+                                    </View>
                                 </View>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text"]}>联系人：</Text>
-                                <View>
-                                    <TextInput
-                                        style={["inputbox"]}
-                                        placeholder={'请输入姓名'}
-                                        underlineColorAndroid="transparent"
-                                        onChangeText={(text) => {
-                                            this.setState({
-                                                datab: Object.assign({}, this.state.datab, {linkman: text})
-                                            })
-                                        }}
-                                    />
+                                <View style={["title2box"]}>
+                                    <Text style={"title2"}>请绑定门店结算账户信息</Text>
                                 </View>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox","martop"]}>
-                                <Text style={["col999","text"]}>登陆账号：</Text>
-                                <View>
-                                    <Text style={["text"]}>{this.state.data.linkPhone}</Text>
+                                <View style={["bgfff","flexrow","ls_conbox"]}>
+                                    <View style={["textv"]}>
+                                        <Text style={["text"]}>持卡人：</Text>
+                                    </View>
+                                    <View>
+                                        <TextInput
+                                            style={["inputbox"]}
+                                            placeholder={'请输入名称'}
+                                            underlineColorAndroid="transparent"
+                                            onChangeText={(text) => {
+                                                this.setState({
+                                                    datab: Object.assign({}, this.state.datab, {name: text})
+                                                })
+                                            }}
+                                        />
+                                    </View>
                                 </View>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text"]}>默认密码：</Text>
-                                <View>
-                                    <Text style={["text"]}>123456</Text>
+                                <View style={["bgfff","flexrow","ls_conbox"]}>
+                                    <View style={["textv"]}>
+                                        <Text style={["text"]}>银行账号：</Text>
+                                    </View>
+                                    <View>
+                                        <TextInput
+                                            style={["inputbox"]}
+                                            placeholder={'请输入银行账号'}
+                                            underlineColorAndroid="transparent"
+                                            keyboardType="phone-pad"
+                                            onChangeText={(text) => {
+                                                this.setState({
+                                                    datab: Object.assign({}, this.state.datab, {cardno: text})
+                                                })
+                                            }}
+                                        />
+                                    </View>
+                                </View>
+                                <View style={["bgfff","flexrow","ls_conbox"]}>
+                                    <View style={["textv"]}>
+                                        <Text style={["text"]}>银行名称：</Text>
+                                    </View>
+                                    <View>
+                                        <TextInput
+                                            style={["inputbox"]}
+                                            placeholder={'请输入银行名称'}
+                                            underlineColorAndroid="transparent"
+                                            onChangeText={(text) => {
+                                                this.setState({
+                                                    datab: Object.assign({}, this.state.datab, {bank: text})
+                                                })
+                                            }}
+                                        />
+                                    </View>
+                                </View>
+                                <View style={["bgfff","flexrow","ls_conbox"]}>
+                                    <View style={["textv"]}>
+                                        <Text style={["text"]}>联系号码：</Text>
+                                    </View>
+                                    <View>
+                                        <TextInput
+                                            style={["inputbox"]}
+                                            placeholder={'请输入联系号码'}
+                                            underlineColorAndroid="transparent"
+                                            onChangeText={(text) => {
+                                                this.setState({
+                                                    datab: Object.assign({}, this.state.datab, {phone: text})
+                                                })
+                                            }}
+                                        />
+                                    </View>
+                                </View>
+                                <View style={["bgfff","flexrow","ls_conbox","martop"]}>
+                                    <View style={["textv"]}>
+                                        <Text style={["text"]}>登陆账号：</Text>
+                                    </View>
+                                    <View>
+                                        <Text style={["text"]}>{this.state.data.linkPhone}</Text>
+                                    </View>
+                                </View>
+                                <View style={["bgfff","flexrow","ls_conbox"]}>
+                                    <View style={["textv"]}>
+                                        <Text style={["text"]}>默认密码：</Text>
+                                    </View>
+                                    <View>
+                                        <Text style={["text"]}>123456</Text>
+                                    </View>
                                 </View>
                             </View>
                         </View>
+                    </ScrollView>
+                    <View>
+                        <Button onPress={this.dopost} style={{borderRadius:0}} textStyle={{
+                            lineHeight: 36,
+                            fontSize:17
+                        }} title={'保存'}/>
                     </View>
-                </ScrollView>
-                <View>
-                    <Button onPress={this.dopost} style={{borderRadius:0}} textStyle={{
-                        lineHeight: 36,
-                        fontSize:17
-                    }} title={'保存'}/>
                 </View>
-            </View>
+            </Keyboard>
 
         );
     }

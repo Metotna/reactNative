@@ -7,31 +7,32 @@ loginStyle {
   .inputCon {
     flex-direction: row;
     background-color: #fff;
-    padding: 5;
-    height: 50;
+    padding: 0 5;
+    height: 40;
     width: 375;
+    .h40JC {
+      height: 40;
+      justify-content: center;
+    }
     .describe {
       width: 100;
-      font-size: 16;
+      font-size: 14;
       color: #333;
-      height: 40;
-      line-height: 35;
       text-align: center;
     }
     .ic_input {
       height: 40;
       color: #000;
       flex: 1;
+      font-size: 15;
       border-width: 0;
     }
     .des_btn {
       width: 100;
-      font-size: 16;
+      font-size: 14;
       color: #666;
-      height: 40;
       margin-left: 10;
       margin-right: 10;
-      line-height: 35;
       text-align: center;
     }
   }
@@ -62,12 +63,11 @@ TabbarHomeStyle {
     margin-bottom: 6;
   }
   .total_title {
-    padding: 5 10 5 10;
+    padding: 4 10 4 10;
     flex-direction: row;
     justify-content: space-between;
   }
   .total_text {
-    line-height: 25;
     font-size: 13;
   }
 }
@@ -120,6 +120,10 @@ HomeComTable {
   .tr {
     text-align: center;
   }
+  .tr_r {
+    text-align: right;
+    padding-right: 5;
+  }
   .updata {
     position: absolute;
     top: 0;
@@ -164,10 +168,7 @@ HandleReport {
     }
   }
   .title_warn {
-    height: 30;
-    line-height: 30;
     color: #592A00;
-    background-color: #FFF7DE;
     text-align: center;
   }
   .btnView {
@@ -178,10 +179,13 @@ HandleReport {
     flex-direction: row;
     border-radius: 5;
     padding: 0 5 0 5;
-    .btns {
+    .btns_f{
       flex: 1;
+      height: 35;
+      justify-content: center;
+    }
+    .btns {
       text-align: center;
-      line-height: 38;
       font-size: 14;
       color: @primary;
     }
@@ -192,7 +196,6 @@ HandleReport {
   }
   .content_imga {
     height: 220;
-    background-color: @green;
   }
   .cont_bor {
     padding: 12 10 12 10;
@@ -254,7 +257,7 @@ netBarDay {
   }
   .list {
     padding: 16 14 14 12;
-    height: 44;
+    min-height: 44;
     background-color: #ffffff;
   }
 }

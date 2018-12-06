@@ -10,6 +10,7 @@ import {
   TextInput,
 } from 'react-native';
 import { WhiteSpace, WingBlank, Checkbox, DatePicker, List,   Button,} from 'antd-mobile-rn'
+import Btn from '../common/buttonplat'
 
 @insertStyle('loginStyle')
 export default class Main extends Component {
@@ -30,7 +31,7 @@ export default class Main extends Component {
   render() {
     return (
       <View >
-        <View style="border150h"/>
+        <View style="border60h"/>
         <View style='inputCon'>
           <Text style="describe">新密码</Text>
           <TextInput style="ic_input" onChangeText={(password) => this.setState({ password })}
@@ -38,7 +39,7 @@ export default class Main extends Component {
             value={this.state.password} placeholder="请输入新密码"
           />
         </View>
-        <View style="border150h"/>
+        <View style="border60h"/>
         <View style='inputCon'>
           <Text style="describe">确认密码</Text>
           <TextInput style="ic_input" onChangeText={(passwordAgain) => this.setState({ passwordAgain })}
@@ -46,9 +47,12 @@ export default class Main extends Component {
             value={this.state.passwordAgain} placeholder="请再次输入新密码"
           />
         </View>
+        <View style={styles.inputBtn} >
+        <Btn title="确定" onPress={() => this.props.navigation.navigate('setPassword')} style={{height:40}}/>
 
+        </View>
         {/* <Button style="inputBtn" onPress={this._btnPress} title="下一步" /> */}
-        <Button style={styles.inputBtn}>确定</Button>
+        {/* <Button style={styles.inputBtn}>确定</Button> */}
 
       </View>
     );

@@ -2,14 +2,14 @@
 import React, { Component } from 'react';
 import { createStackNavigator, createBottomTabNavigator, StackNavigator } from 'react-navigation';
 import StackViewStyleInterpolator from "react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator";
-import { Text, View, StyleSheet, Image ,ActivityIndicator} from 'react-native';
+import { Text, View, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import insertStyle from '../../assets/style'
 import Storage from '../asyncStorage'
 import fetchs from '../fetch'
 
 import AuthLoading from '../../component/AuthLoading'
-import HomeScreenR from '../../component/Tabbar/homeR'
-import HomeScreenS from '../../component/Tabbar/homeS'
+import HomeScreenManager from '../../component/Tabbar/homeManager'
+import HomeScreenStore from '../../component/Tabbar/homeStore'
 
 import storeScreen from '../../component/Tabbar/store'
 import mineScreen from "../../component/Tabbar/mine";
@@ -30,123 +30,13 @@ const icon = {
   width: 20,
   height: 20
 }
-
-const tabbarS = createBottomTabNavigator(
+/* 店长 */
+const tabbarStore = createBottomTabNavigator(
   {
     Home: {
       screen: createStackNavigator({
         HomeScreen: {
-          screen: HomeScreenR,
-          navigationOptions: {
-            title: '首页R',
-            headerStyle: headerStyleB,
-            headerTitleStyle: headerTitleStyleB,
-          }
-        }
-      }),
-      navigationOptions: ({ navigation }) => ({
-        tabBarLabel: '首页R',
-        tabBarIcon: ({ focused, tintColor }) => (
-          focused ? <Image style={icon} source={require('../../assets/image/img/首页-选中.png')} /> : <Image style={icon} source={require('../../assets/image/img/首页-未选中.png')} />
-        )
-      })
-    },
-    Home2: {
-      screen: createStackNavigator({
-        HomeScreen: {
-          screen: HomeScreenS,
-          navigationOptions: {
-            title: '首页S',
-            headerStyle: headerStyleB,
-            headerTitleStyle: headerTitleStyleB,
-          }
-        }
-      }),
-      navigationOptions: ({ navigation }) => ({
-        tabBarLabel: '首页S',
-        tabBarIcon: ({ focused, tintColor }) => (
-          focused ? <Image style={icon} source={require('../../assets/image/img/首页-选中.png')} /> : <Image style={icon} source={require('../../assets/image/img/首页-未选中.png')} />
-        )
-      })
-    },
-    Store: {
-      screen: createStackNavigator({
-        storeScreen: {
-            screen: storeScreen,
-            navigationOptions: ({navigation}) => {
-                return {
-                    title: '门店管理',
-                    headerStyle: headerStyleB,
-                    headerTitleStyle: headerTitleStyleB,
-                    headerRight: (
-                        <Icon name="plus" size={32} color="#fff" onPress={() => navigation.navigate('joinstore')}/>
-                    )
-                }
-            }
-        }
-        }),
-      navigationOptions: ({ navigation }) => ({
-        tabBarLabel: '门店',
-        tabBarIcon: ({ focused, tintColor }) => (
-          focused ? <Image style={icon} source={require('../../assets/image/img/门店-选中.png')} /> : <Image style={icon} source={require('../../assets/image/img/门店-未选中.png')} />
-        )
-      })
-    },
-    Report: {
-      screen: createStackNavigator({
-        reportScreen: {
-          screen: reportScreen,
-          navigationOptions: {
-            title: '报表管理',
-            headerStyle: headerStyleB,
-            headerTitleStyle: headerTitleStyleB,
-          }
-        }
-      }),
-      navigationOptions: ({ navigation }) => ({
-        tabBarLabel: '报表',
-        tabBarIcon: ({ focused, tintColor }) => (
-          focused ? <Image style={icon} source={require('../../assets/image/img/报表-选中.png')} /> : <Image style={icon} source={require('../../assets/image/img/报表-未选中.png')} />
-        )
-      })
-    },
-    Mine: {
-      screen: createStackNavigator({
-        mineScreen: {
-          screen: mineScreen,
-          navigationOptions: {
-            title: '我的',
-            headerStyle: headerStyleB,
-            headerTitleStyle: headerTitleStyleB,
-          }
-        }
-      }),
-      navigationOptions: ({ navigation }) => ({
-        tabBarLabel: '我的',
-        tabBarIcon: ({ focused, tintColor }) => (
-          focused ? <Image style={icon} source={require('../../assets/image/img/我的-选中.png')} /> : <Image style={icon} source={require('../../assets/image/img/我的.png')} />
-        )
-      })
-    },
-  }, {
-    initialRouteName: 'Home',
-    lazy: true,
-    tabBarOptions: {
-      // inactiveTintColor: "#8F8F8F",
-      // activeTintColor: "#ED5601",
-      labelStyle: {
-        marginBottom: 4,
-        fontSize: 12,
-      },
-    }
-  }
-)
-const tabbarR = createBottomTabNavigator(
-  {
-    Home: {
-      screen: createStackNavigator({
-        HomeScreen: {
-          screen: HomeScreenR,
+          screen: HomeScreenStore,
           navigationOptions: {
             title: '首页',
             headerStyle: headerStyleB,
@@ -157,7 +47,7 @@ const tabbarR = createBottomTabNavigator(
       navigationOptions: ({ navigation }) => ({
         tabBarLabel: '首页',
         tabBarIcon: ({ focused, tintColor }) => (
-          focused ? <Image style={icon} source={require('../../assets/image/img/首页-选中.png')} /> : <Image style={icon} source={require('../../assets/image/img/首页-未选中.png')} />
+          focused ? <Image style={icon} source={require('../../assets/image/img/home.png')} /> : <Image style={icon} source={require('../../assets/image/img/un_home.png')} />
         )
       })
     },
@@ -175,7 +65,7 @@ const tabbarR = createBottomTabNavigator(
       navigationOptions: ({ navigation }) => ({
         tabBarLabel: '报表',
         tabBarIcon: ({ focused, tintColor }) => (
-          focused ? <Image style={icon} source={require('../../assets/image/img/报表-选中.png')} /> : <Image style={icon} source={require('../../assets/image/img/报表-未选中.png')} />
+          focused ? <Image style={icon} source={require('../../assets/image/img/report.png')} /> : <Image style={icon} source={require('../../assets/image/img/un_report.png')} />
         )
       })
     },
@@ -184,16 +74,118 @@ const tabbarR = createBottomTabNavigator(
         mineScreen: {
           screen: mineScreen,
           navigationOptions: {
-            title: '我的',
+            title: '首页',
             headerStyle: headerStyleB,
             headerTitleStyle: headerTitleStyleB,
           }
+        
         }
       }),
       navigationOptions: ({ navigation }) => ({
         tabBarLabel: '我的',
         tabBarIcon: ({ focused, tintColor }) => (
-          focused ? <Image style={icon} source={require('../../assets/image/img/我的-选中.png')} /> : <Image style={icon} source={require('../../assets/image/img/我的.png')} />
+          focused ? <Image style={icon} source={require('../../assets/image/img/my.png')} /> : <Image style={icon} source={require('../../assets/image/img/un_my.png')} />
+        )
+      })
+    },
+  }, {
+    initialRouteName: 'Report',
+    lazy: true,
+    tabBarOptions: {
+      // inactiveTintColor: "#8F8F8F",
+      // activeTintColor: "#ED5601",
+      labelStyle: {
+        marginBottom: 4,
+        fontSize: 12,
+      },
+    }
+
+  }
+)
+
+/* 业务经理 */
+const tabbarManager = createBottomTabNavigator(
+  {
+    Home: {
+      screen: createStackNavigator({
+        HomeScreen: {
+          screen: HomeScreenManager,
+          navigationOptions: {
+            title: '首页',
+            headerStyle: headerStyleB,
+            headerTitleStyle: headerTitleStyleB,
+            // tabBarOnPress
+          }
+        }
+      }),
+      navigationOptions: ({ navigation }) => ({
+        tabBarLabel: '首页',
+        tabBarIcon: ({ focused, tintColor }) => (
+          focused ? <Image style={icon} source={require('../../assets/image/img/home.png')} /> : <Image style={icon} source={require('../../assets/image/img/un_home.png')} />
+        )
+      })
+    },
+    Store: {
+      screen: createStackNavigator({
+        storeScreen: {
+          screen: storeScreen,
+          navigationOptions: ({ navigation }) => {
+            return {
+              title: '门店管理',
+              headerStyle: headerStyleB,
+              headerTitleStyle: headerTitleStyleB,
+              headerRight: (
+                <Icon name="plus" size={32} color="#fff" onPress={() => navigation.navigate('joinstore')} />
+              )
+            }
+          }
+        }
+      }),
+      navigationOptions: ({ navigation }) => ({
+        tabBarLabel: '门店',
+        tabBarIcon: ({ focused, tintColor }) => (
+          focused ? <Image style={icon} source={require('../../assets/image/img/store.png')} /> : <Image style={icon} source={require('../../assets/image/img/un_store.png')} />
+        )
+      })
+    },
+  
+    Mine: {
+      screen: createStackNavigator({
+        mineScreen: {
+          screen: mineScreen,
+          navigationOptions: ({ navigation }) => ({
+            title: '我的',
+            headerStyle: headerStyleB,
+            headerTitleStyle: headerTitleStyleB,
+            tabBarOnPress: (value) => {
+              //监听点击事件
+              value.defaultHandler();
+
+              console.log(JSON.stringify(value));//{"navigation":{"state":{"key":"Work","routeName":"Work"},"actions":{}}}
+              console.log(value.defaultHandler);
+              // const defaultHandler = () => {
+              //         if (navigation.isFocused()) {
+              //           if (route.hasOwnProperty('index') && route.index > 0) {
+              //             // If current tab has a nested navigator, pop to top
+              //             navigation.dispatch(StackActions.popToTop({ key: route.key }));
+              //           } else {
+              //             // TODO: do something to scroll to top
+              //           }
+              //         } else {
+              //           this._jumpTo(route.routeName);
+              //         }
+              //       };
+              console.log('点击了工作');
+
+            }
+
+          })
+        }
+      }),
+      navigationOptions: ({ navigation }) => ({
+        tabBarLabel: '我的',
+        tabBarIcon: ({ focused, tintColor }) => (
+          focused ? <Image style={icon} source={require('../../assets/image/img/my.png')} /> : <Image style={icon} source={require('../../assets/image/img/un_my.png')} />
         )
       })
     },
@@ -212,8 +204,8 @@ const tabbarR = createBottomTabNavigator(
 )
 
 const RouteConfigs = {
-  TabbarS: {
-    screen: tabbarS,
+  TabbarStore: {
+    screen: tabbarStore,
     navigationOptions: ({ navigation }) => (
       {
         header: null,
@@ -221,8 +213,8 @@ const RouteConfigs = {
         headerTruncatedBackTitle: ` `,
       })
   },
-  TabbarR: {
-    screen: tabbarR,
+  TabbarManager: {
+    screen: tabbarManager,
     navigationOptions: ({ navigation }) => (
       {
         header: null,
@@ -237,7 +229,7 @@ const RouteConfigs = {
     }),
   },
 }
-const initialRouteName = "TabbarS"
+const initialRouteName = "AuthLoading"
 // defaultRouter
 export default StackNavigator(Object.assign({}, RouteConfigs, rpartA, rpartB), {
   initialRouteName: initialRouteName,

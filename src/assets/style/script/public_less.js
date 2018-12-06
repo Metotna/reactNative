@@ -179,6 +179,13 @@ module.exports = function({containerMargin}){
         },
         s51: {
             backgroundColor: "#fff"
+        },
+        s52: {
+            height: 30,
+            justifyContent: "center"
+        },
+        s53: {
+            backgroundColor: "#FFF7DE"
         }
     });
 
@@ -237,7 +244,9 @@ module.exports = function({containerMargin}){
             col333: allStyle.s48,
             col999: allStyle.s49,
             coltheme: allStyle.s50,
-            bgfff: allStyle.s51
+            bgfff: allStyle.s51,
+            h30JC: allStyle.s52,
+            warning: allStyle.s53
         }
     };
 };

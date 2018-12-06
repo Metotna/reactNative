@@ -6,10 +6,9 @@ import {
     View,
     Platform,
     ScrollView,
-    Alert,
     TextInput
 } from 'react-native';
-import {List, DatePicker} from 'antd-mobile-rn'
+import {List, DatePicker, Toast} from 'antd-mobile-rn'
 
 import rn_Less from 'rn-less/src/runtime';
 import style from '../../assets/style/script/style_less'
@@ -30,6 +29,7 @@ export default class Main extends Component {
         super(props);
         this.state = {
             data:{
+                id:'',
                 sn:'',
                 openTime:'',
                 sellLot:'',
@@ -54,7 +54,7 @@ export default class Main extends Component {
         for (var prop in obj) {
             if(!obj[prop]){
                 console.log(prop)
-                Alert.alert('请补充完整数据提交');
+                Toast.show('请补充完整数据提交');
                 return false;
             }
         }
@@ -107,7 +107,7 @@ export default class Main extends Component {
                     })
                 })
                 let withdrawal = '';
-                if(this.state.data.withdrawal){
+                if(this.state.data.withdrawal){'l;'
                     withdrawal = '1';//修改open时间
                 }else {
                     withdrawal = '2';//修改open时间
@@ -121,7 +121,6 @@ export default class Main extends Component {
                     withdrawal:withdrawal
                 })
                 setTimeout(() =>{
-                    console.log(this)
                     this.setState({
                         withdrawal:withdrawal
                     })
@@ -141,26 +140,27 @@ export default class Main extends Component {
             return false;
         }
         this.state.data.withdrawal = this.selwithdrawal(this.state.data.withdrawal);
-        http.post('/netbar/machine/edit',this.state.data).then(res=>{
+        http.loadingPost('/netbar/machine/edit',this.state.data).then(res=>{
             /* Storage.saveObj({
                  user:res.data.token,
                  token:res.data.token
              })*/
-            console.log(res)
+            //console.log(res)
             if(res.status == '200'){
-                Alert.alert(res.msg);
-                this.props.navigation.navigate('cpjmanagement');
+                Toast.show('修改成功',3)
+                this.props.navigation.state.params.dopost();
+                this.props.navigation.goBack();
+                //this.props.navigation.navigate('cpjmanagement');
             }
         }).catch(err=>{
             console.log(err)
         })
-        console.log(this.state.data)
     }
 
     //rende之后调用
     componentDidMount(){
         this.getdetail();
-        console.log(this.props.navigation.getParam('sn'));
+        console.log(this.props.navigation.state.params.dopost);
     }
 
     //checkbox选择器
@@ -185,7 +185,9 @@ export default class Main extends Component {
             <View>
                 <View>
                     <View style={["bgfff","flexrow","ls_conbox"]}>
-                        <Text style={["col999","text","fontsize14"]}>机器编号：</Text>
+                        <View style={["textv"]}>
+                            <Text style={["text"]}>机器编号：</Text>
+                        </View>
                         <View>
                             <TextInput
                                 style={["inputbox"]}
@@ -197,11 +199,14 @@ export default class Main extends Component {
                                     })
                                 }}
                                 value={this.state.data.sn}
+                                editable={false}
                             />
                         </View>
                     </View>
                     <View style={["bgfff","flexrow","ls_conbox"]}>
-                        <Text style={["col999","text","fontsize14"]}>在售彩种：</Text>
+                        <View style={["textv"]}>
+                            <Text style={["text"]}>在售彩种：</Text>
+                        </View>
                         <View style={["flexrow"]}>
                             {this.state.Change.map((i,id) => (
                                 <CheckBox
@@ -216,7 +221,9 @@ export default class Main extends Component {
                         </View>
                     </View>
                     <View style={["bgfff","flexrow","ls_conbox"]}>
-                        <Text style={["col999","text","fontsize14"]}>提现开通：</Text>
+                        <View style={["textv"]}>
+                            <Text style={["text"]}>提现开通：</Text>
+                        </View>
                         {this.state.withdrawal
                             ?
                             <Radio

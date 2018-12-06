@@ -6,13 +6,14 @@ import {
     View,
     Platform,
     ScrollView,
-    Alert, TextInput,
+    TextInput,
 } from 'react-native';
 
 import rn_Less from 'rn-less/src/runtime';
 import style from '../../assets/style/script/style_less'
 import styleP from '../../assets/style/script/public_less'
 import  Button from  '../common/button'
+import {Toast } from 'antd-mobile-rn'
 
 
 const cssStyle =Object.assign({},style({}).idjoin,styleP({}).public)
@@ -38,7 +39,7 @@ export default class Main extends Component {
         for (var prop in obj) {
             if(!obj[prop]){
                 console.log(prop)
-                Alert.alert('请补充完整数据提交');
+                Toast.show('请补充完整数据提交');
                 return false;
             }
         }
@@ -50,15 +51,16 @@ export default class Main extends Component {
         if(!this.checkdata(this.state.data)){
             return false;
         }
-        http.post('/netbar/account/edit',this.state.data).then(res=>{
+        http.loadingPost('/netbar/account/edit',this.state.data).then(res=>{
             /* Storage.saveObj({
                  user:res.data.token,
                  token:res.data.token
              })*/
             console.log(res)
             if(res.status == '200'){
-                Alert.alert(res.msg);
-                this.props.navigation.navigate('idmanagement');
+                Toast.show(res.msg,3);
+                this.props.navigation.state.params.dopost();
+                this.props.navigation.goBack();
             }
         }).catch(err=>{
             console.log(err)
@@ -72,7 +74,9 @@ export default class Main extends Component {
             <View style={{marginTop:6}}>
                 <View style={["ls_box"]}>
                     <View style={["bgfff","flexrow","ls_conbox"]}>
-                        <Text style={["col999","text","fontsize14"]}>姓名：</Text>
+                        <View style={"txetv"}>
+                            <Text style={["col999","text","fontsize14"]}>姓名：</Text>
+                        </View>
                         <View>
                             <TextInput
                                 style={["inputbox"]}
@@ -87,7 +91,9 @@ export default class Main extends Component {
                         </View>
                     </View>
                     <View style={["bgfff","flexrow","ls_conbox"]}>
-                        <Text style={["col999","text","fontsize14"]}>手机号码：</Text>
+                        <View style={"txetv"}>
+                            <Text style={["col999","text","fontsize14"]}>手机号码：</Text>
+                        </View>
                         <View>
                             <TextInput
                                 style={["inputbox"]}
@@ -102,7 +108,9 @@ export default class Main extends Component {
                         </View>
                     </View>
                     <View style={["titbox"]}>
-                        <Text style={["col999","fontsize14"]}>手机号码即账号，默认密码123456</Text>
+                        <View style={"txetv"}>
+                            <Text style={["col999","fontsize14"]}>手机号码即账号，默认密码123456</Text>
+                        </View>
                     </View>
                     <View style={["butbox"]}>
                         <Button onPress={this.dopost} style={{borderRadius:5}} textStyle={{

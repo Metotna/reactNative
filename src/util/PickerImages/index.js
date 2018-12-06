@@ -11,9 +11,8 @@ import {
     View,
     Text
 } from 'react-native'
-
-var ImagePicker = require('react-native-image-picker');
-import Icon from 'react-native-vector-icons/Ionicons';
+import ImagePicker from 'react-native-image-picker';
+//var ImagePicker = require('react-native-image-picker');
 
 //参数具体文档：https://github.com/react-community/react-native-image-picker/blob/HEAD/docs/Reference.md
 const options = {
@@ -29,7 +28,7 @@ const options = {
     maxHeight: 600,
     aspectX: 2,
     aspectY: 1,
-    quality: 0.8,
+    quality: 0.3,
     angle: 0,
     allowsEditing: false,
     noData: false,

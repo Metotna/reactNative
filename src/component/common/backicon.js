@@ -9,6 +9,7 @@ export default class Main extends Component {
 
   render() {
     return (
+
       <Image style={styles.icon} source={require('../../assets/image/backicon.png')} />
     )
   }
@@ -16,5 +17,6 @@ export default class Main extends Component {
 const styles = StyleSheet.create({
   icon: {
     marginLeft: 5,
+    paddingRight:10
   },
 })

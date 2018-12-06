@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, TouchableHighlight, View, } from 'react-native';
 import { withNavigation } from 'react-navigation';
-
+import f from '../../../util/filter'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 @insertStyle('HomeComTable')
@@ -11,8 +11,8 @@ class Main extends Component {
     // this.handleClick= this.handleClick.bind(this)
     this.state = {
       value: '',
-      name1: this.props.total ? '' : '销售:',
-      name2: this.props.total ? '' : '兑奖:',
+      name1: this.props.total ? '' : '销售:　',
+      name2: this.props.total ? '' : '兑奖:　',
     };
   }
 
@@ -62,23 +62,23 @@ class Main extends Component {
 
             <View style="table_td">
               <View style="borderB">
-                <Text style={["tr", "tr_h3", "month_t"]}>上月</Text>
+                <Text style={["tr_r", "tr_h3", "month_t"]}>上月</Text>
                 <View style={{ borderTopColor: '#f2f3f5', borderTopWidth: 1, }}>
-                  <Text style={["tr", "tr_h3", "month_a"]}>{this._showData('syReport', 'allSell')}</Text>
-                  <Text style={["tr", "tr_h3", "month_b"]}>{this._showData('syReport', 'allBonus')}</Text>
+                  <Text style={["tr_r", "tr_h3", "month_a"]}>{f.number(this._showData('syReport', 'allSell'))}</Text>
+                  <Text style={["tr_r", "tr_h3", "month_b"]}>{f.number(this._showData('syReport', 'allBonus'))}</Text>
                 </View>
               </View>
               <View style="table">
                 <View style={["table_td"]}>
-                  <Text style={["tr", "tr_h2", "child_t"]}>线上</Text>
-                  <Text style={["tr", "fgreen", "tr_h2", "child_a"]}>{this._showData('syReport', 'onlineSell')}</Text>
-                  <Text style={["tr", "fred", "tr_h2",]}>{this._showData('syReport', 'onlineBonus')}</Text>
+                  <Text style={["tr_r", "tr_h2", "child_t"]}>线上</Text>
+                  <Text style={["tr_r", "fgreen", "tr_h2", "child_a"]}>{f.number(this._showData('syReport', 'onlineSell'))}</Text>
+                  <Text style={["tr_r", "fred", "tr_h2",]}>{f.number(this._showData('syReport', 'onlineBonus'))}</Text>
                 </View>
                 <View style="border10"></View>
                 <View style={["table_td"]}>
-                  <Text style={["tr", "tr_h2", "child_t"]}>线下</Text>
-                  <Text style={["tr", "fblue", "tr_h2", "child_a"]}>{this._showData('syReport', 'offlineSell')}</Text>
-                  <Text style={["tr", "fred", "tr_h2",]}>{this._showData('syReport', 'offlineBonus')}</Text>
+                  <Text style={["tr_r", "tr_h2", "child_t"]}>线下</Text>
+                  <Text style={["tr_r", "fblue", "tr_h2", "child_a"]}>{f.number(this._showData('syReport', 'offlineSell'))}</Text>
+                  <Text style={["tr_r", "fred", "tr_h2",]}>{f.number(this._showData('syReport', 'offlineBonus'))}</Text>
                 </View>
               </View>
             </View>
@@ -87,23 +87,23 @@ class Main extends Component {
 
             <View style="table_td">
               <View style="borderB">
-                <Text style={["tr", "tr_h3", "month_t"]}>本月</Text>
+                <Text style={["tr_r", "tr_h3", "month_t"]}>本月</Text>
                 <View style={{ borderTopColor: '#f2f3f5', borderTopWidth: 1, }}>
-                  <Text style={["tr", "tr_h3", "month_a"]}>{this._showData('byReport', 'allSell')}</Text>
-                  <Text style={["tr", "tr_h3", "month_b"]}>{this._showData('byReport', 'allBonus')}</Text>
+                  <Text style={["tr_r", "tr_h3", "month_a"]}>{f.number(this._showData('byReport', 'allSell'))}</Text>
+                  <Text style={["tr_r", "tr_h3", "month_b"]}>{f.number(this._showData('byReport', 'allBonus'))}</Text>
                 </View>
               </View>
               <View style="table">
                 <View style={["table_td"]}>
-                  <Text style={["tr", "tr_h2", "child_t"]}>线上</Text>
-                  <Text style={["tr", "fgreen", "tr_h2", "child_a"]}>{this._showData('byReport', 'onlineSell')}</Text>
-                  <Text style={["tr", "fred", "tr_h2",]}>{this._showData('byReport', 'onlineBonus')}</Text>
+                  <Text style={["tr_r", "tr_h2", "child_t"]}>线上</Text>
+                  <Text style={["tr_r", "fgreen", "tr_h2", "child_a"]}>{f.number(this._showData('byReport', 'onlineSell'))}</Text>
+                  <Text style={["tr_r", "fred", "tr_h2",]}>{f.number(this._showData('byReport', 'onlineBonus'))}</Text>
                 </View>
                 <View style="border10"></View>
                 <View style={["table_td"]}>
-                  <Text style={["tr", "tr_h2", "child_t"]}>线下</Text>
-                  <Text style={["tr", "fblue", "tr_h2", "child_a"]}>{this._showData('byReport', 'offlineSell')}</Text>
-                  <Text style={["tr", "fred", "tr_h2",]}>{this._showData('byReport', 'offlineBonus')}</Text>
+                  <Text style={["tr_r", "tr_h2", "child_t"]}>线下</Text>
+                  <Text style={["tr_r", "fblue", "tr_h2", "child_a"]}>{f.number(this._showData('byReport', 'offlineSell'))}</Text>
+                  <Text style={["tr_r", "fred", "tr_h2",]}>{f.number(this._showData('byReport', 'offlineBonus'))}</Text>
                 </View>
               </View>
             </View>
@@ -112,23 +112,23 @@ class Main extends Component {
 
             <View style="table_width">
               <View style="borderB">
-                <Text style={["tr", "tr_h3", "month_t"]}>{this._timeFormat(this._showData('nearlyReport', 'dateMemo'))}</Text>
+                <Text style={["tr_r", "tr_h3", "month_t"]}>{this._timeFormat(this._showData('nearlyReport', 'dateMemo'))}</Text>
                 <View style={{ borderTopColor: '#f2f3f5', borderTopWidth: 1, }}>
-                  <Text style={["tr", "tr_h3", "month_a"]}>{this.state.name1}{this._showData('nearlyReport', 'allSell')}</Text>
-                  <Text style={["tr", "tr_h3", "month_b"]}>{this.state.name2}{this._showData('nearlyReport', 'allBonus')}</Text>
+                  <Text style={["tr_r", "tr_h3", "month_a"]}>{this.state.name1}{f.number(this._showData('nearlyReport', 'allSell'))}</Text>
+                  <Text style={["tr_r", "tr_h3", "month_b"]}>{this.state.name2}{f.number(this._showData('nearlyReport', 'allBonus'))}</Text>
                 </View>
               </View>
               <View style="table">
                 <View style={["table_td"]}>
-                  <Text style={["tr", "tr_h2", "child_t"]}>线上</Text>
-                  <Text style={["tr", "fgreen", "tr_h2", "child_a"]}>{this._showData('nearlyReport', 'onlineSell')}</Text>
-                  <Text style={["tr", "fred", "tr_h2",]}>{this._showData('nearlyReport', 'onlineBonus')}</Text>
+                  <Text style={["tr_r", "tr_h2", "child_t"]}>线上</Text>
+                  <Text style={["tr_r", "fgreen", "tr_h2", "child_a"]}>{f.number(this._showData('nearlyReport', 'onlineSell'))}</Text>
+                  <Text style={["tr_r", "fred", "tr_h2",]}>{f.number(this._showData('nearlyReport', 'onlineBonus'))}</Text>
                 </View>
                 <View style="border10"></View>
                 <View style={["table_td"]}>
-                  <Text style={["tr", "tr_h2", "child_t"]}>线下</Text>
-                  <Text style={["tr", "fblue", "tr_h2", "child_a"]}>{this._showData('nearlyReport', 'offlineSell')}</Text>
-                  <Text style={["tr", "fred", "tr_h2",]}>{this._showData('nearlyReport', 'offlineBonus')}</Text>
+                  <Text style={["tr_r", "tr_h2", "child_t"]}>线下</Text>
+                  <Text style={["tr_r", "fblue", "tr_h2", "child_a"]}>{f.number(this._showData('nearlyReport', 'offlineSell'))}</Text>
+                  <Text style={["tr_r", "fred", "tr_h2",]}>{f.number(this._showData('nearlyReport', 'offlineBonus'))}</Text>
                 </View>
               </View>
               {

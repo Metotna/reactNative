@@ -10,12 +10,28 @@ export default class PopupExample extends React.Component {
       data: '',
       value: [],
       baseInfo: {
-        name: '杭州小一网吧',
-        address: "浙江省杭州市文二西路凯新通信大厦",
-        linkman: "王五",
-        linkPhone: "15145671234",
+        name: '',
+        address: "",
+        linkman: "",
+        linkPhone: "",
       },
     };
+  }
+  componentDidMount() {
+    http.loadingPost("/netbar/my/companyInfo", {}).then(res => {
+      if (res) {
+        if (res.status == 200) {
+          this.setState({
+            baseInfo: {
+              name: res.data.companyName,
+              address: res.data.companyAddr,
+              linkman: res.data.linkman,
+              linkPhone: res.data.linkPhone,
+            },
+          })
+        }
+      }
+    })
   }
   render() {
     const style = {

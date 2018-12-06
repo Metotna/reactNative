@@ -5,8 +5,7 @@ import {
     Text,
     View,
     Platform,
-    ScrollView,
-    TouchableHighlight, ListView,
+    TouchableHighlight, ListView, ActivityIndicator, RefreshControl,
 } from 'react-native';
 import { Modal,Toast } from 'antd-mobile-rn'
 
@@ -17,7 +16,7 @@ import Icon from "react-native-vector-icons/Entypo";
 import  Button from  '../common/button'
 
 let pageNumber = 1;//当前第几页
-let totalPage = 0;//总的页数
+let totalPage = 1;//总的页数
 
 const cssStyle =Object.assign({},style({}).cpjmanagement,styleP({}).public)
 @rn_Less.rnLess(cssStyle)
@@ -39,15 +38,20 @@ class Listbox extends Component{
         ]);
     }
 
+    //rende之后调用
+    componentDidMount(){
+    }
+
     dopost =(p)=> {
-        http.post('/netbar//account/delete',{account:p}).then(responseData=>{
+        http.loadingPost('/netbar//account/delete',{account:p}).then(responseData=>{
             /* Storage.saveObj({
                  user:res.data.token,
                  token:res.data.token
              })*/
 
             if(responseData.status == '200'){
-                Toast.success('删除成功！', 3);
+                Toast.show('删除成功！', 3);
+                this.props.onDopost();
             }
         }).catch(err=>{
             console.log(err)
@@ -78,7 +82,7 @@ class Listbox extends Component{
                             }}
                             title={'删除'}
                     />
-                    <Button onPress={() => this.deleteid(this.state.data.phone)} style={["but"]}
+                    <Button style={["but"]}
                             textStyle={{
                                 color:"#666",
                                 lineHeight: 22,
@@ -98,32 +102,51 @@ export default class Main extends Component {
         super(props);
         this.state = {
             data: [],
-            showFoot:0, // 控制foot， 0：隐藏footer  1：已加载完成,没有更多数据   2 ：显示加载中
-            isRefreshing:false,//下拉控制
             ds:new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
             shopid:this.props.navigation.getParam('id'),
+            listStatus: 'Loading',//控制foot
+            refreshing: false,//下拉刷新图标控制
         };
     }
 
     //rende之后调用
     componentDidMount(){
-        const { navigation } = this.props;
-        const id = this.props.navigation.getParam('id');
         this.dopost();
     }
 
     //上拉加载
-    _updata(){
+    _updata = () =>{
         console.log(pageNumber)
-        if(pageNumber >= totalPage){
+        if(pageNumber > totalPage){
             return false;
         }else {
             this.dopost();
         }
     }
 
+
+    //下拉刷新
+    _onRefresh = () =>{
+        pageNumber = 1;
+        this.state.data = [];
+        this.setState({
+            refreshing: true,
+        })
+        this.dopost();
+    }
+
+    _hanleFooter = () => {
+        if (this.state.listStatus == "Loading") {
+            return <Text style={{ lineHeight: 35, textAlign: "center", color: "#666" }}>加载中...</Text>
+        } else if (this.state.listStatus == "noMore") {
+            return <Text style={{ lineHeight: 35, textAlign: "center", color: "#666", marginBottom: 6 }}>暂无更多数据</Text>
+        } else {
+            return <ActivityIndicator style={{ height: 35 }} />
+        }
+    }
+
     dopost =()=> {
-        http.post('/netbar/account/list',{shopId:this.state.shopid}).then(responseData=>{
+        http.loadingPost('/netbar/account/list',{shopId:this.state.shopid}).then(responseData=>{
             /* Storage.saveObj({
                  user:res.data.token,
                  token:res.data.token
@@ -132,32 +155,33 @@ export default class Main extends Component {
 
             if(responseData.status == '200'){
                 let data = responseData.data.entitys;
-                let dataBlob = [];
-                pageNumber ++;
 
-                console.log(data)
+                let listStatus = pageNumber == responseData.data.totalPage ? "noMore" : "goOn";
+                totalPage = responseData.data.totalPage;
+                pageNumber ++;
 
                 this.setState({
                     //复制数据源
                     data: this.state.data.concat(data),
                     //dataArray:this.state.dataArray.concat(dataBlob),
-                    isLoading: false,
-                    isRefreshing:false,
+                    listStatus: listStatus,
+                    refreshing: false,
                 });
             }
         }).catch(err=>{
             console.log(err)
         })
-        console.log(this.state.data)
     }
 
     render() {
         return (
             <View style={["cpjmanagementbox"]}>
-                <TouchableHighlight style={{width:'100%'}} onPress={() => this.props.navigation.navigate('idjoin',{shopid: this.state.shopid})}>
+                <TouchableHighlight style={{width:'100%'}} onPress={() => this.props.navigation.navigate('idjoin',{shopid: this.state.shopid,dopost:this._onRefresh})}>
                     <View style={["flexrow","hardebox"]}>
                         <Icon style={"icon"} name="plus" size={32} color="#114FCD" />
-                        <Text style={["tjbut"]}>创建账号</Text>
+                        <View style={["textv"]}>
+                            <Text style={["tjbut"]}>创建账号</Text>
+                        </View>
                     </View>
                 </TouchableHighlight>
                 {
@@ -165,56 +189,25 @@ export default class Main extends Component {
                         <ListView
                             style={["flatListbox"]}
                             dataSource={this.state.ds.cloneWithRows(this.state.data)}
-                            renderRow={(rowData, sectionID, rowId) => <Listbox rowData={rowData} sectionID={sectionID}
-                                                                               rowId={rowId} navigation={this.props.navigation}/>}
+                            refreshControl={<RefreshControl
+                                refreshing={this.state.refreshing}
+                                onRefresh={this._onRefresh}
+                                tintColor="#666666"
+                                title="Loading..."
+                                titleColor="#666666"
+                                colors={['#666666']}
+                                progressBackgroundColor="#f2f3f5"
+                            />}
+                            renderRow={(rowData, sectionID, rowId) =>
+                                <Listbox rowData={rowData} sectionID={sectionID} rowId={rowId} onDopost={this._onRefresh} navigation={this.props.navigation}/>}
                             onEndReachedThreshold={30}
                             onEndReached={this._updata}
+                            renderFooter={this._hanleFooter}
                         />
                         :
                         <View></View>
                 }
             </View>
-            /*<View style="delbox">
-                <View style="tit">
-                    <Text style="lh">XXX个提交建站申请，XXX个实地勘察，XXX个正常营业</Text>
-                </View>
-                <View style="mdlist">
-                    <View style="ls_t">
-                        <View style="a_1">
-                            <Text style="fontsize16">绍兴彩票店</Text>
-                            <Text style={["fontsize14", "col666"]}>提交建站申请</Text>
-                        </View>
-                    </View>
-                    <View style="ls_con">
-                        <View style={["flexrowbet"]}>
-                            <View style={["c_box","flex1","flexrowbet"]}>
-                                <Text style={["fontsize14", "col666"]}>类型：</Text>
-                                <Text style={["fontsize14", "col333"]}>福彩</Text>
-                            </View>
-                            <View style={["c_box","flex1","flexrowbet"]}>
-                                <Text style={["fontsize14", "col666"]}>业务经理：</Text>
-                                <Text style={["fontsize14", "col333"]}>王强</Text>
-                            </View>
-                        </View>
-                        <View style={["flexrowbet"]}>
-                            <View style={["c_box","flex1","flexrowbet"]}>
-                                <Text style={["fontsize14", "col666"]}>联系人：</Text>
-                                <Text style={["fontsize14", "col333"]}>王小二</Text>
-                            </View>
-                            <View style={["c_box","flex1","flexrowbet"]}>
-                                <Text style={["fontsize14", "col666"]}>联系方式</Text>
-                                <Text style={["fontsize14", "col333"]}>151236273627</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={["ls_bot","flex1"]}>
-                        <Button size={12} style={["but"]} activeStyle={{ backgroundColor: 'red' }}>账号</Button>
-                        <Button size={12} style={["but"]} activeStyle={{ backgroundColor: 'red' }}>修改</Button>
-                        <Button size={12} style={["but"]} activeStyle={{ backgroundColor: 'red' }}>彩票机</Button>
-                        <Button size={12} style={["but"]} activeStyle={{ backgroundColor: 'red' }}>删除</Button>
-                    </View>
-                </View>
-            </View>*/
 
         );
     }

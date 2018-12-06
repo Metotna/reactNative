@@ -54,9 +54,13 @@ export default class Main extends Component {
 
   _hanleFooter = () => {
     if (this.state.listStatus == "Loading") {
-      return <Text style={{ lineHeight: 35, textAlign: "center", color: "#666" }}>加载中...</Text>
+      return <View style={{height:35,justifyContent:"center"}}>
+     <Text style={{  textAlign: "center", color: "#666" }}>加载中...</Text>
+      </View>
     } else if (this.state.listStatus == "noMore") {
-      return <Text style={{ lineHeight: 35, textAlign: "center", color: "#666", marginBottom: 6 }}>暂无更多数据</Text>
+      return <View style={{height:35,justifyContent:"center"}}>
+      <Text style={{  textAlign: "center", color: "#666" }}>暂无更多数据</Text>
+       </View>
     } else {
       return <ActivityIndicator style={{ height: 35 }} />
     }
@@ -118,6 +122,12 @@ export default class Main extends Component {
     )
   }
   componentWillMount() {
+    this._onRefresh()
+  }
+  componentWillReceiveProps(nextProps){
+    const { navigation } = this.props;
+    this.times = navigation.getParam('time');
+    this.shopId =navigation.getParam('itemId');
     this._onRefresh()
   }
 }

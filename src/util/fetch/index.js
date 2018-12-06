@@ -15,7 +15,7 @@ function checkStatus(response) {
 function checkCode(response) {
   if (response.status==501) {
     NavigationService.navigate("login")
-    return false
+    return response
   }
   return response
 }
@@ -81,15 +81,20 @@ global.http = {
     for (var key in data) {
       body.append(key, data[key])
     }
+      showLoading()
     return fetch(networkEnvironment + url, {
       method: 'POST',
       headers: {
         // 'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        //'Content-Type': 'application/x-www-form-urlencoded;'
       },
       body
     })
       .then(response => checkStatus(response))
-      .then(res => checkCode(res))
+      .then(res => {
+          closeLoading()
+              return checkCode(res)
+      }
+      )
   },
 }

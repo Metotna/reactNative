@@ -7,7 +7,7 @@ import {
     Platform,
     TextInput,
     Alert,
-    ListView,
+    ListView, RefreshControl,ActivityIndicator,DeviceEventEmitter
 } from 'react-native';
 import { Button, SearchBar, Picker } from 'antd-mobile-rn'
 
@@ -15,10 +15,19 @@ import rn_Less from 'rn-less/src/runtime';
 import style from '../../assets/style/script/style_less'
 import styleP from '../../assets/style/script/public_less'
 import qs from "query-string";
+import { Modal,Toast } from 'antd-mobile-rn'
+import Icon from "react-native-vector-icons/Entypo";
+import Backicon from "../common/backicon";
 
 let pageNumber = 1;//当前第几页
-let totalPage = 0;//总的页数
+let totalPage = 1;//总的页数
 
+const headerStyleB={
+    backgroundColor: '#2073D3',
+}
+const headerTitleStyleB={
+    color: '#fff'
+}
 
 const cssStyle =Object.assign({},style({}).detail,styleP({}).public)
 @rn_Less.rnLess(cssStyle)
@@ -27,22 +36,91 @@ class Listbox extends Component{
         super(props);
         this.state = {
             data: this.props.rowData,
+            viewdata:[],
         };
     }
+
+    //删除彩票机
+    deleteid(p){
+        Modal.alert('温馨提示', '确认删除门店？', [
+            { text: '取消', onPress: () => {}, style: 'cancel' },
+            { text: '确定', onPress: () => {
+                    this.dopost(p);
+                }},
+        ]);
+    }
+
+    dopost =(p)=> {
+        http.post('/netbar//shop/delete',{shopId:p}).then(responseData=>{
+            /* Storage.saveObj({
+                 user:res.data.token,
+                 token:res.data.token
+             })*/
+
+            if(responseData.status == '200'){
+                Toast.show('删除成功！', 3);
+                this.props.onDopost();
+            }
+        }).catch(err=>{
+            console.log(err)
+        })
+        console.log(this.state.data)
+    }
+
+    //类型解析
+    _ResolveLotOrg =(x) =>{
+        const lot = {
+            "1": "体彩",
+            "2": "福彩",
+        };
+        let str = lot[x];
+        return str;
+    }
+
+    //进度解析
+    _ResolveSchedule =(x,id) =>{
+        const scheduledataA = {
+            "10": "提交建站申请",
+            "20": "实地勘查",
+            "30": "网吧签合同",
+            "40": "与体彩签合同",
+            "41": "装修",
+            "42": "申领机器",
+            "50": "培训",
+            "60": "正常营业"
+        }
+        const scheduledataB = {
+            "10": "提交建站申请",
+            "20": "实地勘查",
+            "30": "网吧签合同",
+            "40": "装修",
+            "41": "福彩签合同",
+            "50": "培训",
+            "60": "正常营业"
+        }
+        let str = "";
+        if(x == 1){
+            str = scheduledataA[id];
+        }else{
+            str = scheduledataB[id];
+        }
+        return str;
+    }
+
     render(){
         return(
             <View style="mdlist">
                 <View style="ls_t">
                     <View style="a_1">
-                        <Text style="fontsize16">{this.state.data.shopName}</Text>
-                        <Text style={["fontsize14", "col666"]}>{this.state.data.schedule}</Text>
+                        <Text style={["fontsize16", "hadtext"]}>{this.state.data.shopName}</Text>
+                        <Text style={["fontsize14", "col666",'hadtext']}>{this._ResolveSchedule(this.state.data.lotOrg,this.state.data.schedule)}</Text>
                     </View>
                 </View>
                 <View style="ls_con">
                     <View style={["flexrowbet"]}>
                         <View style={["c_box","flex1","flexrowbet"]}>
                             <Text style={["fontsize14", "col666"]}>类型：</Text>
-                            <Text style={["fontsize14", "col333"]}>{this.state.data.lotOrg}</Text>
+                            <Text style={["fontsize14", "col333"]}>{this._ResolveLotOrg(this.state.data.lotOrg)}</Text>
                         </View>
                         <View style={["c_box","flex1","flexrowbet"]}>
                             <Text style={["fontsize14", "col666"]}>业务经理：</Text>
@@ -62,9 +140,9 @@ class Listbox extends Component{
                 </View>
                 <View style={["ls_bot","flex1"]}>
                     <Button onClick={() => this.props.navigation.navigate('idmanagement',{id:this.state.data.id})} size={12} style={["but"]} activeStyle={{ backgroundColor: '#114FCD' }}>账号</Button>
-                    <Button onClick={() => this.props.navigation.navigate('revampstore',{id:this.state.data.id})} size={12} style={["but"]} activeStyle={{ backgroundColor: '#114FCD' }}>修改</Button>
+                    <Button onClick={() => this.props.navigation.navigate('revampstore',{id:this.state.data.id,dopost:this.props.onDopost})} size={12} style={["but"]} activeStyle={{ backgroundColor: '#114FCD' }}>修改</Button>
                     <Button onClick={() => this.props.navigation.navigate('cpjmanagement',{id:this.state.data.id})} size={12} style={["but"]} activeStyle={{ backgroundColor: '#114FCD' }}>彩票机</Button>
-                    <Button size={12} style={["but"]} activeStyle={{ backgroundColor: 'red' }}>删除</Button>
+                    <Button onClick={() => this.deleteid(this.state.data.id)} size={12} style={["but"]} activeStyle={{ backgroundColor: 'red' }}>删除</Button>
                 </View>
             </View>
         )
@@ -82,7 +160,9 @@ export default class Main extends Component {
             data: [],
             showFoot:0, // 控制foot， 0：隐藏footer  1：已加载完成,没有更多数据   2 ：显示加载中
             isRefreshing:false,//下拉控制
-            ds:new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+            ds:new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+            listStatus: 'Loading',//控制foot
+            refreshing: false,//下拉刷新图标控制
         };
     }
 
@@ -90,73 +170,103 @@ export default class Main extends Component {
         this.setState({ value: '' });
     }
 
+
+    //rende之前调用
+    componentWillMount(){
+        //路由监听
+        /*this.props.navigation.addListener(
+            'didFocus',
+            payload =>  {
+                this.dopost();
+                /!*console.log(payload)
+                console.log(this.props.navigation.isFocused())*!/
+            }
+        );*/
+        this.setTitle = DeviceEventEmitter.addListener('refreshShopList', (data)=>{
+            if(data == 'suc'){
+                this._onRefresh();
+            }
+        });
+    }
+
     //rende之后调用
     componentDidMount(){
         this.dopost();
     }
 
-
-    _renderFooter(){
-        if (this.state.showFoot === 1) {
-            return (
-                <View style={{height:30,alignItems:'center',justifyContent:'flex-start',}}>
-                    <Text style={{color:'#999999',fontSize:14,marginTop:5,marginBottom:5,}}>
-                        没有更多数据了
-                    </Text>
-                </View>
-            );
-        } else if(this.state.showFoot === 2) {
-            return (
-                <View style={styles.footer}>
-                    <ActivityIndicator />
-                    <Text>正在加载更多数据...</Text>
-                </View>
-            );
-        } else if(this.state.showFoot === 0){
-            return (
-                <View style={styles.footer}>
-                    <Text></Text>
-                </View>
-            );
-        }
+    //卸载接受广播的方法
+    componentWillUnmount(){
+    // DeviceEventEmitter.removeListener();
+        this.setTitle.remove();
     }
+
+
     //上拉加载
-    _updata =()=> {
+    _updata = () =>{
         if(pageNumber > totalPage){
             return false;
         }else {
-            //console.log(pageNumber)
             this.dopost();
         }
     }
+
+    //下拉刷新
+    _onRefresh = () =>{
+        pageNumber = 1;
+        this.state.data = [];
+        this.setState({
+            refreshing: true,
+        })
+        this.dopost();
+    }
+
+    _hanleFooter = () => {
+        if (this.state.listStatus == "Loading") {
+            return <Text style={{ lineHeight: 35, textAlign: "center", color: "#666" }}>加载中...</Text>
+        } else if (this.state.listStatus == "noMore") {
+            return <Text style={{ lineHeight: 35, textAlign: "center", color: "#666", marginBottom: 6 }}>暂无更多数据</Text>
+        } else {
+            return <ActivityIndicator style={{ height: 35 }} />
+        }
+    }
+
+
+
     Search =(v) =>{
         Alert.alert(v)
     }
 
     dopost =()=> {
-        http.post('/netbar/shop/list',{pageNumber:pageNumber}).then(responseData=>{
-            /* Storage.saveObj({
-                 user:res.data.token,
-                 token:res.data.token
-             })*/
-            console.log(responseData)
-            let data = responseData.data.entitys;
-            let dataBlob = [];
-            pageNumber ++;
-            totalPage = responseData.data.totalPage;
-            console.log(data)
+        http.loadingPost('/netbar/shop/list',{pageNumber:pageNumber}).then(responseData=>{
+            if (responseData && responseData.status == 200) {
+                let data = responseData.data.entitys;
+                //console.log(data)
+                let listStatus = pageNumber == responseData.data.totalPage ? "noMore" : "goOn";
 
-            this.setState({
-                //复制数据源
-                data: this.state.data.concat(data),
-                //dataArray:this.state.dataArray.concat(dataBlob),
-                isLoading: false,
-                isRefreshing:false,
-            });
+                pageNumber ++;
+                totalPage = responseData.data.totalPage;
+
+
+                this.setState({
+                    //复制数据源
+                    data: this.state.data.concat(data),
+                    listStatus: listStatus,
+                    refreshing: false,
+                });
+            }
         }).catch(err=>{
             console.log(err)
         })
-        console.log(this.state.data)
+        http.post('/netbar/shop/overView',{}).then(responseData=>{
+            if (responseData && responseData.status == 200) {
+                this.state.viewdata = responseData.data;
+                this.setState({
+                    viewdata:this.state.viewdata
+                })
+            }
+        }).catch(err=>{
+            console.log(err)
+        })
     }
 
     render() {
@@ -164,7 +274,13 @@ export default class Main extends Component {
             <View style="delbox">
                 <View style={["herderbox"]}>
                     <View style="tit">
-                        <Text style="lh">XXX个提交建站申请，XXX个实地勘察，XXX个正常营业</Text>
+                        {
+                            this.state.viewdata
+                                ?
+                                <Text style="lh">{this.state.viewdata.applyCount}个提交建站申请，{this.state.viewdata.surveyCount}个实地勘察，{this.state.viewdata.normalCount}个正常营业</Text>
+                                :
+                                <Text style="lh"></Text>
+                        }
                     </View>
                     <View style="searchbox">
                         {/*<Picker
@@ -198,10 +314,20 @@ export default class Main extends Component {
                     <ListView
                         style={["flatListbox"]}
                         dataSource={this.state.ds.cloneWithRows(this.state.data)}
+                        refreshControl={<RefreshControl
+                            refreshing={this.state.refreshing}
+                            onRefresh={this._onRefresh}
+                            tintColor="#666666"
+                            title="Loading..."
+                            titleColor="#666666"
+                            colors={['#666666']}
+                            progressBackgroundColor="#f2f3f5"
+                        />}
                         renderRow={(rowData, sectionID, rowId) => <Listbox rowData={rowData} sectionID={sectionID}
-                                                                           rowId={rowId} navigation={this.props.navigation}/>}
+                                                                           onDopost={this._onRefresh} rowId={rowId} navigation={this.props.navigation}/>}
                         onEndReachedThreshold={30}
                         onEndReached={this._updata}
+                        renderFooter={this._hanleFooter}
                     />
                     :
                     <View></View>
