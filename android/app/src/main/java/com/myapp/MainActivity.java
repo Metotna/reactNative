@@ -1,8 +1,6 @@
 package com.myapp;
 
-import android.os.Bundle; // here
 import com.facebook.react.ReactActivity;
-import com.cboy.rn.splashscreen.SplashScreen; // here
 
 public class MainActivity extends ReactActivity {
 
@@ -13,11 +11,5 @@ public class MainActivity extends ReactActivity {
     @Override
     protected String getMainComponentName() {
         return "MyApp";
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.show(this);  // here
-        super.onCreate(savedInstanceState);
     }
 }

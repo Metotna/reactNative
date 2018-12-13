@@ -65,66 +65,70 @@ module.exports = function({containerMargin}){
         s11: {
             flexDirection: "row",
             justifyContent: "space-between",
-            paddingBottom: 4,
+            paddingBottom: 8,
             paddingLeft: 10,
             paddingRight: 10,
-            paddingTop: 4
+            paddingTop: 8
         },
         s12: {
-            fontSize: 13
+            fontSize: 15
         },
         s13: {
             borderBottomColor: "#f2f3f5",
             borderBottomWidth: 1,
             flexDirection: "row",
-            justifyContent: "space-between",
-            paddingBottom: 5,
-            paddingLeft: 12,
-            paddingRight: 12,
-            paddingTop: 5
+            justifyContent: "space-between"
         },
         s14: {
-            fontSize: 16,
-            lineHeight: 25
+            height: 36,
+            justifyContent: "center",
+            marginLeft: 12
         },
         s15: {
+            fontSize: 16
+        },
+        s16: {
+            height: 36,
+            width: 36
+        },
+        s17: {
             borderBottomColor: "#f2f3f5",
             borderBottomWidth: 1,
             color: "#666666",
-            paddingTop: 6
-        },
-        s16: {
-            color: "#333333",
-            paddingTop: 8
-        },
-        s17: {
-            color: "#E7505A",
             paddingTop: 3
         },
         s18: {
+            color: "#333333",
+            paddingTop: 3
+        },
+        s19: {
+            color: "#E7505A",
+            paddingTop: 0
+        },
+        s20: {
             color: "#666666",
             lineHeight: 20
         },
-        s19: {
+        s21: {
             paddingTop: 4
         },
-        s20: {
+        s22: {
             flex: 1,
             flexDirection: "row"
         },
-        s21: {
+        s23: {
             width: 152
         },
-        s22: {
+        s24: {
             textAlign: "center"
         },
-        s23: {
+        s25: {
             paddingRight: 5,
             textAlign: "right"
         },
-        s24: {
+        s26: {
             alignItems: "center",
-            backgroundColor: "#fff",
+            backgroundColor: "#F5F7FA",
             bottom: 0,
             flexDirection: "column",
             justifyContent: "center",
@@ -133,42 +137,42 @@ module.exports = function({containerMargin}){
             right: 0,
             top: 0
         },
-        s25: {
-            color: "#E7505A",
+        s27: {
+            color: "#666666",
             fontSize: 16,
             lineHeight: 20
         },
-        s26: {
+        s28: {
             backgroundColor: "#f2f3f5",
             flex: 1,
             flexDirection: "column"
         },
-        s27: {
+        s29: {
             backgroundColor: "#fff",
             flex: 1
         },
-        s28: {
+        s30: {
             height: 70,
             paddingBottom: 15,
             paddingLeft: 12,
             paddingRight: 12,
             paddingTop: 15
         },
-        s29: {
+        s31: {
             backgroundColor: "#2073D3",
             height: 48
         },
-        s30: {
+        s32: {
             color: "#FFFFFF",
             fontSize: 17,
             lineHeight: 48,
             textAlign: "center"
         },
-        s31: {
+        s33: {
             color: "#592A00",
             textAlign: "center"
         },
-        s32: {
+        s34: {
             backgroundColor: "#fff",
             borderColor: "#2073D3",
             borderRadius: 5,
@@ -181,39 +185,39 @@ module.exports = function({containerMargin}){
             paddingRight: 5,
             paddingTop: 0
         },
-        s33: {
+        s35: {
             flex: 1,
             height: 35,
             justifyContent: "center"
         },
-        s34: {
+        s36: {
             color: "#2073D3",
             fontSize: 14,
             textAlign: "center"
         },
-        s35: {
+        s37: {
             backgroundColor: "#2073D3",
             width: 1
         },
-        s36: {
-            height: 220
+        s38: {
+            fontSize: 14
         },
-        s37: {
+        s39: {
             paddingBottom: 12,
             paddingLeft: 10,
             paddingRight: 10,
             paddingTop: 12
         },
-        s38: {
+        s40: {
             width: 90
         },
-        s39: {
+        s41: {
             width: 110
         },
-        s40: {
+        s42: {
             width: 135
         },
-        s41: {
+        s43: {
             backgroundColor: "#F3F3F3",
             flexDirection: "row",
             height: 37,
@@ -223,12 +227,11 @@ module.exports = function({containerMargin}){
             paddingRight: 18,
             paddingTop: 10
         },
-        s42: {
+        s44: {
             color: "#333333",
-            fontSize: 16,
-            lineHeight: 16
+            fontSize: 16
         },
-        s43: {
+        s45: {
             fontSize: 16,
             lineHeight: 22,
             paddingBottom: 10,
@@ -236,25 +239,31 @@ module.exports = function({containerMargin}){
             paddingRight: 20,
             paddingTop: 10
         },
-        s44: {
+        s46: {
             backgroundColor: "#fff",
             flex: 1,
             flexDirection: "column"
         },
-        s45: {
+        s47: {
             backgroundColor: "#fff",
             flex: 0,
             height: 30,
             paddingLeft: 12,
             paddingRight: 12
         },
-        s46: {
+        s48: {
             backgroundColor: "#ffffff"
         },
-        s47: {
+        s49: {
             backgroundColor: "#F3F3F3"
         },
-        s48: {
+        s50: {
+            color: "#333",
+            flex: 1,
+            fontSize: 14,
+            textAlign: "right"
+        },
+        s51: {
             backgroundColor: "#ffffff",
             minHeight: 44,
             paddingBottom: 14,
@@ -262,38 +271,38 @@ module.exports = function({containerMargin}){
             paddingRight: 14,
             paddingTop: 16
         },
-        s49: {
+        s52: {
             fontSize: 20,
             lineHeight: 60
         },
-        s50: {
+        s53: {
             backgroundColor: "#fff",
             height: 90,
             padding: 15
         },
-        s51: {
+        s54: {
             height: 60,
             width: 60
         },
-        s52: {
+        s55: {
             backgroundColor: "#fff",
             paddingBottom: 12,
             paddingLeft: 15,
             paddingRight: 15,
             paddingTop: 12
         },
-        s53: {
+        s56: {
             height: 20,
             width: 20
         },
-        s54: {
+        s57: {
             lineHeight: 18,
             marginLeft: 8
         },
-        s55: {
+        s58: {
             padding: 10
         },
-        s56: {
+        s59: {
             backgroundColor: "#f2f3f5",
             color: "#666666",
             fontSize: 14,
@@ -303,7 +312,8 @@ module.exports = function({containerMargin}){
             paddingRight: 12,
             paddingTop: 10
         },
-        s57: {
+        s60: {
+            backgroundColor: "#DCDFE6",
             fontSize: 16,
             height: 35,
             paddingBottom: 11,
@@ -311,26 +321,27 @@ module.exports = function({containerMargin}){
             paddingRight: 18,
             paddingTop: 8
         },
-        s58: {
-            backgroundColor: "#DBDBDB",
+        s61: {
+            backgroundColor: "#ffffff",
+            marginBottom: 1,
             paddingBottom: 6,
             paddingLeft: 12,
             paddingRight: 12,
             paddingTop: 6
         },
-        s59: {
+        s62: {
             lineHeight: 25
         },
-        s60: {
+        s63: {
             backgroundColor: "#fff"
         },
-        s61: {
+        s64: {
             paddingBottom: 12,
             paddingLeft: 6,
             paddingRight: 6,
             paddingTop: 12
         },
-        s62: {
+        s65: {
             backgroundColor: "#f3f3f3",
             height: 1
         }
@@ -357,67 +368,70 @@ module.exports = function({containerMargin}){
         },
         HomeComTable: {
             title: allStyle.s13,
-            t_name: allStyle.s14,
-            month_t: allStyle.s15,
-            month_a: allStyle.s16,
-            month_b: allStyle.s17,
-            child_t: allStyle.s18,
-            child_a: allStyle.s19,
-            table: allStyle.s20,
+            t_nameView: allStyle.s14,
+            t_name: allStyle.s15,
+            t_img: allStyle.s16,
+            month_t: allStyle.s17,
+            month_a: allStyle.s18,
+            month_b: allStyle.s19,
+            child_t: allStyle.s20,
+            child_a: allStyle.s21,
+            table: allStyle.s22,
             table_td: allStyle.s8,
-            table_width: allStyle.s21,
-            tr: allStyle.s22,
-            tr_r: allStyle.s23,
-            updata: allStyle.s24,
-            f16h20: allStyle.s25
+            table_width: allStyle.s23,
+            tr: allStyle.s24,
+            tr_r: allStyle.s25,
+            updata: allStyle.s26,
+            f14h20: allStyle.s27
         },
         HandleReport: {
-            container: allStyle.s26,
-            tab_list: allStyle.s27,
-            bottom_btn: allStyle.s28,
-            bottom_btn2: allStyle.s29,
-            bb2_text: allStyle.s30,
-            title_warn: allStyle.s31,
-            btnView: allStyle.s32,
-            btns_f: allStyle.s33,
-            btns: allStyle.s34,
-            border10_b: allStyle.s35,
-            content_imga: allStyle.s36,
-            cont_bor: allStyle.s37,
-            text_left: allStyle.s38,
-            text_left2: allStyle.s39,
-            text_left3: allStyle.s40,
-            up_title: allStyle.s41,
-            up_text: allStyle.s42,
-            up_list: allStyle.s43
+            container: allStyle.s28,
+            tab_list: allStyle.s29,
+            bottom_btn: allStyle.s30,
+            bottom_btn2: allStyle.s31,
+            bb2_text: allStyle.s32,
+            title_warn: allStyle.s33,
+            btnView: allStyle.s34,
+            btns_f: allStyle.s35,
+            btns: allStyle.s36,
+            border10_b: allStyle.s37,
+            content_imga: allStyle.s38,
+            cont_bor: allStyle.s39,
+            text_left: allStyle.s40,
+            text_left2: allStyle.s41,
+            text_left3: allStyle.s42,
+            up_title: allStyle.s43,
+            up_text: allStyle.s44,
+            up_list: allStyle.s45
         },
         netBarDetail: {
-            container: allStyle.s44,
-            content: allStyle.s45,
-            odd_bgc: allStyle.s46,
-            even_bgc: allStyle.s47
+            container: allStyle.s46,
+            content: allStyle.s47,
+            odd_bgc: allStyle.s48,
+            even_bgc: allStyle.s49,
+            flistText: allStyle.s50
         },
         netBarDay: {
-            container: allStyle.s26,
-            list: allStyle.s48
+            container: allStyle.s28,
+            list: allStyle.s51
         },
         TabbarMineStyle: {
-            phone: allStyle.s49,
-            h90: allStyle.s50,
-            imgsize: allStyle.s51,
-            h45: allStyle.s52,
-            imgsizeM: allStyle.s53,
-            mal8: allStyle.s54,
-            outBtn: allStyle.s55,
-            netBarTitle: allStyle.s56
+            phone: allStyle.s52,
+            h90: allStyle.s53,
+            imgsize: allStyle.s54,
+            h45: allStyle.s55,
+            imgsizeM: allStyle.s56,
+            mal8: allStyle.s57,
+            outBtn: allStyle.s58,
+            netBarTitle: allStyle.s59
         },
         ReportInfo: {
-            rtitle: allStyle.s57,
-            rbgc: allStyle.s58,
-            rt_id: allStyle.s59,
-            rinfo: allStyle.s60,
-            ri_cot: allStyle.s61,
-            border10_f: allStyle.s62
+            rtitle: allStyle.s60,
+            rbgc: allStyle.s61,
+            rt_id: allStyle.s62,
+            rinfo: allStyle.s63,
+            ri_cot: allStyle.s64,
+            border10_f: allStyle.s65
         }
     };
 };

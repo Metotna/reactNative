@@ -17,11 +17,7 @@ export default class Loading extends Component {
   }
 
   close() {
-    if (Platform.OS === 'android') {
-      setTimeout(() => {
-        this.setState({ modalVisible: false });
-      }, 1000)
-    } else {
+    if (this.state.modalVisible) {
       this.setState({ modalVisible: false });
     }
   }

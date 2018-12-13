@@ -29,7 +29,7 @@ export default class Main extends Component {
   }
   render() {
     return (
-      <ScrollView >
+      <ScrollView keyboardShouldPersistTaps={'handled'}>
         <View style={{ marginTop: 6 }} />
         <View style='inputCon'>
           <View style="h40JC">
@@ -98,26 +98,23 @@ export default class Main extends Component {
           password: this.state.password,
         }, true).then(res => {
           if (res) {
-            if (res) {
-              if (res.status == 200) {
-                Toast.success('重置密码成功，请重新登录！', 1)
-                Storage.delete("token")
-                this.props.navigation.dispatch(StackActions.reset({
-                  index: 0,
-                  actions: [NavigationActions.navigate({ routeName: "login" })],
-                }))
-              } else {
-                Toast.fail(res.msg, 1);
+            if (res.status == 200) {
+              Toast.success('重置密码成功，请重新登录！', 1)
+              Storage.delete("token")
+              if(this.cDInt){
+                clearInterval(this.cDInt)
               }
+              this.props.navigation.goBack()
+            } else {
+              Toast.fail(res.msg, 1);
             }
-
           }
         }).catch(err => {
           // console.log(err)
         })
       } else {
         Toast.info('新密码不一致请重新输入！', 1);
-        
+
         this.props.navigation.navigate('setPassword')
       }
     }
@@ -134,12 +131,13 @@ export default class Main extends Component {
     }, true).then(res => {
       if (res) {
         if (res.status == 200) {
+          console.log(res)
           Toast.success('验证码已发送，请注意查收', 1)
           this.setState({ countDown: true })
           let c = 60;
-          var cDInt = setInterval(() => {
+          this.cDInt = setInterval(() => {
             if (c == 0) {
-              clearInterval(cDInt)
+              clearInterval(this.cDInt)
               this.setState({ getText: '获取验证码', countDown: false })
               return
             } else {
@@ -148,7 +146,7 @@ export default class Main extends Component {
             }
           }, 1000)
         } else {
-          Toast.fail(res.msg, 1);
+          
         }
       }
     }).catch(err => {

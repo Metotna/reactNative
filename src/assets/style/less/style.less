@@ -18,19 +18,13 @@ detail {
   }
   .herderbox{
     width: 100%;
-    height: 74;
+    height: 80;
   }
   .searchbox{
     height: 44;
     background-color: #fff;
     margin-bottom: 6;
-    .pic{
-      height: 25;
-      width: 25;
-    }
-    .search{
-      height: 25;
-    }
+    border-bottom: 1px solid #ddd;
   }
   .tit{
     height: 30;
@@ -91,6 +85,7 @@ cpjmanagement{
       width: 100%;
     }
     .ls_box{
+      height: 180px;
       margin-bottom: 6;
     }
     .textv{
@@ -314,8 +309,8 @@ uploadreport{
     justify-content: center;
     align-items: center;
     .img{
-      width: 130px;
-      height: 120px;
+      width: 146px;
+      height: 162px;
     }
   }
 }
@@ -329,14 +324,16 @@ ReportUpload{
     width: 100%;
   }
   .bannerbox{
-    width: 300;
-    height: 220px;
+    flex: 1;
     margin-bottom: 6px;
   }
   .itembox{
     flex-direction: row;
     background-color: #fff;
     padding: 0 12px;
+    height: 32;
+    flex-direction: row;
+    align-items: center;
     .texta{
       font-size: 16px;
       color: #333;
@@ -344,7 +341,6 @@ ReportUpload{
     .textb{
       font-size: 16px;
       color: #002000;
-      line-height: 32;
     }
   }
   .ls_conbox{
@@ -357,21 +353,17 @@ ReportUpload{
       font-size: 16;
       color: #333333;
       min-width: 75;
-      line-height: 40;
       text-align: left;
     }
     .inputbox{
-      font-size: 16px;
       width: 160px;
-      height: 25px;
-      line-height: 25;
-      font-size: 14px;
+      height: 40px;
+      line-height: 40;
+      font-size: 14;
       border: 1px solid #eee;
-      margin-top: 7;
+      margin-top: 2;
       text-align: right;
       color: #666;
-      border-radius: 3px;
-      overflow: hidden;
     }
   }
   .butbox{

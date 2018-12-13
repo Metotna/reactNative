@@ -33,7 +33,8 @@ export default class Main extends Component {
                 openTime:'',
                 sellLot:'',
                 shopId:this.props.navigation.getParam('shopid'),
-                withdrawal:'1'
+                withdrawal:'1',
+                status:'ON',
             },
             deftime: new Date(),
             Change:[
@@ -89,7 +90,7 @@ export default class Main extends Component {
         }
         this.state.data.withdrawal = this.selwithdrawal(this.state.data.withdrawal);
         http.loadingPost('/netbar/machine/edit',this.state.data).then(res=>{
-            console.log(res)
+            //console.log(res)
             if(res.status == '200'){
                 Toast.show(res.msg);
                 this.props.navigation.state.params.dopost();
@@ -170,7 +171,6 @@ export default class Main extends Component {
                             selectedValue={this.state.data.withdrawal}
                             onValueChange={(id) => {
                                 this.state.data.withdrawal = id;
-                                console.log(this.state.data.withdrawal)
                             }}
                             style={{ flexDirection:'row',
                                 flexWrap:'wrap',
@@ -182,6 +182,27 @@ export default class Main extends Component {
                         >
                             <Text value="1">开通</Text>
                             <Text value="2">未开通</Text>
+                        </Radio>
+                    </View>
+                    <View style={["bgfff","flexrow","ls_conbox"]}>
+                        <View style={["textv"]}>
+                            <Text style={["text"]}>是否启用：</Text>
+                        </View>
+                        <Radio
+                            selectedValue={this.state.data.status}
+                            onValueChange={(id) => {
+                                this.state.data.status = id;
+                            }}
+                            style={{ flexDirection:'row',
+                                flexWrap:'wrap',
+                                alignItems:'flex-start',
+                                flex:1,
+                                backgroundColor:'#ffffff',
+                                paddingTop:10
+                            }}
+                        >
+                            <Text value="ON">启用</Text>
+                            <Text value="OFF">关闭</Text>
                         </Radio>
                     </View>
                     <View style={["bgfff"]}>

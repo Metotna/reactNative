@@ -13,47 +13,49 @@ class AuthLoadingScreen extends React.Component {
     this.state = {
       unshow: true
     }
-    Storage.get('token').then(res=>{
-      if(res){
-      this._bootstrapAsync();
-      }else {
+    Storage.get('token').then(res => {
+      // console.log(`token:` + res)
+      // this.props.navigation.navigate('login')
+      if (res) {
+        this._bootstrapAsync();
+      } else {
+        // console.log(`token unexist`)
         this.props.navigation.dispatch(StackActions.reset({
           index: 0,
           actions: [NavigationActions.navigate({ routeName: "login" })],
         }))
-      SplashScreen.hide();
-
+        SplashScreen.hide();
       }
     })
   }
   _bootstrapAsync = () => {
-
     http.post('/auth/my', {}).then(res => {
+      // console.log(res)
       if (res) {
+        let routeName = 'login'
         if (res.status == 200) {
           let rule = res.data.roleVOS[0].key;
+          Storage.save("rule", rule)
           if (rule == 'ADMIN' || rule == "BUSM" || rule == "SHOPM") {
-            var routeName = (rule == 'ADMIN' || rule == "BUSM") ? "TabbarManager" : "TabbarStore"
-            this.props.navigation.dispatch(StackActions.reset({
-              index: 0,
-              actions: [NavigationActions.navigate({ routeName })],
-            }))
+            routeName = rule == 'SHOPM' ? "TabbarStore" : "TabbarManager";
           } else {
             Toast.success('当前登录信息失效，请重新登录', 1);
-            this.props.navigation.dispatch(StackActions.reset({
-              index: 0,
-              actions: [NavigationActions.navigate({ routeName: "login" })],
-            }))
+            routeName = "login"
           }
-        } else {
-          this.props.navigation.dispatch(StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: "login" })],
-          }))
         }
+        this.props.navigation.dispatch(StackActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName })],
+        }))
+        // this.props.navigation.dispatch(StackActions.popToTop())
+        // console.log(routeName)
+        // this.props.navigation.dispatch(StackActions.reset({
+        //   index: 0,
+        //   actions: [NavigationActions.navigate({ routeName })],
+        // }))
       }
-      SplashScreen.hide();
-    }).catch(err=>{
+      SplashScreen.hide()
+    }).catch(err => {
       SplashScreen.hide();
     })
   };

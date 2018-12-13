@@ -34,10 +34,9 @@ export default class Main extends Component {
         super(props);
         this.state = {
             data:{
-                account:'',
                 address:'',
                 area:JSON.stringify(["110000","110100","110108"]),
-                bank:'',
+                //bank:'',
                 linkPhone:'',
                 linkman:'',
                 lotOrg:1,
@@ -51,6 +50,11 @@ export default class Main extends Component {
                 bank:'',
                 cardno:'',
                 phone:'',
+            },
+            datac:{
+                account:'',
+                accountName:'',
+                pwd:'123456',
             },
             value: ["110000","110100","110108"],
             adddata: district,
@@ -92,6 +96,10 @@ export default class Main extends Component {
                 {
                     "label": "正常营业",
                     "value": "60"
+                },
+                {
+                    "label": "关闭",
+                    "value": "70"
                 }
             ],
             scheduledataB:[
@@ -126,6 +134,10 @@ export default class Main extends Component {
                 {
                     "label": "正常营业",
                     "value": "60"
+                },
+                {
+                    "label": "关闭",
+                    "value": "70"
                 }
             ]
         };
@@ -196,6 +208,10 @@ export default class Main extends Component {
             {
                 "label": "正常营业",
                 "value": "60"
+            },
+            {
+                "label": "关闭",
+                "value": "70"
             }
         ];
         data.map(x =>{
@@ -207,22 +223,25 @@ export default class Main extends Component {
     }
 
     dopost =()=> {
-        this.state.data.account = this.state.data.linkPhone;
-        this.state.data.bank = JSON.stringify(this.state.datab);
         //this.scheduleCl(this.state.data.schedule);
         //console.log(this.state.data.schedule);
-        if(!this.checkdata(this.state.data)){
+        /*if(!this.checkdata(this.state.data)){
             return false;
-        }
-        if(!this.checkdata(this.state.datab)){
+        }*/
+        this.state.data.account = this.state.datac.account;
+        this.state.data.accountName = this.state.datac.accountName;
+        this.state.data.bank = JSON.stringify(this.state.datab);
+
+        /*if(!this.checkdata(this.state.datab)){
             return false;
-        }
-        http.post('/netbar/shop/edit',this.state.data).then(res=>{
+        }*/
+        //console.log(this.state.data)
+        http.loadingPost('/netbar/shop/edit',this.state.data).then(res=>{
             /* Storage.saveObj({
                  user:res.data.token,
                  token:res.data.token
              })*/
-            console.log(res)
+            //console.log(res)
             if(res.status == '200'){
                 DeviceEventEmitter.emit('refreshShopList', 'suc');//添加广播
                 this.props.navigation.goBack();
@@ -268,7 +287,7 @@ export default class Main extends Component {
                                             underlineColorAndroid="transparent"
                                             onChangeText={(text) => {
                                                 this.setState({
-                                                    data: Object.assign({}, this.state.data, {shopName: text})
+                                                    data:{...this.state.data, ...{shopName: text}}
                                                 })
                                             }}
                                         />
@@ -282,7 +301,7 @@ export default class Main extends Component {
                                         selectedValue={this.state.initId}
                                         onValueChange={(id) => {
                                             this.setState({
-                                                data: Object.assign({}, this.state.data, {workType: id})
+                                                data:{...this.state.data, ...{workType: id}}
                                             })
                                         }}
                                         selectedValue = '1'
@@ -306,7 +325,7 @@ export default class Main extends Component {
                                         onValueChange={(id) => {
                                             this._setSchedule(id);
                                             this.setState({
-                                                data: Object.assign({}, this.state.data, {lotOrg: id})
+                                                data:{...this.state.data, ...{lotOrg: id}}
                                             })
                                         }}
                                         selectedValue = '1'
@@ -363,12 +382,12 @@ export default class Main extends Component {
                                         <TextInput
                                             autoHeight={'rows'}
                                             placeholderTextColor={'#ccc'}
-                                            style={["textareaItem"]}
+                                            style={["textareaItem",stylesa.iptvertical]}
                                             placeholder={'请输入详细地址信息，如道路、门牌号、单元室等'}
                                             underlineColorAndroid="transparent"
                                             onChangeText={(text) => {
                                                 this.setState({
-                                                    data: Object.assign({}, this.state.data, {address: text})
+                                                    data:{...this.state.data, ...{address: text}}
                                                 })
                                             }}
                                         />
@@ -483,17 +502,43 @@ export default class Main extends Component {
                                 </View>
                                 <View style={["bgfff","flexrow","ls_conbox","martop"]}>
                                     <View style={["textv"]}>
+                                        <Text style={["text"]}>账号姓名：</Text>
+                                    </View>
+                                    <View>
+                                        <TextInput
+                                            style={["inputbox"]}
+                                            placeholder={'请输入账号姓名'}
+                                            underlineColorAndroid="transparent"
+                                            onChangeText={(text) => {
+                                                this.setState({
+                                                    datac: Object.assign({}, this.state.datac, {accountName: text})
+                                                })
+                                            }}
+                                        />
+                                    </View>
+                                </View>
+                                <View style={["bgfff","flexrow","ls_conbox"]}>
+                                    <View style={["textv"]}>
                                         <Text style={["text"]}>登陆账号：</Text>
                                     </View>
                                     <View>
-                                        <Text style={["text"]}>{this.state.data.linkPhone}</Text>
+                                        <TextInput
+                                            style={["inputbox"]}
+                                            placeholder={'请输入手机号'}
+                                            underlineColorAndroid="transparent"
+                                            onChangeText={(text) => {
+                                                this.setState({
+                                                    datac: Object.assign({}, this.state.datac, {account: text})
+                                                })
+                                            }}
+                                        />
                                     </View>
                                 </View>
                                 <View style={["bgfff","flexrow","ls_conbox"]}>
                                     <View style={["textv"]}>
                                         <Text style={["text"]}>默认密码：</Text>
                                     </View>
-                                    <View>
+                                    <View style={["textv"]}>
                                         <Text style={["text"]}>123456</Text>
                                     </View>
                                 </View>
@@ -514,5 +559,8 @@ export default class Main extends Component {
 
 }
 
-const styles = StyleSheet.create({
+const stylesa = StyleSheet.create({
+    iptvertical:{
+        paddingVertical: 0
+    }
 });

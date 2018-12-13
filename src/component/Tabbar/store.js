@@ -7,20 +7,18 @@ import {
     Platform,
     TextInput,
     Alert,
-    ListView, RefreshControl,ActivityIndicator,DeviceEventEmitter
+    ListView, RefreshControl,ActivityIndicator,DeviceEventEmitter,FlatList
 } from 'react-native';
-import { Button, SearchBar, Picker } from 'antd-mobile-rn'
+import { Button, SearchBar, Modal,Toast,PickerView } from 'antd-mobile-rn'
 
 import rn_Less from 'rn-less/src/runtime';
 import style from '../../assets/style/script/style_less'
 import styleP from '../../assets/style/script/public_less'
 import qs from "query-string";
-import { Modal,Toast } from 'antd-mobile-rn'
 import Icon from "react-native-vector-icons/Entypo";
 import Backicon from "../common/backicon";
+import  Buttons from  '../common/button'
 
-let pageNumber = 1;//当前第几页
-let totalPage = 1;//总的页数
 
 const headerStyleB={
     backgroundColor: '#2073D3',
@@ -36,8 +34,9 @@ class Listbox extends Component{
         super(props);
         this.state = {
             data: this.props.rowData,
-            viewdata:[],
+            viewdata:[]
         };
+        //console.log(this.props)
     }
 
     //删除彩票机
@@ -87,7 +86,8 @@ class Listbox extends Component{
             "41": "装修",
             "42": "申领机器",
             "50": "培训",
-            "60": "正常营业"
+            "60": "正常营业",
+            "70": "关闭"
         }
         const scheduledataB = {
             "10": "提交建站申请",
@@ -96,7 +96,8 @@ class Listbox extends Component{
             "40": "装修",
             "41": "福彩签合同",
             "50": "培训",
-            "60": "正常营业"
+            "60": "正常营业",
+            "70": "关闭"
         }
         let str = "";
         if(x == 1){
@@ -119,21 +120,21 @@ class Listbox extends Component{
                 <View style="ls_con">
                     <View style={["flexrowbet"]}>
                         <View style={["c_box","flex1","flexrowbet"]}>
-                            <Text style={["fontsize14", "col666"]}>类型：</Text>
+                            <Text style={["fontsize14", "col999"]}>类型：</Text>
                             <Text style={["fontsize14", "col333"]}>{this._ResolveLotOrg(this.state.data.lotOrg)}</Text>
                         </View>
                         <View style={["c_box","flex1","flexrowbet"]}>
-                            <Text style={["fontsize14", "col666"]}>业务经理：</Text>
+                            <Text style={["fontsize14", "col999"]}>业务经理：</Text>
                             <Text style={["fontsize14", "col333"]}>{this.state.data.busManager}</Text>
                         </View>
                     </View>
                     <View style={["flexrowbet"]}>
                         <View style={["c_box","flex1","flexrowbet"]}>
-                            <Text style={["fontsize14", "col666"]}>联系人：</Text>
+                            <Text style={["fontsize14", "col999"]}>联系人：</Text>
                             <Text style={["fontsize14", "col333"]}>{this.state.data.linkman}</Text>
                         </View>
                         <View style={["c_box","flex1","flexrowbet"]}>
-                            <Text style={["fontsize14", "col666"]}>联系方式</Text>
+                            <Text style={["fontsize14", "col999"]}>联系方式</Text>
                             <Text style={["fontsize14", "col333"]}>{this.state.data.linkPhone}</Text>
                         </View>
                     </View>
@@ -160,9 +161,25 @@ export default class Main extends Component {
             data: [],
             showFoot:0, // 控制foot， 0：隐藏footer  1：已加载完成,没有更多数据   2 ：显示加载中
             isRefreshing:false,//下拉控制
-            ds:new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+            //ds:new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
             listStatus: 'Loading',//控制foot
             refreshing: false,//下拉刷新图标控制
+            pageNumber:1,//当前第几页
+            totalPage:1,//总的页数
+            shopName:'',
+            seasons:[
+                [
+                    {
+                        label: '2013',
+                        value: '2013',
+                    },
+                    {
+                        label: '2014',
+                        value: '2014',
+                    },
+                ],
+            ],
+            value: undefined,
         };
     }
 
@@ -184,6 +201,7 @@ export default class Main extends Component {
         );*/
         this.setTitle = DeviceEventEmitter.addListener('refreshShopList', (data)=>{
             if(data == 'suc'){
+        DeviceEventEmitter.emit('refreshHomeManager', 'refresh')
                 this._onRefresh();
             }
         });
@@ -203,7 +221,7 @@ export default class Main extends Component {
 
     //上拉加载
     _updata = () =>{
-        if(pageNumber > totalPage){
+        if(this.state.pageNumber > this.state.totalPage){
             return false;
         }else {
             this.dopost();
@@ -212,7 +230,7 @@ export default class Main extends Component {
 
     //下拉刷新
     _onRefresh = () =>{
-        pageNumber = 1;
+        this.state.pageNumber = 1;
         this.state.data = [];
         this.setState({
             refreshing: true,
@@ -230,21 +248,26 @@ export default class Main extends Component {
         }
     }
 
-
-
+    //门店模糊查询
     Search =(v) =>{
-        Alert.alert(v)
+        this.state.shopName = v;
+        this.state.pageNumber = 1;
+        this.state.data = [];
+        this.setState({
+            refreshing: true,
+        })
+        this.dopost();
     }
 
     dopost =()=> {
-        http.loadingPost('/netbar/shop/list',{pageNumber:pageNumber}).then(responseData=>{
+        http.loadingPost('/netbar/shop/list',{pageNumber:this.state.pageNumber,shopName:this.state.shopName}).then(responseData=>{
             if (responseData && responseData.status == 200) {
                 let data = responseData.data.entitys;
-                //console.log(data)
-                let listStatus = pageNumber == responseData.data.totalPage ? "noMore" : "goOn";
+                //console.log(responseData)
+                let listStatus = this.state.pageNumber == responseData.data.totalPage ? "noMore" : "goOn";
 
-                pageNumber ++;
-                totalPage = responseData.data.totalPage;
+                this.state.pageNumber ++;
+                this.state.totalPage = responseData.data.totalPage;
 
 
                 this.setState({
@@ -269,6 +292,12 @@ export default class Main extends Component {
         })
     }
 
+    onPickerView = (value) => {
+        this.setState({
+            value,
+        });
+    }
+
     render() {
         return (
             <View style="delbox">
@@ -277,12 +306,12 @@ export default class Main extends Component {
                         {
                             this.state.viewdata
                                 ?
-                                <Text style="lh">{this.state.viewdata.applyCount}个提交建站申请，{this.state.viewdata.surveyCount}个实地勘察，{this.state.viewdata.normalCount}个正常营业</Text>
+                                <Text style="lh">{this.state.viewdata}</Text>
                                 :
                                 <Text style="lh"></Text>
                         }
                     </View>
-                    <View style="searchbox">
+                    <View style={[stylesa.searchbox]}>
                         {/*<Picker
                     selectedValue={this.state.language}
                     style="pic"
@@ -290,7 +319,7 @@ export default class Main extends Component {
                     <Picker.Item label="Java" value="java" />
                     <Picker.Item label="JavaScript" value="js" />
                 </Picker>*/}
-                        <SearchBar
+                        {/*<SearchBar
                             style="search"
                             value={this.state.value}
                             placeholder="请输入网吧名字"
@@ -299,39 +328,59 @@ export default class Main extends Component {
                             onChange={(v) => {console.log(v)}}
                             showCancelButton={false}
                             iosreturnKeyType={"search"}
-                        />
-                        {/*<TextInput
-                            style={{width:200,height:50}}
-                            placeholder="请输入网吧名字"
-                            keyboardType={'web-search'}
-                            returnKeyType={"search"}
-                            onBlur={(value) => this.Search}
                         />*/}
+                       {/* <View style={{width:68,}}>
+                            <PickerView
+                                onChange={this.onPickerView}
+                                value={this.state.value}
+                                data={this.state.seasons}
+                                cascade={false}
+                            />
+                        </View>*/}
+                        <View style={{flex:1}}>
+                            <SearchBar
+                                style={[stylesa.search]}
+                                placeholder="请输入网吧名字"
+                                keyboardType={'default'}
+                                returnKeyType={"go"}
+                                underlineColorAndroid='transparent'// 下划线透明
+                                onSubmit={(value) => this.Search(value)}
+                                showCancelButton={false}
+                                //onSubmitEditing={(value) => this.Search(value.nativeEvent.text)}
+                            />
+                        </View>
+
+                        {/*<View style={{width:68,paddingLeft:10,paddingRight:10}}>
+                            <Buttons onPress={this._onRefresh} style={{borderRadius:4,width:45,height:25,backgroundColor:'rgba(32,115,211,0.10)'}} textStyle={{
+                                fontSize:12,
+                                color:'#2073D3'
+                            }} title={'查询'}/>
+                        </View>*/}
+
                     </View>
                 </View>
-                {
-                    this.state.data.length ?
-                    <ListView
-                        style={["flatListbox"]}
-                        dataSource={this.state.ds.cloneWithRows(this.state.data)}
-                        refreshControl={<RefreshControl
-                            refreshing={this.state.refreshing}
-                            onRefresh={this._onRefresh}
-                            tintColor="#666666"
-                            title="Loading..."
-                            titleColor="#666666"
-                            colors={['#666666']}
-                            progressBackgroundColor="#f2f3f5"
-                        />}
-                        renderRow={(rowData, sectionID, rowId) => <Listbox rowData={rowData} sectionID={sectionID}
-                                                                           onDopost={this._onRefresh} rowId={rowId} navigation={this.props.navigation}/>}
-                        onEndReachedThreshold={30}
-                        onEndReached={this._updata}
-                        renderFooter={this._hanleFooter}
-                    />
-                    :
-                    <View></View>
-                }
+                <FlatList
+                    style={["flatListbox"]}
+                    data={this.state.data}
+                    refreshControl={<RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh}
+                        tintColor="#666666"
+                        title="Loading..."
+                        titleColor="#666666"
+                        colors={['#666666']}
+                        progressBackgroundColor="#f2f3f5"
+                    />}
+                    renderItem={(item) => <Listbox rowData={item.item}
+                                                   onDopost={this._onRefresh} navigation={this.props.navigation}/>}
+                    onEndReachedThreshold={0.1}
+                    initialNumToRender={5}
+                    getItemLayout={(data, index) => ( {length: 136, offset: 136 * index, index} )}
+                    keyExtractor={(item, index) => index}
+                    onEndReached={this._updata}
+                    ListFooterComponent={this._hanleFooter}
+                />
+
             </View>
 
         );
@@ -339,27 +388,20 @@ export default class Main extends Component {
 
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5FCFF',
-    },
-    title: {
-        fontSize: 15,
-        color: 'blue',
-    },
-    footer:{
+const stylesa = StyleSheet.create({
+    searchbox:{
+        flex:1,
+      height:50,
+      backgroundColor:'#fff',
         flexDirection:'row',
-        height:24,
-        justifyContent:'center',
-        alignItems:'center',
-        marginBottom:10,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        marginBottom: 6,
     },
-    content: {
-        fontSize: 15,
-        color: 'black',
+    search:{
+        fontSize:12,
+        height: 25,
+        overflow:'hidden',
+        textAlign:'center'
     }
 });

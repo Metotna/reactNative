@@ -4,7 +4,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "2688h",
-      "filename" : "iPhone XS Max Portrait.png",
+      "filename" : "iPhone Xs Max P.png",
       "minimum-system-version" : "12.0",
       "orientation" : "portrait",
       "scale" : "3x"
@@ -13,7 +13,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "2688h",
-      "filename" : "iPhone XS Max Landscape-1.png",
+      "filename" : "iPhone Xs Max L.png",
       "minimum-system-version" : "12.0",
       "orientation" : "landscape",
       "scale" : "3x"
@@ -22,7 +22,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "1792h",
-      "filename" : "iPhone XR Portrait.png",
+      "filename" : "iPhone XR P.png",
       "minimum-system-version" : "12.0",
       "orientation" : "portrait",
       "scale" : "2x"
@@ -31,7 +31,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "1792h",
-      "filename" : "iPhone XR Landscape.png",
+      "filename" : "iPhone XR L.png",
       "minimum-system-version" : "12.0",
       "orientation" : "landscape",
       "scale" : "2x"
@@ -40,7 +40,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "2436h",
-      "filename" : "iPhone X_XS Portrait.png",
+      "filename" : "iPhone X P.png",
       "minimum-system-version" : "11.0",
       "orientation" : "portrait",
       "scale" : "3x"
@@ -49,7 +49,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "2436h",
-      "filename" : "iPhone X_XS Landscape.png",
+      "filename" : "iPhone X L.png",
       "minimum-system-version" : "11.0",
       "orientation" : "landscape",
       "scale" : "3x"
@@ -58,7 +58,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "736h",
-      "filename" : "iPhone Portrait-Retina HD 5.5.png",
+      "filename" : "Retina HD 5.5\" P.png",
       "minimum-system-version" : "8.0",
       "orientation" : "portrait",
       "scale" : "3x"
@@ -67,7 +67,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "736h",
-      "filename" : "iPhone Landscape-Retina HD 5.5.png",
+      "filename" : "Retina HD 5.5\" L.png",
       "minimum-system-version" : "8.0",
       "orientation" : "landscape",
       "scale" : "3x"
@@ -76,7 +76,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "667h",
-      "filename" : "iPhone Portrait-Retina HD 4.7.png",
+      "filename" : "Retina HD 4.7\" P.png",
       "minimum-system-version" : "8.0",
       "orientation" : "portrait",
       "scale" : "2x"
@@ -84,7 +84,7 @@
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "iPhone Portrait@2x.png",
+      "filename" : "2X P.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
       "scale" : "2x"
@@ -93,7 +93,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "retina4",
-      "filename" : "iPhone Portrait-Retina 4.png",
+      "filename" : "Retina 4 L.png",
       "minimum-system-version" : "7.0",
       "orientation" : "portrait",
       "scale" : "2x"
@@ -101,21 +101,21 @@
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "iPhone Portrait@1x.png",
+      "filename" : "1X P.png",
       "extent" : "full-screen",
       "scale" : "1x"
     },
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "iPhone Portrait@2x-1.png",
+      "filename" : "2X P-1.png",
       "extent" : "full-screen",
       "scale" : "2x"
     },
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "iPhone Portrait-Retina 4-1.png",
+      "filename" : "Retina 4 L-1.png",
       "extent" : "full-screen",
       "subtype" : "retina4",
       "scale" : "2x"

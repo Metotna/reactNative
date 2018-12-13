@@ -92,6 +92,10 @@ export default class Main extends Component {
                 {
                     "label": "正常营业",
                     "value": "60"
+                },
+                {
+                    "label": "关闭",
+                    "value": "70"
                 }
             ],
             scheduledataB:[
@@ -126,13 +130,17 @@ export default class Main extends Component {
                 {
                     "label": "正常营业",
                     "value": "60"
+                },
+                {
+                    "label": "关闭",
+                    "value": "70"
                 }
             ]
         };
     }
 
     onSchedule = (schedule) => {
-        console.log(schedule)
+        //console.log(schedule)
         this.state.data.schedule = schedule[0];
         this.setState({ schedule });
     }
@@ -196,6 +204,10 @@ export default class Main extends Component {
             {
                 "label": "正常营业",
                 "value": "60"
+            },
+            {
+                "label": "关闭",
+                "value": "70"
             }
         ];
         data.map(x =>{
@@ -214,9 +226,8 @@ export default class Main extends Component {
                  user:res.data.token,
                  token:res.data.token
              })*/
-            console.log(res)
+            //console.log(res)
             if(res.status == '200'){
-
                 const data = res.data;
                 for(let i in this.state.data){
                     this.state.data[i] = data[i];
@@ -254,22 +265,14 @@ export default class Main extends Component {
 
     //修改提交
     dopost =()=> {
-        this.state.data.account = this.state.data.linkPhone;
         this.state.data.bank = JSON.stringify(this.state.datab);
-        //this.scheduleCl(this.state.data.schedule);
-        //console.log(this.state.data.schedule);
-        if(!this.checkdata(this.state.data)){
-            return false;
-        }
-        if(!this.checkdata(this.state.datab)){
-            return false;
-        }
+
         http.loadingPost('/netbar/shop/edit',this.state.data).then(res=>{
             /* Storage.saveObj({
                  user:res.data.token,
                  token:res.data.token
              })*/
-            console.log(res)
+            //console.log(res)
             if(res.status == '200'){
                 Toast.show('修改成功',3)
                 this.props.navigation.state.params.dopost();
@@ -410,16 +413,6 @@ export default class Main extends Component {
                                                 </List.Item>
                                             </Picker>
                                         </List>
-                                        {/*<TextInput
-                                        style={["inputbox"]}
-                                        placeholder={'请输入所在地区'}
-                                        underlineColorAndroid="transparent"
-                                        onChangeText={(text) => {
-                                            this.setState({
-                                                data: Object.assign({}, this.state.data, {area: text})
-                                            })
-                                        }}
-                                    />*/}
                                     </View>
                                 </View>
                                 <View style={["bgfff","flexrow","ls_conboxrw"]}>
@@ -573,177 +566,3 @@ export default class Main extends Component {
 const styles = StyleSheet.create({
 });
 
-/*
-
-import React, { Component } from 'react';
-import {
-    StyleSheet,
-    Text,
-    View,
-    Platform,
-    ScrollView,
-    Alert,
-    TextInput
-} from 'react-native';
-import { Button, InputItem,List } from 'antd-mobile-rn'
-
-import rn_Less from 'rn-less/src/runtime';
-import style from '../../assets/style/script/style_less'
-import styleP from '../../assets/style/script/public_less'
-import Radio from '../common/radio'
-
-
-const cssStyle =Object.assign({},style({}).revampstore,styleP({}).public)
-@rn_Less.rnLess(cssStyle)
-
-export default class Main extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: [],
-            value: '2',
-            pickerValue: [],
-            part2Value:'2'
-        };
-    }
-
-
-    clear = () => {
-        this.setState({ value: '' });
-    }
-
-    render() {
-        return (
-            <View style={["revampstore"]}>
-                <ScrollView>
-                    <View style={{marginTop:6}}>
-                        <View style={["ls_box"]}>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text","fontsize14"]}>网吧名称：</Text>
-                                <View>
-                                    <TextInput
-                                        style={["inputbox"]}
-                                    />
-                                </View>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text","fontsize14"]}>合作方式：</Text>
-                                <Radio
-                                    selectedValue={this.state.initId}
-                                    onValueChange={(id,item) => this.setState({initId: id,initItem:item})}
-                                    style={{ flexDirection:'row',
-                                        flexWrap:'wrap',
-                                        alignItems:'flex-start',
-                                        flex:1,
-                                        backgroundColor:'#ffffff',
-                                        paddingTop:10
-                                    }}
-                                >
-                                    <Text value="0" style={{fontSize:16}}>自营</Text>
-                                    <Text value="1">联营</Text>
-                                </Radio>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text","fontsize14"]}>网吧类型：</Text>
-                                <Radio
-                                    selectedValue={this.state.initId}
-                                    onValueChange={(id,item) => this.setState({initId: id,initItem:item})}
-                                    style={{ flexDirection:'row',
-                                        flexWrap:'wrap',
-                                        alignItems:'flex-start',
-                                        flex:1,
-                                        backgroundColor:'#ffffff',
-                                        paddingTop:10
-                                    }}
-                                >
-                                    <Text value="0">体彩</Text>
-                                    <Text value="1">福彩</Text>
-                                </Radio>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text","fontsize14"]}>进度：</Text>
-                                <Text style={["col333","text","fontsize16"]}>正常营业</Text>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text","fontsize14"]}>所在地区：</Text>
-                                <View>
-                                    <TextInput
-                                        style={["inputbox"]}
-                                    />
-                                </View>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text","fontsize14"]}>详细地址：</Text>
-                                <View>
-                                    <TextInput
-                                        style={["inputbox"]}
-                                    />
-                                </View>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text","fontsize14"]}>联系人：</Text>
-                                <View>
-                                    <TextInput
-                                        style={["inputbox"]}
-                                    />
-                                </View>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text","fontsize14"]}>联系方式：</Text>
-                                <View>
-                                    <TextInput
-                                        style={["inputbox"]}
-                                    />
-                                </View>
-                            </View>
-                            <View>
-                                <Text style={"title2"}>请绑定门店结算账户信息</Text>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text","fontsize14"]}>持卡人：</Text>
-                                <View>
-                                    <TextInput
-                                        style={["inputbox"]}
-                                    />
-                                </View>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text","fontsize14"]}>银行账号：</Text>
-                                <View>
-                                    <TextInput
-                                        style={["inputbox"]}
-                                    />
-                                </View>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text","fontsize14"]}>银行名称：</Text>
-                                <View>
-                                    <TextInput
-                                        style={["inputbox"]}
-                                    />
-                                </View>
-                            </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
-                                <Text style={["col999","text","fontsize14"]}>联系人：</Text>
-                                <View>
-                                    <TextInput
-                                        style={["inputbox"]}
-                                    />
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                </ScrollView>
-                <View>
-                    <Button onPress={() => this.props.navigation.navigate('cpjmanagement')} size={'20'} style={["but"]}>保存</Button>
-                </View>
-            </View>
-
-        );
-    }
-
-}
-
-const styles = StyleSheet.create({
-});*/

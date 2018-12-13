@@ -34,11 +34,13 @@ export default class Main extends Component {
                 openTime:'',
                 sellLot:'',
                 shopId:'',
-                withdrawal:''
+                withdrawal:'',
+                status:'',
             },
             deftime: new Date(),
             sn: this.props.navigation.getParam('sn'),
             withdrawal:'',
+            status:'',
             Change:[
                 { value: 1, label: '竞彩' ,checked:false},
                 { value: 2, label: '数字彩' ,checked:false},
@@ -84,14 +86,14 @@ export default class Main extends Component {
     }
     //查询
     getdetail(){
-        http.post('/netbar/machine/detail',{
+        http.loadingPost('/netbar/machine/detail',{
             sn:this.state.sn
         }).then(res=>{
             /* Storage.saveObj({
                  user:res.data.token,
                  token:res.data.token
              })*/
-            console.log(res)
+            //console.log(res)
             if(res.status == '200'){
                 const data = res.data;
                 for(let i in this.state.data){
@@ -107,7 +109,8 @@ export default class Main extends Component {
                     })
                 })
                 let withdrawal = '';
-                if(this.state.data.withdrawal){'l;'
+                let status = this.state.data.status;
+                if(this.state.data.withdrawal){
                     withdrawal = '1';//修改open时间
                 }else {
                     withdrawal = '2';//修改open时间
@@ -118,11 +121,13 @@ export default class Main extends Component {
                     data:this.state.data,
                     deftime:new Date(moment(this.state.data.openTime).format()),
                     Change:this.state.Change,
-                    withdrawal:withdrawal
+                    withdrawal:withdrawal,
+                    status:status,
                 })
                 setTimeout(() =>{
                     this.setState({
-                        withdrawal:withdrawal
+                        withdrawal:withdrawal,
+                        status:status
                     })
                 },50)
                 //this.props.navigation.navigate('Store')
@@ -160,7 +165,7 @@ export default class Main extends Component {
     //rende之后调用
     componentDidMount(){
         this.getdetail();
-        console.log(this.props.navigation.state.params.dopost);
+        //console.log(this.props.navigation.state.params.dopost);
     }
 
     //checkbox选择器
@@ -243,6 +248,33 @@ export default class Main extends Component {
                             <Text value="1">开通</Text>
                             <Text value="2">未开通</Text>
                         </Radio>
+                            :
+                            <Text></Text>
+                        }
+                    </View>
+                    <View style={["bgfff","flexrow","ls_conbox"]}>
+                        <View style={["textv"]}>
+                            <Text style={["text"]}>是否启用：</Text>
+                        </View>
+                        {this.state.status
+                            ?
+                            <Radio
+                                selectedValue={this.state.status}
+                                onValueChange={(id) => {
+                                    this.state.status = id;
+                                    this.state.data.status = id;
+                                }}
+                                style={{ flexDirection:'row',
+                                    flexWrap:'wrap',
+                                    alignItems:'flex-start',
+                                    flex:1,
+                                    backgroundColor:'#ffffff',
+                                    paddingTop:10
+                                }}
+                            >
+                                <Text value="ON">启用</Text>
+                                <Text value="OFF">关闭</Text>
+                            </Radio>
                             :
                             <Text></Text>
                         }

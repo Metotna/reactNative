@@ -1,38 +1,22 @@
 import React, { Component } from 'react';
 import { FlatList, Text, ListView, View, } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import Button from '../../common/button'
+import Button from '../../common/buttonplat'
 
 
 @insertStyle('ReportInfo')
 class Main extends Component {
   constructor(props) {
     super(props);
-    // console.log(this.props.data)
-    // this.handleClick= this.handleClick.bind(this)
-    var ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     const data = this.props.data || {}
-    // this.dataSource = data.child
     this.state = {
-      dataSource:data.child,
+      dataSource: data.child,
       time: data.dateMemo || '',
       // dataSource: ds.cloneWithRows(data.child || []),
       value: '',
     };
   }
   // style={["container", "sss"]}
-  _onPressButton = () => {
-    this.props.navigation.navigate('NetBarDetail', {
-      itemId: 86,
-      otherParam: 'anything you want here',
-      title: this.props.name,
-    });
-    // DetailList
-    console.log(`table touch`)
-  }
-  iconPhone = () => {
-    console.log(`call phone1111`)
-  }
   _ButtonRouter = (data) => {
     // return
     /* 10 待上传 15 审核中 20 驳回  30 通过 */
@@ -43,13 +27,13 @@ class Main extends Component {
       });
     } else {
       this.props.navigation.navigate('Examine', {
-        source:data,
+        source: data,
       });
     }
   }
   render() {
     return (
-      <View>
+      <View style={{ marginTop:4 }}>
         <Text style={["rtitle", "fblock3"]}>{this.state.time}</Text>
         <FlatList data={this.state.dataSource}
           keyExtractor={(item, index) => index}
@@ -61,10 +45,10 @@ class Main extends Component {
 }
 
 @insertStyle('ReportInfo')
-class InfoDetail extends Component {
+export class InfoDetail extends Component {
   constructor(props) {
     super(props);
-    const t = this.props.type;
+    const t = this.props.types;
     // er	@mock=10待上传,15审核失败,20待审核,30审核成功
     let tt, btnt
     if (t == 10) {
@@ -75,34 +59,34 @@ class InfoDetail extends Component {
       btnt = "查 看"
     } else if (t == 15) {
       tt = "驳回";
-      btnt = "查 看"
-    } else {
+      btnt = "重新上传"
+    } else if (t == 30){
       tt = "通过";
       btnt = "查 看"
     }
     this.state = {
       data: this.props.rowData,
-      type: this.props.type,
+      type: this.props.types,
       title: tt || '',
       btnText: btnt || '',
     }
   }
   _btnRouter = () => {
-    console.log(111222)
     this.props.onPress(this.props.rowData)
   }
 
   render() {
-    /* 1 待上传 2 审核中 3 驳回  4 通过 */
-
     return (
       <View >
-
         <View style={["flexrow", "rbgc"]}>
-          <Text style={["f16", "fblock3", "flex2", "rt_id", "tAlignL", "aSelf"]}>{this.state.data.sn}</Text>
-          <Text style={["f16", "fblock3", "flex1", "rt_id", "tAlignC", "aSelf"]}>{this.state.title}</Text>
+          <View style={["JCC", "h25", "flex2"]}>
+            <Text style={["f16", "fblock3", "tAlignL"]}>{this.state.data.sn}</Text>
+          </View>
+          <View style={["JCC", "h25", "flex1"]}>
+            <Text style={["f16", "fblock3", "tAlignC"]}>{this.state.title}</Text>
+          </View>
           <View style={{ flex: 2, alignItems: "flex-end" }}>
-            <Button style={{ width: 70 }} textStyle={{ fontSize: 12, lineHeight: 13 }} title={this.state.btnText} onPress={this._btnRouter} />
+            <Button style={{ width: 70, height: 25 }} textStyle={{ fontSize: 12, }} title={this.state.btnText} onPress={this._btnRouter} />
           </View>
         </View>
 
@@ -111,6 +95,8 @@ class InfoDetail extends Component {
             ?
             <View style={["flexrow", "rinfo"]}>
               <View style={["flex1", "rinfo"]}>
+              <View style="border10h" />
+
                 <View style={["ri_cot", "flexrowbet",]}>
                   <Text style={["f13h18", "fblock9"]}>总售：</Text>
                   <Text style={["f13h18", "fblock3"]}>{this.state.data.allSell}</Text>
@@ -128,6 +114,8 @@ class InfoDetail extends Component {
               </View>
               <View style="border10" />
               <View style={["flex1", "rinfo"]}>
+              <View style="border10h" />
+
                 <View style={["ri_cot", "flexrowbet",]}>
                   <Text style={["f13h18", "fblock9"]}>线上：</Text>
                   <Text style={["f13h18", "fblock3"]}>{this.state.data.onlineSell}</Text>
@@ -145,6 +133,8 @@ class InfoDetail extends Component {
               </View>
               <View style="border10" />
               <View style={["flex1", "rinfo"]}>
+              <View style="border10h" />
+
                 <View style={["ri_cot", "flexrowbet",]}>
                   <Text style={["f13h18", "fblock9"]}>线下：</Text>
                   <Text style={["f13h18", "fblock3"]}>{this.state.data.offlineSell}</Text>
@@ -170,5 +160,4 @@ class InfoDetail extends Component {
   }
 }
 
-
-export default withNavigation(Main)
+export const MachineInfo = withNavigation(Main)

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Provider, connect, } from "react-redux";
-import { ActivityIndicator, View,Text } from 'react-native';
+import { ActivityIndicator, View, Text } from 'react-native';
 import NavigationService from './util/fetch/NavigationService'
 
 import AppNavigator from './util/router';
@@ -19,17 +19,18 @@ const mapStateToProps = (state) => ({
   nav: state.nav
 });
 
-const AppWithNavigationState = connect(mapStateToProps,null,null,{withRef: true})(AppNavigator);
+const AppWithNavigationState = connect(mapStateToProps, null, null, { withRef: true })(AppNavigator);
+
 export default class Root extends Component {
   constructor(props) {
     super(props);
   }
 
   componentWillMount() {
-    global.showLoading =()=> { this.Loading.show()};
-    global.closeLoading =()=> { this.Loading.close()};
-    setTimeout(()=>{NavigationService.setTopLevelNavigator(this.refs.root.getWrappedInstance())})
-}
+    global.showLoading = () => { this.Loading.show() };
+    global.closeLoading = () => { this.Loading.close() };
+    setTimeout(() => { NavigationService.setTopLevelNavigator(this.refs.root.getWrappedInstance()) })
+  }
 
   componentWillUnmount() {
     // 移除监听
@@ -37,10 +38,10 @@ export default class Root extends Component {
   }
   render() {
     return (
-      <View style={{flex:1}}>
-        <Loading ref={r=>{this.Loading = r}} hide = {true} />
+      <View style={{ flex: 1 }}>
+        <Loading ref={r => { this.Loading = r }} hide={true} />
         <Provider store={store} >
-          <AppWithNavigationState ref='root'/>
+          <AppWithNavigationState ref='root' />
         </Provider>
       </View>
     );

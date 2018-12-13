@@ -74,10 +74,10 @@ export default class filter {
   static number(val){
     var re = /^[0-9]+.?[0-9]*$/;
     if(re.test(val)){
-      if(val>10000){
+      if(val>100000){
         return (val/10000).toFixed(1)+'万'
       }else{
-        return (val*1).toFixed(1)
+        return (val*1).toFixed(0)
       }
     }
     return val

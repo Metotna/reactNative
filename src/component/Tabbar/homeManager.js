@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ListView, ActivityIndicator, RefreshControl, Dimensions, } from 'react-native';
+import { StyleSheet, Text, View, ListView, ActivityIndicator, RefreshControl, Dimensions,DeviceEventEmitter ,Modal,Image,TouchableHighlight} from 'react-native';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Tabs } from 'antd-mobile-rn'
@@ -25,9 +25,10 @@ class Main extends Component {
       /* day,month,lastmonth */
       refreshing: false,
       listPage: 1,
-      listPageSize: 20,
+      listPageSize: 10,
       listStatus: 'Loading',
       listReqing: false,
+      modalVisible:false,
     };
     this._dataSource = []
     this._data = {
@@ -35,16 +36,14 @@ class Main extends Component {
       month: [],
       lastmonth: [],
     }
-  }
-  _onPressButton = () => {
-    console.log(1452287)
+
   }
 
   _tabChange = (val) => {
     this.setState({ dataType: val.type ,listPage:1})
     this._dataSource = []
     this._dataSource = this._data[val.type]
-    console.log(this._dataSource.length)
+    // console.log(this._dataSource.length)
     if (this._dataSource.length) {
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(this._dataSource)
@@ -55,14 +54,17 @@ class Main extends Component {
   }
 
   _EndListPush = () => {
+
     // console.log(`add data`, this.state.listReqing, this.state.listStatus, this.state.listPage)
     if (this.state.listStatus == 'noMore' || this.state.listReqing) return false
     this.setState({ listReqing: true })
+    // if(!this._dataSource.length)return 
     http.post('/netbar/report/overViewList', {
       orderby: this.state.dataType,
       pageNumber: this.state.listPage + 1,
       pageSize: this.state.listPageSize,
     }).then(res => {
+      // console.log(res)
       if (res && res.status == 200) {
         var listStatus = this.state.listPage == res.data.totalPage ? "noMore" : "goOn";
         this._dataSource = this._dataSource.concat(res.data.entitys);
@@ -115,8 +117,25 @@ class Main extends Component {
         })
       }
     })
+
+
+    http.post('/netbar/report/overView', {}).then(res => {
+      if (res && res.status == 200) {
+        this.setState({
+          baseData: res.data,
+          hanleComfirm: res.data.comfirmCount,
+          hanleUpload: res.data.uploadCount,
+        })
+      }
+    })
   }
 
+
+  _hanleModal=()=>{
+      
+      Storage.save("leadShow","true");
+      this.setState({ modalVisible: false })
+  }
   render() {
     const tabs = [
       { title: '昨日排行', type: 'day' },
@@ -132,7 +151,7 @@ class Main extends Component {
             this.state.hanleComfirm || this.state.hanleUpload
               ? <View style="total_title">
               <View style={{height:22,justifyContent:"center"}}>
-              <Text style={["total_text", "fblock3"]}>{this.state.hanleComfirm}条报表待审核，{this.state.hanleUpload}家网吧未上传</Text>
+              <Text style={["total_text", "fblock6"]}>{this.state.hanleComfirm}条报表待审核，{this.state.hanleUpload}家网吧未上传</Text>
               </View>
                 <Button title='立即处理' onPress={() => this.props.navigation.navigate('handleReport')} style={styles.btnStyle} textStyle={styles.btnTextStyle} underlayColor="rgba(32,115,211,0.20)" />
                 {/* ="small" onClick={ }>立即处理</Button> */} 
@@ -143,8 +162,7 @@ class Main extends Component {
           }
         </View >
         <View style={{ height: 36 }}>
-        <Tab tabs={tabs} onChange={this._tabChange}/>
-          {/* <Tabs tabs={tabs} initialPage={0} onChange={this._tabChange} /> */}
+        <Tab tabs={tabs} onChange={this._tabChange} bgColor={"#e8f1fa"} color={"#2073D3"}  />
         </View>
         <ListView style="flex1"
           dataSource={this.state.dataSource}
@@ -162,11 +180,32 @@ class Main extends Component {
           renderFooter={this._hanleFooter}
           enableEmptySections={true}
           renderRow={(rowData) => <DateTable name={rowData.shopName} data={rowData} showTag={true} />} />
+                 
+        <Modal
+          animationType="none"
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={this._hanleModal}
+
+        >
+          <View style={{ paddingTop: 138,paddingLeft:26,paddingRight:26,flex:1,backgroundColor:"rgba(0,0,0,0.50)", alignItems: 'center', }}>
+              <Image style={{height:263,width:323}} source={require('../../assets/image/my/lead.png')} />
+              <TouchableHighlight onPress={() => { Storage.save("leadShow","true");this.setState({ modalVisible: false }) }}>
+              <Image style={{height:30,width:150,marginTop:35}} source={require('../../assets/image/my/button.png')} />
+              </TouchableHighlight>
+              {/* <TouchableHighlight onPress={() => { this.setState({ modalVisible: false }) }}>
+                <Text>Hide Modal</Text>
+              </TouchableHighlight> */}
+          </View>
+        </Modal>
       </View>
     );
   }
 
   componentWillMount() {
+    Storage.get('leadShow').then(res => {
+      if(!res)this.setState({ modalVisible: true })
+    })
     http.loadingPost('/netbar/report/overView', {}).then(res => {
       if (res && res.status == 200) {
         this.setState({
@@ -190,6 +229,13 @@ class Main extends Component {
         })
       }
     })
+
+    this.Emitter = DeviceEventEmitter.addListener('refreshHomeManager', (data)=>{
+      console.log(data)
+      if(data == 'refresh'){
+          this._onRefresh();
+      }
+    });
     /* 组件初始化时只调用,整个生命周期只调用一次 */
   }
   componentDidMount() {
@@ -203,6 +249,7 @@ class Main extends Component {
     /* 组件初始化时不调用，组件更新完成后调用，此时可以获取dom节点。 */
   }
   componentWillUnmount() {
+    this.Emitter.remove();
     /* 组件将要卸载时调用，一些事件监听和定时器需要在此时清除。 */
   }
 
@@ -234,6 +281,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   btnTextStyle: {
-    fontSize: 12, color: "#2073D3",
+    fontSize: 14, color: "#2073D3",
   }
 });

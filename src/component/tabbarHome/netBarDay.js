@@ -17,7 +17,7 @@ export default class Main extends Component {
       listReqing: false,
     };
     this.times = navigation.getParam('time');
-    this.shopId = navigation.getParam('itemId');
+    this.shopId = navigation.getParam('shopId');
     this.listPageSize = 20
     this._dataSource = [];
     // console.log(this.times)
@@ -79,7 +79,7 @@ export default class Main extends Component {
       pageSize: this.listPageSize,
       status:30
     }).then(res => {
-      // console.log(res)
+      console.log(222,res)
       if (res && res.status == 200) {
         var listStatus = this.state.listPage == res.data.totalPage ? "noMore" : "goOn";
         this._dataSource = res.data.entitys;
@@ -94,6 +94,16 @@ export default class Main extends Component {
   }
 
   render() {
+    const style ={
+      list:{
+        backgroundColor: "#ffffff",
+        minHeight: 44,
+        paddingBottom: 14,
+        paddingLeft: 12,
+        paddingRight: 14,
+        paddingTop: 16,
+      }
+    }
     return (
       <ListView style="container"
         dataSource={this.state.dataSource}
@@ -118,7 +128,9 @@ export default class Main extends Component {
         enableEmptySections={true}
         renderRow={(rowData) => (
           <DataList data={rowData}/>
-        )} />
+        )} 
+     
+        />
     )
   }
   componentWillMount() {

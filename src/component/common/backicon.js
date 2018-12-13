@@ -9,14 +9,21 @@ export default class Main extends Component {
 
   render() {
     return (
-
+      <View style={styles.contanir}>
       <Image style={styles.icon} source={require('../../assets/image/backicon.png')} />
+
+      </View>
     )
   }
 }
 const styles = StyleSheet.create({
+  contanir:{
+    height:30,
+    width:50,
+    justifyContent:"center"
+  },
   icon: {
-    marginLeft: 5,
-    paddingRight:10
+    marginLeft: 10,
+
   },
 })

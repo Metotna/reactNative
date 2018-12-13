@@ -37,18 +37,22 @@ const tabbarStore = createBottomTabNavigator(
       screen: createStackNavigator({
         HomeScreen: {
           screen: HomeScreenStore,
-          navigationOptions: {
-            title: '首页',
+          navigationOptions: ({ navigation }) => ({
+            title: navigation.getParam('title','首页'),
             headerStyle: headerStyleB,
             headerTitleStyle: headerTitleStyleB,
-          }
+          }),
         }
-      }),
+      })
+      ,
       navigationOptions: ({ navigation }) => ({
         tabBarLabel: '首页',
         tabBarIcon: ({ focused, tintColor }) => (
           focused ? <Image style={icon} source={require('../../assets/image/img/home.png')} /> : <Image style={icon} source={require('../../assets/image/img/un_home.png')} />
-        )
+        ),
+        // tabBarOnPress:({navigation,defaultHandler})=>{
+        //   console.log(navigation,defaultHandler)
+        // }
       })
     },
     Report: {
@@ -89,7 +93,7 @@ const tabbarStore = createBottomTabNavigator(
       })
     },
   }, {
-    initialRouteName: 'Report',
+    initialRouteName: 'Home',
     lazy: true,
     tabBarOptions: {
       // inactiveTintColor: "#8F8F8F",
@@ -110,12 +114,11 @@ const tabbarManager = createBottomTabNavigator(
       screen: createStackNavigator({
         HomeScreen: {
           screen: HomeScreenManager,
-          navigationOptions: {
+          navigationOptions: ({ navigation }) => ({
             title: '首页',
             headerStyle: headerStyleB,
             headerTitleStyle: headerTitleStyleB,
-            // tabBarOnPress
-          }
+          }),
         }
       }),
       navigationOptions: ({ navigation }) => ({
@@ -157,27 +160,25 @@ const tabbarManager = createBottomTabNavigator(
             title: '我的',
             headerStyle: headerStyleB,
             headerTitleStyle: headerTitleStyleB,
-            tabBarOnPress: (value) => {
-              //监听点击事件
-              value.defaultHandler();
+            // tabBarOnPress: (value) => {
+            //   //监听点击事件
+            //   value.defaultHandler();
 
-              console.log(JSON.stringify(value));//{"navigation":{"state":{"key":"Work","routeName":"Work"},"actions":{}}}
-              console.log(value.defaultHandler);
-              // const defaultHandler = () => {
-              //         if (navigation.isFocused()) {
-              //           if (route.hasOwnProperty('index') && route.index > 0) {
-              //             // If current tab has a nested navigator, pop to top
-              //             navigation.dispatch(StackActions.popToTop({ key: route.key }));
-              //           } else {
-              //             // TODO: do something to scroll to top
-              //           }
-              //         } else {
-              //           this._jumpTo(route.routeName);
-              //         }
-              //       };
-              console.log('点击了工作');
+            //   // const defaultHandler = () => {
+            //   //         if (navigation.isFocused()) {
+            //   //           if (route.hasOwnProperty('index') && route.index > 0) {
+            //   //             // If current tab has a nested navigator, pop to top
+            //   //             navigation.dispatch(StackActions.popToTop({ key: route.key }));
+            //   //           } else {
+            //   //             // TODO: do something to scroll to top
+            //   //           }
+            //   //         } else {
+            //   //           this._jumpTo(route.routeName);
+            //   //         }
+            //   //       };
+            //   console.log('点击了工作');
 
-            }
+            // }
 
           })
         }
@@ -190,8 +191,8 @@ const tabbarManager = createBottomTabNavigator(
       })
     },
   }, {
-    initialRouteName: 'Mine',
-    lazy: true,
+    initialRouteName: 'Home',
+    // lazy: true,
     tabBarOptions: {
       // inactiveTintColor: "#8F8F8F",
       // activeTintColor: "#ED5601",
@@ -233,6 +234,7 @@ const initialRouteName = "AuthLoading"
 // defaultRouter
 export default StackNavigator(Object.assign({}, RouteConfigs, rpartA, rpartB), {
   initialRouteName: initialRouteName,
+  // headerMode: 'none',
   transitionConfig: () => ({
     screenInterpolator: StackViewStyleInterpolator.forHorizontal,
     // screenInterpolator: (sceneProps) => {

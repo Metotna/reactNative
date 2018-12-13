@@ -1,12 +1,12 @@
 
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Platform, TextInput, Dimensions, Image ,ScrollView,KeyboardAvoidingView} from 'react-native';
-import { Button, CheckBox } from 'react-native-elements';
+// import { Button, CheckBox } from 'react-native-elements';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { Toast } from 'antd-mobile-rn'
 
 import Btn from '../common/buttonplat'
-import  KeyboardView from '../common/keyboard'
+// import  KeyboardView from '../common/keyboard'
 const resetAction = (routerName) => NavigationActions.reset({
   index: 0,
   actions: [
@@ -20,10 +20,12 @@ export default class Main extends Component {
     super(props);
     this.state = {
       user: '',
-      pwd: '123456',
+      pwd: '',
       checked: false,
+      loading:false,
     };
     this.user=''
+    this.loading=false;
     Storage.get("user").then(res=>{
       this.setState({user:res})
 
@@ -42,18 +44,31 @@ export default class Main extends Component {
       Toast.info('用户名或密码不能为空！', 1);
       return 
     }
-    http.loadingPost('/user/login', {
+    if(this.loading)return 
+    this.loading=true;
+    this.setState({
+      loading:true,
+    })
+    // showLoading()
+    http.post('/user/login', {
       username: this.state.user,
       password: this.state.pwd,
       busId: "NETBAR"
     }, true).then(res => {
+      // closeLoading()
+        //console.log(res)
       if (res) {
         if (res.status == 200) {
           let rule = res.data.myInfo.roleVOS[0].key;
           if (rule == 'ADMIN' || rule == "BUSM" || rule == "SHOPM") {
+            this.loading=false;
+            this.setState({
+              loading:false,
+            })
             Storage.saveObj({
               user: this.state.user,
-              token: res.data.token
+              token: res.data.token,
+              rule:rule,
             })
             var routeName = (rule == 'ADMIN' || rule == "BUSM") ? "TabbarManager" : "TabbarStore"
             this.props.navigation.dispatch(StackActions.reset({
@@ -64,11 +79,18 @@ export default class Main extends Component {
             Toast.fail('当前登录账号无效！', 1);
           }
         } else {
+          this.loading=false;
+          this.setState({
+            loading:false,
+          })
           Toast.fail(res.msg, 1);
         }
       }
     }).catch(err => {
-      console.log(err)
+      this.loading=false;
+      this.setState({
+        loading:false,
+      })
     })
   }
   _handleLogin2(){
@@ -76,7 +98,7 @@ export default class Main extends Component {
   }
   render() {
     return (
-      <ScrollView style={css.container} >
+      <ScrollView style={css.container} keyboardShouldPersistTaps={'handled'}>
         <Text style={{ height: (Platform.OS === 'ios') ? 20 : 0, }}></Text>
         <Text style={css.titles}>必赢门店管理系统</Text>
         <View style={css.inputOut}>
@@ -122,7 +144,7 @@ export default class Main extends Component {
            <Text></Text>
           <Text style={css.checkText} onPress={() => this.props.navigation.navigate('forgetPassword')}>忘记密码？</Text>
         </View>
-          <Btn  title='登录' textStyle={{ fontSize: 16,color: '#2073D3', }} style={{height:40,backgroundColor:"#fff",}} onPress={this._handleLogin}/>
+          <Btn loading={this.state.loading} textStyle={{ fontSize: 16,color: '#2073D3', }} style={{height:40,backgroundColor:"#fff",}} onPress={this._handleLogin}>登录</Btn>
       </ScrollView>
     );
   }

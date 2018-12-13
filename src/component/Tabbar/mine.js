@@ -20,15 +20,24 @@ export default class PopupExample extends React.Component {
       data: '',
       value: [],
       pickerValue: [],
-      user:'',
+      user: '',
+      storeInfo: false,
     };
 
   }
   componentWillMount() {
-    Storage.get('user').then(res=>{
+    Storage.get('user').then(res => {
       this.setState({
-        user:res
+        user: res
       })
+    })
+    Storage.get("rule").then(res => {
+      if (res == "SHOPM") {
+        this.setState({ storeInfo: true })
+      } else {
+        this.setState({ storeInfo: false })
+
+      }
     })
   }
   onChange = (value) => {
@@ -46,14 +55,20 @@ export default class PopupExample extends React.Component {
           </View>
         </TouchableHighlight>
         <View style="border60h" />
+        {
+          this.state.storeInfo
+            ? <View>
+              <TouchableHighlight onPress={() => this.props.navigation.navigate('StoreInfo')}>
+                <View style={["h45", "flexrowbet"]} >
+                  <Image source={require('../../assets/image/img/mdinfo.png')} style="imgsizeM" />
+                  <Text style={["flex1", "f16", "mal8", "fblock3"]}>门店信息</Text>
+                  <Image source={require('../../assets/image/img/more.png')} style="imgsizeM" /></View>
+              </TouchableHighlight>
+              <View style="border10h" />
+            </View>
+            : null
+        }
 
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('StoreInfo')}>
-          <View style={["h45", "flexrowbet"]} >
-            <Image source={require('../../assets/image/img/mdinfo.png')} style="imgsizeM" />
-            <Text style={["flex1", "f16", "mal8", "fblock3"]}>门店信息</Text>
-            <Image source={require('../../assets/image/img/more.png')} style="imgsizeM" /></View>
-        </TouchableHighlight>
-        <View style="border10h" />
 
         <TouchableHighlight onPress={() => this.props.navigation.navigate('CompanyInfo')}>
           <View style={["h45", "flexrowbet"]} >

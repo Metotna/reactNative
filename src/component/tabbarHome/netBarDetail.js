@@ -16,7 +16,7 @@ class Main extends Component {
       listReqing: false,
     };
     const { navigation } = this.props;
-    this.shopId =navigation.getParam('itemId');
+    this.shopId =navigation.getParam('shopId');
     this.title=navigation.getParam('title');
     this.listPageSize = 20
     this._dataSource = [];
@@ -132,10 +132,11 @@ class Main extends Component {
   }
   componentWillMount() {
     this._onRefresh()
+    // console.log(`first Refresh`)
   }
   componentWillReceiveProps(nextProps){
     const { navigation } = this.props;
-    this.shopId =navigation.getParam('itemId');
+    this.shopId =navigation.getParam('shopId');
     this._onRefresh()
   }
 }

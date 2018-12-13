@@ -43,6 +43,7 @@ export default class Main extends Component {
                 refund:'',
                 payment:'',
             },
+            imageh:220,
         };
     }
 
@@ -98,6 +99,14 @@ export default class Main extends Component {
     //rende之后调用
     componentDidMount(){
         //console.log(this.state)
+        let screenWidth = Dimensions.get('window').width;
+        Image.getSize(this.state.data.sellImg, (width, height) => {
+            let r = screenWidth / (width / height)
+            this.setState({ imageh: r })
+
+            //width 图片的宽度
+            //height 图片的高度
+        })
     }
 
     render() {
@@ -107,20 +116,10 @@ export default class Main extends Component {
                     <View style={["topbox"]}>
                         <ScrollView>
                             <View style={["bannerbox"]}>
-                                {
-                                    this.state.data.sellImg
-                                        ?
-                                        <Image
-                                            style={{width:width,height:220,display:'flex'}}
-                                            source={{uri:this.state.data.sellImg}}
-                                        />
-                                        :
-                                        <Image
-                                            style={{width:width,height:220,display:'flex'}}
-                                            source={require('../../assets/image/banner/1.jpg')}
-                                        />
-
-                                }
+                                <Image
+                                    style={{width:width,height:this.state.imageh,display:'flex'}}
+                                    source={this.state.data.sellImg ? {uri:this.state.data.sellImg} : require('../../assets/image/banner/1.jpg')}
+                                />
                             </View>
                             <View style={["itembox"]}>
                                 <Text style={["texta"]}>日期：</Text>
@@ -130,21 +129,22 @@ export default class Main extends Component {
                                 <Text style={["texta"]}>机器编号：</Text>
                                 <Text style={["texta"]}>{this.state.data.sn}</Text>
                             </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
+                            <View style={["bgfff","flexrow","ls_conbox",stylesA.topbor]}>
                                 <View style={[stylesA.textv]}>
                                     <Text style={["text"]}>总销售（已减取消）</Text>
                                 </View>
                                 <View>
                                     <TextInput
-                                        style={["inputbox"]}
+                                        style={["inputbox",stylesA.iptvertical]}
                                         placeholder={'请输入总销售'}
                                         underlineColorAndroid="transparent"
                                         onChangeText={(text) => {
                                             this.setState({
-                                                data: Object.assign({}, this.state.data, {allSell: text})
+                                                data:{...this.state.data, ...{allSell: text}}
                                             })
                                         }}
                                         value={this.state.data.allSell}
+                                        keyboardType={"number-pad"}
                                     />
                                 </View>
                             </View>
@@ -159,10 +159,11 @@ export default class Main extends Component {
                                         underlineColorAndroid="transparent"
                                         onChangeText={(text) => {
                                             this.setState({
-                                                data: Object.assign({}, this.state.data, {offlineSell: text})
+                                                data:{...this.state.data, ...{offlineSell: text}}
                                             })
                                         }}
                                         value={this.state.data.offlineSell}
+                                        keyboardType={"number-pad"}
                                     />
                                 </View>
                             </View>
@@ -177,10 +178,11 @@ export default class Main extends Component {
                                         underlineColorAndroid="transparent"
                                         onChangeText={(text) => {
                                             this.setState({
-                                                data: Object.assign({}, this.state.data, {onlineSell: text})
+                                                data:{...this.state.data, ...{onlineSell: text}}
                                             })
                                         }}
                                         value={this.state.data.onlineSell}
+                                        keyboardType={"number-pad"}
                                     />
                                 </View>
                             </View>
@@ -195,10 +197,11 @@ export default class Main extends Component {
                                         underlineColorAndroid="transparent"
                                         onChangeText={(text) => {
                                             this.setState({
-                                                data: Object.assign({}, this.state.data, {jcSell: text})
+                                                data:{...this.state.data, ...{jcSell: text}}
                                             })
                                         }}
                                         value={this.state.data.jcSell}
+                                        keyboardType={"number-pad"}
                                     />
                                 </View>
                             </View>
@@ -213,10 +216,11 @@ export default class Main extends Component {
                                         underlineColorAndroid="transparent"
                                         onChangeText={(text) => {
                                             this.setState({
-                                                data: Object.assign({}, this.state.data, {allBonus: text})
+                                                data:{...this.state.data, ...{allBonus: text}}
                                             })
                                         }}
                                         value={this.state.data.allBonus}
+                                        keyboardType={"number-pad"}
                                     />
                                 </View>
                             </View>
@@ -231,10 +235,11 @@ export default class Main extends Component {
                                         underlineColorAndroid="transparent"
                                         onChangeText={(text) => {
                                             this.setState({
-                                                data: Object.assign({}, this.state.data, {offlineBonus: text})
+                                                data:{...this.state.data, ...{offlineBonus: text}}
                                             })
                                         }}
                                         value={this.state.data.offlineBonus}
+                                        keyboardType={"number-pad"}
                                     />
                                 </View>
                             </View>
@@ -249,10 +254,11 @@ export default class Main extends Component {
                                         underlineColorAndroid="transparent"
                                         onChangeText={(text) => {
                                             this.setState({
-                                                data: Object.assign({}, this.state.data, {onlineBonus: text})
+                                                data:{...this.state.data, ...{onlineBonus: text}}
                                             })
                                         }}
                                         value={this.state.data.onlineBonus}
+                                        keyboardType={"number-pad"}
                                     />
                                 </View>
                             </View>
@@ -267,10 +273,11 @@ export default class Main extends Component {
                                         underlineColorAndroid="transparent"
                                         onChangeText={(text) => {
                                             this.setState({
-                                                data: Object.assign({}, this.state.data, {cancel: text})
+                                                data:{...this.state.data, ...{cancel: text}}
                                             })
                                         }}
                                         value={this.state.data.cancel}
+                                        keyboardType={"number-pad"}
                                     />
                                 </View>
                             </View>
@@ -285,10 +292,11 @@ export default class Main extends Component {
                                         underlineColorAndroid="transparent"
                                         onChangeText={(text) => {
                                             this.setState({
-                                                data: Object.assign({}, this.state.data, {refund: text})
+                                                data:{...this.state.data, ...{refund: text}}
                                             })
                                         }}
                                         value={this.state.data.refund}
+                                        keyboardType={"number-pad"}
                                     />
                                 </View>
                             </View>
@@ -303,10 +311,11 @@ export default class Main extends Component {
                                         underlineColorAndroid="transparent"
                                         onChangeText={(text) => {
                                             this.setState({
-                                                data: Object.assign({}, this.state.data, {payment: text})
+                                                data:{...this.state.data, ...{payment: text}}
                                             })
                                         }}
                                         value={this.state.data.payment}
+                                        keyboardType={"number-pad"}
                                     />
                                 </View>
                             </View>
@@ -321,12 +330,12 @@ export default class Main extends Component {
                         <View style={{
                             width:138
                         }}>
-                            <Text style={{
-                                fontSize:12,
-                                lineHeight:40,
-                                color:'#E7505A',
-                                textAlign:"center"
-                            }}>请仔细核对销售数据</Text>
+                            <View style={stylesA.textb}>
+                                <Text style={{
+                                    fontSize:12,
+                                    color:'#E7505A',
+                                }}>请仔细核对销售数据</Text>
+                            </View>
                         </View>
                         <Button onPress={this.dopost} style={{borderRadius:5,width:100,height:40}} textStyle={{
                             lineHeight: 26,
@@ -343,7 +352,19 @@ export default class Main extends Component {
 }
 
 const stylesA = StyleSheet.create({
+    topbor:{
+        borderColor: '#eee',
+        borderStyle: 'solid',
+        borderWidth: 1,
+    },
     textv: {
         justifyContent:'center',
     },
+    textb:{
+        justifyContent:'center',
+        height:40,
+    },
+    iptvertical:{
+        paddingVertical: 0
+    }
 })

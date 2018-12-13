@@ -31,7 +31,7 @@ export default class Main extends Component {
         this.state = {
             pdata: this.props.navigation.state.params.pdata,
         };
-        console.log(this.state.pdata)
+        //console.log(this.state.pdata)
     }
 
     static navigationOptions = ({ navigation, navigationOptions }) => {
@@ -53,11 +53,11 @@ export default class Main extends Component {
 
     //rende之后调用
     componentDidMount(){
-        console.log(this.props)
+        //console.log(this.props)
     }
 
     //上传图片
-    onFileUpload = async (file, fileName) => {
+    onFileUpload = async (file) => {
         const token = await Storage.get('token');
         //let formData = new FormData();//如果需要上传多张图片,需要遍历数组,把图片的路径数组放入formData中
         let files = {uri: file, type: 'multipart/form-data', name: 'image.png'};   //这里的key(uri和type和name)不能改变,
@@ -72,7 +72,7 @@ export default class Main extends Component {
         //formData.append("token",token);
 
         http.postForm('/common/upload',params).then(res=>{
-            console.log(res)
+            //console.log(res)
             if(res.status == '200'){
                 if(this.props.navigation.state.params.path == 't'){
                     this.props.navigation.navigate('ReportUpload_a', {

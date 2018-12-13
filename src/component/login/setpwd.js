@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { WhiteSpace, WingBlank, Checkbox, DatePicker, List,   Button,} from 'antd-mobile-rn'
 import Btn from '../common/buttonplat'
+import { Toast } from 'antd-mobile-rn'
 
 @insertStyle('loginStyle')
 export default class Main extends Component {

@@ -97,6 +97,14 @@ export default class Main extends Component {
             //console.log(k)
             this.state.data[k] = pdata[k];
         }
+        let screenWidth = Dimensions.get('window').width;
+        Image.getSize(this.state.data.chargeImg, (width, height) => {
+            let r = screenWidth / (width / height)
+            this.setState({ imageh: r })
+
+            //width 图片的宽度
+            //height 图片的高度
+        })
     }
 
     render() {
@@ -106,20 +114,10 @@ export default class Main extends Component {
                     <View style={["topbox"]}>
                         <ScrollView>
                             <View style={["bannerbox"]}>
-                                {
-                                    this.state.data.chargeImg
-                                        ?
-                                        <Image
-                                            style={{width:width,height:220,display:'flex'}}
-                                            source={{uri:this.state.data.chargeImg}}
-                                        />
-                                        :
-                                        <Image
-                                            style={{width:width,height:220,display:'flex'}}
-                                            source={require('../../assets/image/banner/1.jpg')}
-                                        />
-
-                                }
+                                <Image
+                                    style={{width:width,height:this.state.imageh,display:'flex'}}
+                                    source={this.state.data.chargeImg ? {uri:this.state.data.chargeImg} : require('../../assets/image/banner/1.jpg')}
+                                />
                             </View>
                             <View style={["itembox"]}>
                                 <Text style={["texta"]}>日期：</Text>
@@ -129,7 +127,7 @@ export default class Main extends Component {
                                 <Text style={["texta"]}>机器编号：</Text>
                                 <Text style={["texta"]}>{this.state.data.sn}</Text>
                             </View>
-                            <View style={["bgfff","flexrow","ls_conbox"]}>
+                            <View style={["bgfff","flexrow","ls_conbox",stylesA.topbor]}>
                                 <View style={[stylesA.textv]}>
                                     <Text style={["text"]}>银行卡充值</Text>
                                 </View>
@@ -140,10 +138,11 @@ export default class Main extends Component {
                                         underlineColorAndroid="transparent"
                                         onChangeText={(text) => {
                                             this.setState({
-                                                data: Object.assign({}, this.state.data, {bankCharge: text})
+                                                data:{...this.state.data, ...{bankCharge: text}}
                                             })
                                         }}
                                         value={this.state.data.bankCharge}
+                                        keyboardType={"number-pad"}
                                     />
                                 </View>
                             </View>
@@ -158,10 +157,11 @@ export default class Main extends Component {
                                         underlineColorAndroid="transparent"
                                         onChangeText={(text) => {
                                             this.setState({
-                                                data: Object.assign({}, this.state.data, {aliCharge: text})
+                                                data:{...this.state.data, ...{aliCharge: text}}
                                             })
                                         }}
                                         value={this.state.data.aliCharge}
+                                        keyboardType={"number-pad"}
                                     />
                                 </View>
                             </View>
@@ -176,10 +176,11 @@ export default class Main extends Component {
                                         underlineColorAndroid="transparent"
                                         onChangeText={(text) => {
                                             this.setState({
-                                                data: Object.assign({}, this.state.data, {wxCharge: text})
+                                                data:{...this.state.data, ...{wxCharge: text}}
                                             })
                                         }}
                                         value={this.state.data.wxCharge}
+                                        keyboardType={"number-pad"}
                                     />
                                 </View>
                             </View>
@@ -194,12 +195,13 @@ export default class Main extends Component {
                         <View style={{
                             width:138
                         }}>
-                            <Text style={{
-                                fontSize:12,
-                                lineHeight:40,
-                                color:'#E7505A',
-                                textAlign:"center"
-                            }}>请仔细核对销售数据</Text>
+                            <View style={stylesA.textb}>
+                                <Text style={{
+                                    fontSize:12,
+                                    color:'#E7505A',
+                                    textAlign:"center"
+                                }}>请仔细核对销售数据</Text>
+                            </View>
                         </View>
                         <Button onPress={this.dopost} style={{borderRadius:5,width:100,height:40}} textStyle={{
                             lineHeight: 26,
@@ -215,7 +217,19 @@ export default class Main extends Component {
 }
 
 const stylesA = StyleSheet.create({
+    topbor:{
+        borderColor: '#eee',
+        borderStyle: 'solid',
+        borderWidth: 1,
+    },
     textv: {
         justifyContent:'center',
     },
+    textb:{
+        justifyContent:'center',
+        height:40,
+    },
+    iptvertical:{
+        paddingVertical: 0
+    }
 })

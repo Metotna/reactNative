@@ -11,11 +11,13 @@ export default class textShow extends Component {
       under: this.props.underlayColor || "rgba(32,115,211,.8)",
       choose: "0",
       oldChoose:0,
+      color:this.props.color||"#E7505A",
+      bgColor:this.props.bgColor||"#fff",
     };
     this.fisrt = true;
     this.list = this.props.tabs||[{ title: 'tab1' }, { title: 'tab2' }, { title: 'tab3' }]
     this.underWidth = (width / this.list.length) * .7;
-    this.underLeft = (width / this.list.length) * 0.15
+    this.underLeft = (width / this.list.length) * 0.15;
   }
   componentWillReceiveProps(nextProps) {
     // console.log(nextProps)
@@ -40,7 +42,7 @@ export default class textShow extends Component {
     const cs = {
       container: {
         height: 35,
-        backgroundColor: '#fff',
+        backgroundColor: this.state.bgColor,
         flexDirection: 'row'
       },
       listView: {
@@ -54,7 +56,7 @@ export default class textShow extends Component {
         color: "#666666"
       },
       choose: {
-        color: "#E7505A",
+        color: this.state.color,
         textAlign: "center",
         fontSize: 16,
       },
@@ -65,7 +67,7 @@ export default class textShow extends Component {
         right: 0,
         height: 2,
         width: this.underWidth,
-        backgroundColor: "red"
+        backgroundColor: this.state.color,
       }
     }
     return (

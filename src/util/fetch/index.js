@@ -5,6 +5,7 @@ import Storage from '../asyncStorage/'
 import BASE from './config'
 import { NavigationActions } from 'react-navigation';
 import NavigationService from './NavigationService'
+import {Toast} from 'antd-mobile-rn'
 /* Intranet 测试  Internet 线上 */
 const networkEnvironment = BASE.Intranet.url;
 /* 检查状态码 */
@@ -16,7 +17,11 @@ function checkCode(response) {
   if (response.status==501) {
     NavigationService.navigate("login")
     return response
+  }else if (response.status==500) {
+      Toast.show(response.msg);
+      return response
   }
+  
   return response
 }
 global.http = {
@@ -40,7 +45,7 @@ global.http = {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
       })
-    // console.log(networkEnvironment + url, options)
+     //console.log(networkEnvironment + url, options)
     showLoading()
     return fetch(networkEnvironment + url, options)
       .then(response => checkStatus(response))
@@ -66,7 +71,7 @@ global.http = {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
       })
-    // console.log(networkEnvironment + url, options)
+     //console.log(networkEnvironment + url, options)
     return fetch(networkEnvironment + url, options)
       .then(response => checkStatus(response))
       .then(res => {

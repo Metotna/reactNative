@@ -50,12 +50,12 @@ class Main extends Component {
 
   render() {
     return (
-      <ScrollView >
+      <ScrollView  keyboardShouldPersistTaps={'handled'}>
         <View style="border150h" />
         <View style='inputCon'>
-        <View style="h40JC">
-        <Text style="describe">原密码</Text>
-</View>
+          <View style="h40JC">
+            <Text style="describe">原密码</Text>
+          </View>
           <TextInput style="ic_input" onChangeText={(oldPassword) => this.setState({ oldPassword })}
             underlineColorAndroid="transparent" secureTextEntry
             value={this.state.oldPassword} placeholder="请输入原密码"
@@ -65,9 +65,9 @@ class Main extends Component {
         <View style="border150h" />
 
         <View style='inputCon'>
-        <View style="h40JC">
-        <Text style="describe">新密码</Text>
-</View>
+          <View style="h40JC">
+            <Text style="describe">新密码</Text>
+          </View>
           <TextInput style="ic_input" onChangeText={(password) => this.setState({ password })}
             underlineColorAndroid="transparent" secureTextEntry
             value={this.state.password} placeholder="请输入新密码"
@@ -76,9 +76,9 @@ class Main extends Component {
         <View style="border150h" />
 
         <View style='inputCon'>
-        <View style="h40JC">
-        <Text style="describe">确认密码</Text>
-</View>
+          <View style="h40JC">
+            <Text style="describe">确认密码</Text>
+          </View>
           <TextInput style="ic_input" onChangeText={(passwordAgain) => this.setState({ passwordAgain })}
             underlineColorAndroid="transparent" secureTextEntry
             value={this.state.passwordAgain} placeholder="请再次输入新密码"

@@ -52,7 +52,7 @@ export default class Main extends Component {
 
     //rende之后调用
     componentDidMount(){
-        console.log(this.props)
+        //console.log(this.props)
     }
 
     onFileUpload = async (file, fileName) => {
@@ -95,7 +95,7 @@ export default class Main extends Component {
         return (
             <View style={["pagebox"]}>
                 <View style={["herderbox"]}>
-                    <Text style={["text"]}>第一步：请上传
+                    <Text style={["text"]}>第二步：请上传
                     <Text style={["col"]}>{this.state.pdata.dateMemo} 缴款报表</Text>
                     </Text>
                     <Text style={["text"]}>机器编号：

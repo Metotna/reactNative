@@ -15,62 +15,57 @@ module.exports = function({Theme}){
             flexDirection: "column"
         },
         s2: {
-            height: 74,
+            height: 80,
             width: "100%"
         },
         s3: {
             backgroundColor: "#fff",
+            borderBottomColor: "#ddd",
+            borderBottomWidth: 1,
             height: 44,
             marginBottom: 6
         },
         s4: {
-            height: 25,
-            width: 25
-        },
-        s5: {
-            height: 25
-        },
-        s6: {
             backgroundColor: "#FFF7DE",
             flexDirection: "column",
             height: 30,
             justifyContent: "center"
         },
-        s7: {
+        s5: {
             paddingLeft: 10
         },
-        s8: {
+        s6: {
             backgroundColor: "#fff",
             height: 130,
             marginBottom: 6
         },
-        s9: {
+        s7: {
             paddingBottom: 0,
             paddingLeft: 12,
             paddingRight: 12,
             paddingTop: 0
         },
-        s10: {
+        s8: {
             lineHeight: 30
         },
-        s11: {
+        s9: {
             flexDirection: "row",
             justifyContent: "space-between"
         },
-        s12: {
+        s10: {
             height: 65,
             paddingBottom: 0,
             paddingLeft: 0,
             paddingRight: 0,
             paddingTop: 0
         },
-        s13: {
+        s11: {
             paddingBottom: 4,
             paddingLeft: 12,
             paddingRight: 12,
             paddingTop: 4
         },
-        s14: {
+        s12: {
             borderBottomWidth: 0,
             borderColor: "#eee",
             borderLeftWidth: 0,
@@ -80,7 +75,7 @@ module.exports = function({Theme}){
             height: 35,
             paddingTop: 5
         },
-        s15: {
+        s13: {
             borderColor: "#DDDDDD",
             borderRadius: 12,
             borderStyle: "solid",
@@ -89,30 +84,31 @@ module.exports = function({Theme}){
             marginLeft: 10,
             width: 65
         },
-        s16: {
+        s14: {
+            height: 180,
             marginBottom: 6
         },
-        s17: {
+        s15: {
             height: 44,
             justifyContent: "center"
         },
-        s18: {
+        s16: {
             backgroundColor: "#fff",
             flexDirection: "row",
             height: 44,
             marginBottom: 6,
             width: "100%"
         },
-        s19: {
+        s17: {
             marginRight: 5,
             marginTop: 6,
             width: 30
         },
-        s20: {
+        s18: {
             color: "#114FCD",
             fontSize: 16
         },
-        s21: {
+        s19: {
             alignItems: "center",
             borderBottomColor: "#eee",
             borderBottomWidth: 1,
@@ -123,10 +119,10 @@ module.exports = function({Theme}){
             paddingRight: 12,
             paddingTop: 0
         },
-        s22: {
+        s20: {
             minWidth: 72
         },
-        s23: {
+        s21: {
             backgroundColor: "#fff",
             borderBottomWidth: 0,
             borderColor: "#eee",
@@ -140,7 +136,7 @@ module.exports = function({Theme}){
             paddingRight: 12,
             paddingTop: 11
         },
-        s24: {
+        s22: {
             backgroundColor: "#fff",
             borderColor: "#DDDDDD",
             borderRadius: 12,
@@ -152,7 +148,10 @@ module.exports = function({Theme}){
             paddingTop: 0,
             width: 65
         },
-        s25: {
+        s23: {
+            marginBottom: 6
+        },
+        s24: {
             borderBottomColor: "#eee",
             borderBottomWidth: 1,
             height: 44,
@@ -161,50 +160,50 @@ module.exports = function({Theme}){
             paddingRight: 12,
             paddingTop: 0
         },
-        s26: {
+        s25: {
             minWidth: 75,
             textAlign: "left"
         },
-        s27: {
+        s26: {
             fontSize: 14,
             height: 44,
             lineHeight: 44,
             width: 250
         },
-        s28: {
+        s27: {
             marginBottom: 10,
             marginLeft: 12,
             marginRight: 12,
             marginTop: 10
         },
-        s29: {
+        s28: {
             backgroundColor: "#114FCD",
             marginBottom: 20,
             marginLeft: 12,
             marginRight: 12,
             marginTop: 20
         },
-        s30: {
+        s29: {
             backgroundColor: "#114FCD",
             borderRadius: 5,
             borderWidth: 0,
             height: 40
         },
-        s31: {
+        s30: {
             flex: 1
         },
-        s32: {
+        s31: {
             alignItems: "center",
             height: 44,
             justifyContent: "center",
             width: 95
         },
-        s33: {
+        s32: {
             fontSize: 14,
             height: 44,
             width: 250
         },
-        s34: {
+        s33: {
             borderBottomColor: "#eee",
             borderBottomWidth: 1,
             height: 45,
@@ -213,11 +212,11 @@ module.exports = function({Theme}){
             paddingRight: 12,
             paddingTop: 0
         },
-        s35: {
+        s34: {
             color: "#000",
             fontSize: 17
         },
-        s36: {
+        s35: {
             borderBottomColor: "#eee",
             borderBottomWidth: 1,
             height: 60,
@@ -226,61 +225,61 @@ module.exports = function({Theme}){
             paddingRight: 12,
             paddingTop: 6
         },
-        s37: {
+        s36: {
             backgroundColor: "#ddd",
             height: 34,
             justifyContent: "center"
         },
-        s38: {
+        s37: {
             color: "#666",
             paddingLeft: 12
         },
-        s39: {
+        s38: {
             backgroundColor: "#114FCD",
             borderRadius: 0,
             borderWidth: 0,
             height: 48,
             lineHeight: 48
         },
-        s40: {
+        s39: {
             borderWidth: 0,
             fontSize: 14,
             height: 48,
             lineHeight: 44,
             width: 250
         },
-        s41: {
+        s40: {
             marginTop: 6
         },
-        s42: {
+        s41: {
             height: 44,
             width: "100%"
         },
-        s43: {
+        s42: {
             height: 44,
             width: 200
         },
-        s44: {
+        s43: {
             lineHeight: 43,
             width: 300
         },
-        s45: {
+        s44: {
             alignItems: "center",
             height: 44,
             justifyContent: "center",
             width: 75
         },
-        s46: {
+        s45: {
             color: "#666",
             fontSize: 14
         },
-        s47: {
+        s46: {
             marginBottom: 94,
             marginLeft: 12,
             marginRight: 12,
             marginTop: 94
         },
-        s48: {
+        s47: {
             backgroundColor: "#114FCD",
             borderRadius: 5,
             borderWidth: 0,
@@ -288,11 +287,11 @@ module.exports = function({Theme}){
             height: 40,
             lineHeight: 40
         },
-        s49: {
+        s48: {
             flexDirection: "column",
             height: "100%"
         },
-        s50: {
+        s49: {
             backgroundColor: "#fff",
             flex: 1,
             paddingBottom: 6,
@@ -300,57 +299,57 @@ module.exports = function({Theme}){
             paddingRight: 0,
             paddingTop: 6
         },
-        s51: {
+        s50: {
             color: "#333",
             fontSize: 17,
             lineHeight: 26,
             textAlign: "center"
         },
-        s52: {
+        s51: {
             color: "#E7505A"
         },
-        s53: {
+        s52: {
             alignItems: "center",
             backgroundColor: "#fff",
             flex: 9,
             justifyContent: "center",
             marginTop: 10
         },
-        s54: {
-            height: 120,
-            width: 130
+        s53: {
+            height: 162,
+            width: 146
         },
-        s55: {
+        s54: {
             flex: 1,
             flexDirection: "column"
         },
-        s56: {
+        s55: {
             flex: 1,
             width: "100%"
         },
-        s57: {
-            height: 220,
-            marginBottom: 6,
-            width: 300
+        s56: {
+            flex: 1,
+            marginBottom: 6
         },
-        s58: {
+        s57: {
+            alignItems: "center",
             backgroundColor: "#fff",
             flexDirection: "row",
+            height: 32,
             paddingBottom: 0,
             paddingLeft: 12,
             paddingRight: 12,
             paddingTop: 0
         },
-        s59: {
+        s58: {
             color: "#333",
             fontSize: 16
         },
-        s60: {
+        s59: {
             color: "#002000",
-            fontSize: 16,
-            lineHeight: 32
+            fontSize: 16
         },
-        s61: {
+        s60: {
             borderBottomColor: "#eee",
             borderBottomWidth: 1,
             flexDirection: "row",
@@ -361,28 +360,25 @@ module.exports = function({Theme}){
             paddingRight: 12,
             paddingTop: 0
         },
-        s62: {
+        s61: {
             color: "#333333",
             fontSize: 16,
-            lineHeight: 40,
             minWidth: 75,
             textAlign: "left"
         },
-        s63: {
+        s62: {
             borderColor: "#eee",
-            borderRadius: 3,
             borderStyle: "solid",
             borderWidth: 1,
             color: "#666",
             fontSize: 14,
-            height: 25,
-            lineHeight: 25,
-            marginTop: 7,
-            overflow: "hidden",
+            height: 40,
+            lineHeight: 40,
+            marginTop: 2,
             textAlign: "right",
             width: 160
         },
-        s64: {
+        s63: {
             backgroundColor: "#fff",
             borderTopColor: "#eee",
             borderTopWidth: 1,
@@ -404,87 +400,85 @@ module.exports = function({Theme}){
             delbox: allStyle.s1,
             herderbox: allStyle.s2,
             searchbox: allStyle.s3,
-            pic: allStyle.s4,
-            search: allStyle.s5,
-            tit: allStyle.s6,
-            lh: allStyle.s7,
-            mdlist: allStyle.s8,
-            ls_t: allStyle.s9,
-            hadtext: allStyle.s10,
-            a_1: allStyle.s11,
-            ls_con: allStyle.s12,
-            c_box: allStyle.s13,
-            ls_bot: allStyle.s14,
-            but: allStyle.s15
+            tit: allStyle.s4,
+            lh: allStyle.s5,
+            mdlist: allStyle.s6,
+            ls_t: allStyle.s7,
+            hadtext: allStyle.s8,
+            a_1: allStyle.s9,
+            ls_con: allStyle.s10,
+            c_box: allStyle.s11,
+            ls_bot: allStyle.s12,
+            but: allStyle.s13
         },
         cpjmanagement: {
             cpjmanagementbox: allStyle.s1,
             flatListbox: allStyle.s0,
-            ls_box: allStyle.s16,
-            textv: allStyle.s17,
-            hardebox: allStyle.s18,
-            icon: allStyle.s19,
-            tjbut: allStyle.s20,
-            ls_conbox: allStyle.s21,
-            text: allStyle.s22,
-            bt_bot: allStyle.s23,
-            but: allStyle.s24
+            ls_box: allStyle.s14,
+            textv: allStyle.s15,
+            hardebox: allStyle.s16,
+            icon: allStyle.s17,
+            tjbut: allStyle.s18,
+            ls_conbox: allStyle.s19,
+            text: allStyle.s20,
+            bt_bot: allStyle.s21,
+            but: allStyle.s22
         },
         idjoin: {
-            txetv: allStyle.s17,
-            ls_box: allStyle.s16,
-            ls_conbox: allStyle.s25,
-            text: allStyle.s26,
-            inputbox: allStyle.s27,
-            titbox: allStyle.s28,
-            butbox: allStyle.s29,
-            but: allStyle.s30
+            txetv: allStyle.s15,
+            ls_box: allStyle.s23,
+            ls_conbox: allStyle.s24,
+            text: allStyle.s25,
+            inputbox: allStyle.s26,
+            titbox: allStyle.s27,
+            butbox: allStyle.s28,
+            but: allStyle.s29
         },
         revampstore: {
-            revampstore: allStyle.s31,
-            textv: allStyle.s32,
-            ls_box: allStyle.s16,
-            inputbox: allStyle.s33,
-            ls_conbox: allStyle.s34,
-            text: allStyle.s35,
-            ls_conboxrw: allStyle.s36,
-            title2box: allStyle.s37,
-            title2: allStyle.s38,
-            but: allStyle.s39,
-            textareaItem: allStyle.s40,
-            martop: allStyle.s41,
-            pickerbox: allStyle.s42,
-            ChinaRegion: allStyle.s43,
-            pickertext: allStyle.s44
+            revampstore: allStyle.s30,
+            textv: allStyle.s31,
+            ls_box: allStyle.s23,
+            inputbox: allStyle.s32,
+            ls_conbox: allStyle.s33,
+            text: allStyle.s34,
+            ls_conboxrw: allStyle.s35,
+            title2box: allStyle.s36,
+            title2: allStyle.s37,
+            but: allStyle.s38,
+            textareaItem: allStyle.s39,
+            martop: allStyle.s40,
+            pickerbox: allStyle.s41,
+            ChinaRegion: allStyle.s42,
+            pickertext: allStyle.s43
         },
         joincpj: {
-            textv: allStyle.s45,
-            ls_conbox: allStyle.s25,
-            text: allStyle.s46,
-            inputbox: allStyle.s27,
-            butbox: allStyle.s47,
-            but: allStyle.s48
+            textv: allStyle.s44,
+            ls_conbox: allStyle.s24,
+            text: allStyle.s45,
+            inputbox: allStyle.s26,
+            butbox: allStyle.s46,
+            but: allStyle.s47
         },
         uploadreport: {
-            pagebox: allStyle.s49,
-            herderbox: allStyle.s50,
-            text: allStyle.s51,
-            col: allStyle.s52,
-            imgbox: allStyle.s53,
-            img: allStyle.s54
+            pagebox: allStyle.s48,
+            herderbox: allStyle.s49,
+            text: allStyle.s50,
+            col: allStyle.s51,
+            imgbox: allStyle.s52,
+            img: allStyle.s53
         },
         ReportUpload: {
-            pagebox: allStyle.s55,
-            topbox: allStyle.s56,
-            bannerbox: allStyle.s57,
-            itembox: allStyle.s58,
-            texta: allStyle.s59,
-            textb: allStyle.s60,
-            ls_conbox: allStyle.s61,
-            text: allStyle.s62,
-            inputbox: allStyle.s63,
-            butbox: allStyle.s64,
-            but: allStyle.s30
+            pagebox: allStyle.s54,
+            topbox: allStyle.s55,
+            bannerbox: allStyle.s56,
+            itembox: allStyle.s57,
+            texta: allStyle.s58,
+            textb: allStyle.s59,
+            ls_conbox: allStyle.s60,
+            text: allStyle.s61,
+            inputbox: allStyle.s62,
+            butbox: allStyle.s63,
+            but: allStyle.s29
         }
     };
 };

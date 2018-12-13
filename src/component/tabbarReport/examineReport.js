@@ -1,10 +1,9 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, ListView, Alert, ScrollView, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Image, ListView, Alert, ScrollView, Dimensions } from 'react-native';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as userActions from '../../util/redux/action/user';
-
 
 @insertStyle('HandleReport')
 class Main extends Component {
@@ -14,21 +13,23 @@ class Main extends Component {
     this.dateSource = navigation.getParam('source')
     this.state = {
       baseData: {},
-      status:this.dateSource.status,
+      image1h: 300,
+      image2h: 300,
+      status: this.dateSource.status,
     }
     // this.handleClick= this.handleClick.bind(this)
-    
+
     // console.log(this.dateSource)
   }
 
 
-    //rende之后调用
-    componentDidMount() {
-      // this.dopost();
-      this._acquireData()
-    }
+  //rende之后调用
+  componentDidMount() {
+    // this.dopost();
+    this._acquireData()
+  }
   _acquireData = () => {
-    let obj ={
+    let obj = {
       sn: this.dateSource.sn,
       status: this.dateSource.status,
       sDate: this.dateSource.dateMemo,
@@ -38,27 +39,35 @@ class Main extends Component {
     // console.log(obj)
     http.loadingPost('/netbar/report/sellDetailList', obj).then(res => {
       // console.log(res)
-      if(res && res.status ==200){
+      if (res && res.status == 200) {
         this.setState({
           baseData: res.data.entitys[0],
+        })
+
+        let screenWidth = Dimensions.get('window').width;
+        Image.getSize(res.data.entitys[0].chargeImg, (width, height) => {
+          let r = screenWidth / (width / height)
+          this.setState({ image2h: r })
+          //width 图片的宽度
+          //height 图片的高度
+        })
+        Image.getSize(res.data.entitys[0].sellImg, (width, height) => {
+          let r = screenWidth / (width / height)
+          this.setState({ image1h: r })
+
+          //width 图片的宽度
+          //height 图片的高度
         })
       }
 
     })
   }
 
-  _btnOnPress=()=>{
+  _btnOnPress = () => {
     this.props.navigation.navigate('uploadreport', {
       pdata: this.dateSource,
       path: 't'
     });
-  }
-  //   <Button
-  //   title="testbtn"
-  //   onPress={() => this.props.navigation.navigate('Page4')}
-  // />
-  handleClickTab = (info) => {
-    console.log(info.title)
   }
 
   render() {
@@ -66,8 +75,7 @@ class Main extends Component {
       <View style='container'>
         <View style='tab_list'>
           <ScrollView style='tab_list'>
-           <Image style="content_imga"  
-           source={{uri: this.state.baseData.chargeImg}}/>
+            <Image source={{ uri: this.state.baseData.sellImg }} style={{ height: this.state.image1h }} />
             <View style='border15h' />
             <View style="cont_bor">
               <View style="flexrow">
@@ -76,7 +84,7 @@ class Main extends Component {
               </View>
               <View style="flexrow">
                 <Text style={["text_left", "f16h30", "fblock9"]}>门店编号：</Text>
-                <Text style={["flex1", "f16h30", "fblock3"]}>{this.state.baseData.shopId}</Text>
+                <Text style={["flex1", "f16h30", "fblock3"]}>{this.state.baseData.sn}</Text>
               </View>
             </View>
             <View style='border10h' />
@@ -128,8 +136,7 @@ class Main extends Component {
                 </View>
               </View>
             </View>
-            <Image style="content_imga"  
-           source={{uri: this.state.baseData.sellImg}}/>
+            <Image source={{ uri: this.state.baseData.chargeImg }} style={{ height: this.state.image2h }} />
             <View style='border15h' />
             <View style="cont_bor">
               <View style={["flex1", "flexrow"]}>
@@ -138,7 +145,7 @@ class Main extends Component {
               </View>
               <View style={["flex1", "flexrow"]}>
                 <Text style={["text_left", "f16h30", "fblock9"]}>门店编号：</Text>
-                <Text style={["flex1", "f16h30", "fblock3"]}>{this.state.baseData.shopId}</Text>
+                <Text style={["flex1", "f16h30", "fblock3"]}>{this.state.baseData.sn}</Text>
               </View>
             </View>
             <View style='border10h' />
@@ -159,7 +166,7 @@ class Main extends Component {
           </ScrollView>
 
           {
-            this.state.status == 20
+            this.state.status == 20 || this.state.status ==15
               ? <View style="bottom_btn2">
                 <Text style="bb2_text" onPress={this._btnOnPress}>重新上传</Text>
               </View>

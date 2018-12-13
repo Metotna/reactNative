@@ -5,7 +5,7 @@ import {
     Text,
     View,
     Platform,
-    TouchableHighlight, ListView, ActivityIndicator, RefreshControl,
+    TouchableHighlight, ActivityIndicator, RefreshControl, FlatList,
 } from 'react-native';
 import { Modal,Toast } from 'antd-mobile-rn'
 
@@ -15,8 +15,6 @@ import styleP from '../../assets/style/script/public_less'
 import Icon from "react-native-vector-icons/Entypo";
 import  Button from  '../common/button'
 
-let pageNumber = 1;//当前第几页
-let totalPage = 1;//总的页数
 
 const cssStyle =Object.assign({},style({}).cpjmanagement,styleP({}).public)
 @rn_Less.rnLess(cssStyle)
@@ -38,17 +36,30 @@ class Listbox extends Component{
         ]);
     }
 
+    //删除账号
+    _resetPwd(phone){
+        Modal.alert('温馨提示', '确认重置密码123456？', [
+            { text: '取消', onPress: () => {}, style: 'cancel' },
+            { text: '确定', onPress: () => {
+                    http.loadingPost('/user/resetPwd',{account:phone}).then(responseData=>{
+                        if(responseData.status == '200'){
+                            Toast.show('重置成功！', 3);
+                            //this.props.onDopost();
+                        }
+                    }).catch(err=>{
+                        console.log(err)
+                    })
+                }},
+        ]);
+    }
+
+
     //rende之后调用
     componentDidMount(){
     }
 
     dopost =(p)=> {
         http.loadingPost('/netbar//account/delete',{account:p}).then(responseData=>{
-            /* Storage.saveObj({
-                 user:res.data.token,
-                 token:res.data.token
-             })*/
-
             if(responseData.status == '200'){
                 Toast.show('删除成功！', 3);
                 this.props.onDopost();
@@ -56,7 +67,7 @@ class Listbox extends Component{
         }).catch(err=>{
             console.log(err)
         })
-        console.log(this.state.data)
+        //console.log(this.state.data)
     }
 
     render(){
@@ -78,14 +89,14 @@ class Listbox extends Component{
                     <Button onPress={() => this.deleteid(this.state.data.phone)} style={["but"]}
                             textStyle={{
                                 color:"#666",
-                                lineHeight: 22,
+                                lineHeight: 20,
                             }}
                             title={'删除'}
                     />
-                    <Button style={["but"]}
+                    <Button onPress={() => this._resetPwd(this.state.data.phone)} style={["but"]}
                             textStyle={{
                                 color:"#666",
-                                lineHeight: 22,
+                                lineHeight: 20,
                             }}
                             title={'重置密码'}
                     />
@@ -102,10 +113,11 @@ export default class Main extends Component {
         super(props);
         this.state = {
             data: [],
-            ds:new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
             shopid:this.props.navigation.getParam('id'),
             listStatus: 'Loading',//控制foot
             refreshing: false,//下拉刷新图标控制
+            pageNumber:1,//当前第几页
+            totalPage:1,//总的页数
         };
     }
 
@@ -116,8 +128,8 @@ export default class Main extends Component {
 
     //上拉加载
     _updata = () =>{
-        console.log(pageNumber)
-        if(pageNumber > totalPage){
+        console.log(this.state.pageNumber)
+        if(this.state.pageNumber > this.state.totalPage){
             return false;
         }else {
             this.dopost();
@@ -127,7 +139,7 @@ export default class Main extends Component {
 
     //下拉刷新
     _onRefresh = () =>{
-        pageNumber = 1;
+        this.state.pageNumber = 1;
         this.state.data = [];
         this.setState({
             refreshing: true,
@@ -146,19 +158,20 @@ export default class Main extends Component {
     }
 
     dopost =()=> {
-        http.loadingPost('/netbar/account/list',{shopId:this.state.shopid}).then(responseData=>{
+        //console.log(this.state.pageNumber)
+        http.loadingPost('/netbar/account/list',{shopId:this.state.shopid,pageNumber:this.state.pageNumber}).then(responseData=>{
             /* Storage.saveObj({
                  user:res.data.token,
                  token:res.data.token
              })*/
-            console.log(responseData)
+            //console.log(responseData)
 
             if(responseData.status == '200'){
                 let data = responseData.data.entitys;
 
-                let listStatus = pageNumber == responseData.data.totalPage ? "noMore" : "goOn";
-                totalPage = responseData.data.totalPage;
-                pageNumber ++;
+                let listStatus = this.state.pageNumber == responseData.data.totalPage ? "noMore" : "goOn";
+                this.state.totalPage = responseData.data.totalPage;
+                this.state.pageNumber ++;
 
                 this.setState({
                     //复制数据源
@@ -184,29 +197,27 @@ export default class Main extends Component {
                         </View>
                     </View>
                 </TouchableHighlight>
-                {
-                    this.state.data.length ?
-                        <ListView
-                            style={["flatListbox"]}
-                            dataSource={this.state.ds.cloneWithRows(this.state.data)}
-                            refreshControl={<RefreshControl
-                                refreshing={this.state.refreshing}
-                                onRefresh={this._onRefresh}
-                                tintColor="#666666"
-                                title="Loading..."
-                                titleColor="#666666"
-                                colors={['#666666']}
-                                progressBackgroundColor="#f2f3f5"
-                            />}
-                            renderRow={(rowData, sectionID, rowId) =>
-                                <Listbox rowData={rowData} sectionID={sectionID} rowId={rowId} onDopost={this._onRefresh} navigation={this.props.navigation}/>}
-                            onEndReachedThreshold={30}
-                            onEndReached={this._updata}
-                            renderFooter={this._hanleFooter}
-                        />
-                        :
-                        <View></View>
-                }
+                <FlatList
+                    style={["flatListbox"]}
+                    data={this.state.data}
+                    refreshControl={<RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this._onRefresh}
+                        tintColor="#666666"
+                        title="Loading..."
+                        titleColor="#666666"
+                        colors={['#666666']}
+                        progressBackgroundColor="#f2f3f5"
+                    />}
+                    renderItem={(item) => <Listbox rowData={item.item}
+                                                   onDopost={this._onRefresh} navigation={this.props.navigation}/>}
+                    onEndReachedThreshold={0.1}
+                    initialNumToRender={5}
+                    getItemLayout={(data, index) => ( {length: 186, offset: 186 * index, index} )}
+                    keyExtractor={(item, index) => index}
+                    onEndReached={this._updata}
+                    ListFooterComponent={this._hanleFooter}
+                />
             </View>
 
         );
