@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableHighlight, View, Image, Linking } from 'reac
 import { withNavigation } from 'react-navigation';
 import f from '../../../util/filter'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import {onlineOffShow } from "../../../config"
 
 @insertStyle('HomeComTable')
 class Main extends Component {
@@ -13,9 +14,17 @@ class Main extends Component {
       value: '',
       name1: this.props.total ? '' : '销售:　',
       name2: this.props.total ? '' : '兑奖:　',
+      data:this.props.data,
     };
+    // console.log(this.props.data)
+  } 
+  componentWillReceiveProps(nextProps) {
+    // console.log(nextProps)
+    this.setState({
+      data:nextProps.data
+    })
+    /* 组件初始化时不调用，组件接受新的props时调用 */
   }
-
   _onPressButton = () => {
     if (this.props.link) return
     this.props.navigation.navigate('NetBarDetail', {
@@ -26,9 +35,12 @@ class Main extends Component {
   }
   _showData = (f, c) => {
     try {
-      if (this.props.data[f][c]) return this.props.data[f][c]
+      if (this.state.data[f][c]!= null){
+        // console.log(`${f}.${c}:${this.state.data[f][c]}`)
+        return this.state.data[f][c]
+      } 
       else return "--"
-    } catch (error) {
+    }catch(err){
       return "--"
     }
   }
@@ -86,10 +98,10 @@ class Main extends Component {
                     <Text style={["tr_r", "f13", "fblock6"]}>线上</Text>
                   </View>
                   <View style={["h17", "JCC"]}>
-                    <Text style={["tr_r", "f13", "fgreen"]}>{f.number(this._showData('syReport', 'onlineSell'))}</Text>
+                    <Text style={["tr_r", "f13", "fgreen"]}>{onlineOffShow?f.number(this._showData('syReport', 'onlineSell')):"--"}</Text>
                   </View>
                   <View style={["h17", "JCC"]}>
-                    <Text style={["tr_r", "f13", "fred"]}>{f.number(this._showData('syReport', 'onlineBonus'))}</Text>
+                    <Text style={["tr_r", "f13", "fred"]}>{onlineOffShow?f.number(this._showData('syReport', 'onlineBonus')):"--"}</Text>
                   </View>
                 </View>
                 {/* <View style="border10"></View> */}
@@ -98,10 +110,10 @@ class Main extends Component {
                     <Text style={["tr_r", "f13", "fblock6"]}>线下</Text>
                   </View>
                   <View style={["h17", "JCC"]}>
-                    <Text style={["tr_r", "f13", "fblue"]}>{f.number(this._showData('syReport', 'offlineSell'))}</Text>
+                    <Text style={["tr_r", "f13", "fblue"]}>{onlineOffShow?f.number(this._showData('syReport', 'offlineSell')):"--"}</Text>
                   </View>
                   <View style={["h17", "JCC"]}>
-                    <Text style={["tr_r", "f13", "fred"]}>{f.number(this._showData('syReport', 'offlineBonus'))}</Text>
+                    <Text style={["tr_r", "f13", "fred"]}>{onlineOffShow?f.number(this._showData('syReport', 'offlineBonus')):"--"}</Text>
                   </View>
                 </View>
               </View>
@@ -130,10 +142,10 @@ class Main extends Component {
                     <Text style={["tr_r", "f13", "fblock6"]}>线上</Text>
                   </View>
                   <View style={["h17", "JCC"]}>
-                    <Text style={["tr_r", "f13", "fgreen"]}>{f.number(this._showData('byReport', 'onlineSell'))}</Text>
+                    <Text style={["tr_r", "f13", "fgreen"]}>{onlineOffShow?f.number(this._showData('byReport', 'onlineSell')):"--"}</Text>
                   </View>
                   <View style={["h17", "JCC"]}>
-                    <Text style={["tr_r", "f13", "fred"]}>{f.number(this._showData('byReport', 'onlineBonus'))}</Text>
+                    <Text style={["tr_r", "f13", "fred"]}>{onlineOffShow?f.number(this._showData('byReport', 'onlineBonus')):"--"}</Text>
                   </View>
                 </View>
                 {/* <View style="border10"></View> */}
@@ -142,10 +154,10 @@ class Main extends Component {
                     <Text style={["tr_r", "f13", "fblock6"]}>线下</Text>
                   </View>
                   <View style={["h17", "JCC"]}>
-                    <Text style={["tr_r", "f13", "fblue"]}>{f.number(this._showData('byReport', 'offlineSell'))}</Text>
+                    <Text style={["tr_r", "f13", "fblue"]}>{onlineOffShow?f.number(this._showData('byReport', 'offlineSell')):"--"}</Text>
                   </View>
                   <View style={["h17", "JCC"]}>
-                    <Text style={["tr_r", "f13", "fred"]}>{f.number(this._showData('byReport', 'offlineBonus'))}</Text>
+                    <Text style={["tr_r", "f13", "fred"]}>{onlineOffShow?f.number(this._showData('byReport', 'offlineBonus')):"--"}</Text>
                   </View>
                 </View>
               </View>
@@ -172,10 +184,10 @@ class Main extends Component {
                     <Text style={["tr_r", "f13", "fblock6"]}>线上</Text>
                   </View>
                   <View style={["h17", "JCC"]}>
-                    <Text style={["tr_r", "f13", "fgreen"]}>{f.number(this._showData('nearlyReport', 'onlineSell'))}</Text>
+                    <Text style={["tr_r", "f13", "fgreen"]}>{onlineOffShow?f.number(this._showData('nearlyReport', 'onlineSell')):"--"}</Text>
                   </View>
                   <View style={["h17", "JCC"]}>
-                    <Text style={["tr_r", "f13", "fred"]}>{f.number(this._showData('nearlyReport', 'onlineBonus'))}</Text>
+                    <Text style={["tr_r", "f13", "fred"]}>{onlineOffShow?f.number(this._showData('nearlyReport', 'onlineBonus')):"--"}</Text>
                   </View>
                 </View>
                 {/* <View style="border10"></View> */}
@@ -184,10 +196,10 @@ class Main extends Component {
                     <Text style={["tr_r", "f13", "fblock6"]}>线下</Text>
                   </View>
                   <View style={["h17", "JCC"]}>
-                    <Text style={["tr_r", "f13", "fblue"]}>{f.number(this._showData('nearlyReport', 'offlineSell'))}</Text>
+                    <Text style={["tr_r", "f13", "fblue"]}>{onlineOffShow?f.number(this._showData('nearlyReport', 'offlineSell')):"--"}</Text>
                   </View>
                   <View style={["h17", "JCC"]}>
-                    <Text style={["tr_r", "f13", "fred"]}>{f.number(this._showData('nearlyReport', 'offlineBonus'))}</Text>
+                    <Text style={["tr_r", "f13", "fred"]}>{onlineOffShow?f.number(this._showData('nearlyReport', 'offlineBonus')):"--"}</Text>
                   </View>
                 </View>
               </View>
@@ -222,7 +234,7 @@ const styles = StyleSheet.create({
   },
   container: {
     height: 185,
-    marginBottom: 6,
+    marginBottom: 2,
   },
   container2: {
     height: 148,

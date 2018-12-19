@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { createStackNavigator, createBottomTabNavigator, StackNavigator } from 'react-navigation';
 import StackViewStyleInterpolator from "react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator";
-import { Text, View, StyleSheet, Image, ActivityIndicator } from 'react-native';
+import { Text, View, StyleSheet, Image, ActivityIndicator ,Platform} from 'react-native';
 import insertStyle from '../../assets/style'
 import Storage from '../asyncStorage'
 import fetchs from '../fetch'
@@ -18,13 +18,16 @@ import reportScreen from '../../component/Tabbar/report'
 import { rpartA, defaultRouter } from './rPartA'
 import rpartB from './rPartB'
 import Icon from "react-native-vector-icons/Entypo";
-
+const TITLE_OFFSET = Platform.OS === 'ios' ? 70 : 56;
 // tabbar路由配置
 const headerStyleB = {
   backgroundColor: '#2073D3',
 }
 const headerTitleStyleB = {
-  color: '#fff'
+  color: '#fff',
+  // alignSelf:'center',
+  // textAlign: 'center',
+  // flex:1,
 }
 const icon = {
   width: 20,
@@ -38,7 +41,7 @@ const tabbarStore = createBottomTabNavigator(
         HomeScreen: {
           screen: HomeScreenStore,
           navigationOptions: ({ navigation }) => ({
-            title: navigation.getParam('title','首页'),
+            title: navigation.getParam('title', '首页'),
             headerStyle: headerStyleB,
             headerTitleStyle: headerTitleStyleB,
           }),
@@ -48,7 +51,9 @@ const tabbarStore = createBottomTabNavigator(
       navigationOptions: ({ navigation }) => ({
         tabBarLabel: '首页',
         tabBarIcon: ({ focused, tintColor }) => (
-          focused ? <Image style={icon} source={require('../../assets/image/img/home.png')} /> : <Image style={icon} source={require('../../assets/image/img/un_home.png')} />
+          focused
+            ? <Image style={icon} source={require('../../assets/image/img/home.png')} />
+            : <Image style={icon} source={require('../../assets/image/img/un_home.png')} />
         ),
         // tabBarOnPress:({navigation,defaultHandler})=>{
         //   console.log(navigation,defaultHandler)
@@ -69,7 +74,9 @@ const tabbarStore = createBottomTabNavigator(
       navigationOptions: ({ navigation }) => ({
         tabBarLabel: '报表',
         tabBarIcon: ({ focused, tintColor }) => (
-          focused ? <Image style={icon} source={require('../../assets/image/img/report.png')} /> : <Image style={icon} source={require('../../assets/image/img/un_report.png')} />
+          focused
+            ? <Image style={icon} source={require('../../assets/image/img/report.png')} />
+            : <Image style={icon} source={require('../../assets/image/img/un_report.png')} />
         )
       })
     },
@@ -82,13 +89,15 @@ const tabbarStore = createBottomTabNavigator(
             headerStyle: headerStyleB,
             headerTitleStyle: headerTitleStyleB,
           }
-        
+
         }
       }),
       navigationOptions: ({ navigation }) => ({
         tabBarLabel: '我的',
         tabBarIcon: ({ focused, tintColor }) => (
-          focused ? <Image style={icon} source={require('../../assets/image/img/my.png')} /> : <Image style={icon} source={require('../../assets/image/img/un_my.png')} />
+          focused
+            ? <Image style={icon} source={require('../../assets/image/img/my.png')} />
+            : <Image style={icon} source={require('../../assets/image/img/un_my.png')} />
         )
       })
     },
@@ -118,14 +127,25 @@ const tabbarManager = createBottomTabNavigator(
             title: '首页',
             headerStyle: headerStyleB,
             headerTitleStyle: headerTitleStyleB,
+            // headerTitleContainerStyle:{
+            //   left: TITLE_OFFSET,
+            //   right: TITLE_OFFSET,
+            // },
           }),
         }
       }),
       navigationOptions: ({ navigation }) => ({
         tabBarLabel: '首页',
         tabBarIcon: ({ focused, tintColor }) => (
-          focused ? <Image style={icon} source={require('../../assets/image/img/home.png')} /> : <Image style={icon} source={require('../../assets/image/img/un_home.png')} />
-        )
+          focused
+            ? <Image style={icon} source={require('../../assets/image/img/home.png')} />
+            : <Image style={icon} source={require('../../assets/image/img/un_home.png')} />
+        ),       
+        // tabBarOnPress: ({ navigation, defaultHandler }) => {
+        //   // console.log(1111)
+        //   navigation.setParams({ refresh: 'true' })
+        //   defaultHandler()
+        // }
       })
     },
     Store: {
@@ -147,11 +167,13 @@ const tabbarManager = createBottomTabNavigator(
       navigationOptions: ({ navigation }) => ({
         tabBarLabel: '门店',
         tabBarIcon: ({ focused, tintColor }) => (
-          focused ? <Image style={icon} source={require('../../assets/image/img/store.png')} /> : <Image style={icon} source={require('../../assets/image/img/un_store.png')} />
+          focused
+            ? <Image style={icon} source={require('../../assets/image/img/store.png')} />
+            : <Image style={icon} source={require('../../assets/image/img/un_store.png')} />
         )
       })
     },
-  
+
     Mine: {
       screen: createStackNavigator({
         mineScreen: {
@@ -160,7 +182,7 @@ const tabbarManager = createBottomTabNavigator(
             title: '我的',
             headerStyle: headerStyleB,
             headerTitleStyle: headerTitleStyleB,
-            // tabBarOnPress: (value) => {
+
             //   //监听点击事件
             //   value.defaultHandler();
 
@@ -186,8 +208,11 @@ const tabbarManager = createBottomTabNavigator(
       navigationOptions: ({ navigation }) => ({
         tabBarLabel: '我的',
         tabBarIcon: ({ focused, tintColor }) => (
-          focused ? <Image style={icon} source={require('../../assets/image/img/my.png')} /> : <Image style={icon} source={require('../../assets/image/img/un_my.png')} />
-        )
+          focused
+            ? <Image style={icon} source={require('../../assets/image/img/my.png')} />
+            : <Image style={icon} source={require('../../assets/image/img/un_my.png')} />
+        ),
+ 
       })
     },
   }, {
@@ -212,16 +237,17 @@ const RouteConfigs = {
         header: null,
         headerBackTitle: 'A much too long text for back button from B to A',
         headerTruncatedBackTitle: ` `,
+
       })
   },
   TabbarManager: {
     screen: tabbarManager,
-    navigationOptions: ({ navigation }) => (
-      {
-        header: null,
-        headerBackTitle: 'A much too long text for back button from B to A',
-        headerTruncatedBackTitle: ` `,
-      })
+    navigationOptions: ({ navigation }) => ({
+      header: null,
+      headerBackTitle: 'A much too long text for back button from B to A',
+      headerTruncatedBackTitle: ` `,
+
+    })
   },
   AuthLoading: {
     screen: AuthLoading,
@@ -229,12 +255,17 @@ const RouteConfigs = {
       header: null,
     }),
   },
+
 }
 const initialRouteName = "AuthLoading"
 // defaultRouter
-export default StackNavigator(Object.assign({}, RouteConfigs, rpartA, rpartB), {
+export default createStackNavigator(Object.assign({}, RouteConfigs, rpartA, rpartB), {
   initialRouteName: initialRouteName,
   // headerMode: 'none',
+  // headerTitleContainerStyle:{
+  //   left: TITLE_OFFSET,
+  //   right: TITLE_OFFSET,
+  // },
   transitionConfig: () => ({
     screenInterpolator: StackViewStyleInterpolator.forHorizontal,
     // screenInterpolator: (sceneProps) => {

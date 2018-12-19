@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, ListView, RefreshControl } from 'react-native';
-
+import {onlineOffShow } from "../../config"
 @insertStyle('netBarDay')
 export default class Main extends Component {
   constructor(props) {
@@ -79,7 +79,7 @@ export default class Main extends Component {
       pageSize: this.listPageSize,
       status:30
     }).then(res => {
-      console.log(222,res)
+      // console.log(222,res)
       if (res && res.status == 200) {
         var listStatus = this.state.listPage == res.data.totalPage ? "noMore" : "goOn";
         this._dataSource = res.data.entitys;
@@ -168,11 +168,11 @@ class DataList extends Component {
         <View style="flexrow">
           <View style={["list", "flex1", "flexrow"]}>
             <Text style={["w88", 'f14', "fblock9"]}>线上销售：</Text>
-            <Text style={["flex1", 'f14', "tAlignR", "fblock3"]}>{this.props.data.onlineSell||0}</Text>
+            <Text style={["flex1", 'f14', "tAlignR", "fblock3"]}>{onlineOffShow?(this.props.data.onlineSell||0):"--"}</Text>
           </View>
           <View style={["list", "flex1", "flexrow"]}>
             <Text style={["w88", 'f14', "fblock9"]}>线下销售：</Text>
-            <Text style={["flex1", 'f14', "tAlignR", "fblock3"]}>{this.props.data.offlineSell||0}</Text>
+            <Text style={["flex1", 'f14', "tAlignR", "fblock3"]}>{onlineOffShow?(this.props.data.offlineSell||0):"--"}</Text>
           </View>
         </View>
         <View style="border10h" />
@@ -180,11 +180,11 @@ class DataList extends Component {
         <View style="flexrow">
           <View style={["list", "flex1", "flexrow"]}>
             <Text style={["w88", 'f14', "fblock9"]}>线上兑奖：</Text>
-            <Text style={["flex1", 'f14', "tAlignR", "fblock3"]}>{this.props.data.onlineBonus||0}</Text>
+            <Text style={["flex1", 'f14', "tAlignR", "fblock3"]}>{onlineOffShow?(this.props.data.onlineBonus||0):"--"}</Text>
           </View>
           <View style={["list", "flex1", "flexrow"]}>
             <Text style={["w88", 'f14', "fblock9"]}>线下兑奖：</Text>
-            <Text style={["flex1", 'f14', "tAlignR", "fblock3"]}>{this.props.data.offlineBonus||0}</Text>
+            <Text style={["flex1", 'f14', "tAlignR", "fblock3"]}>{onlineOffShow?(this.props.data.offlineBonus||0):"--"}</Text>
           </View>
         </View>
         <View style="border10h" />

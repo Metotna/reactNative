@@ -5,23 +5,25 @@ import Storage from '../asyncStorage/'
 import BASE from './config'
 import { NavigationActions } from 'react-navigation';
 import NavigationService from './NavigationService'
-import {Toast} from 'antd-mobile-rn'
+import { Toast } from 'antd-mobile-rn'
 /* Intranet 测试  Internet 线上 */
-const networkEnvironment = BASE.Intranet.url;
+const networkEnvironment = BASE.url;
+// const networkEnvironment = BASE.Internet.url;//线上地址
 /* 检查状态码 */
 function checkStatus(response) {
   return response.json()
 }
 /* 检查返回自定义 状态码 */
 function checkCode(response) {
-  if (response.status==501) {
-    NavigationService.navigate("login")
+  // console.log(response.status)
+  if (response.status == 501) {
+    NavigationService.reset("login")
     return response
-  }else if (response.status==500) {
-      Toast.show(response.msg);
-      return response
+  } else if (response.status == 500) {
+    Toast.show(response.msg);
+    return response
   }
-  
+
   return response
 }
 global.http = {
@@ -45,7 +47,7 @@ global.http = {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
       })
-     //console.log(networkEnvironment + url, options)
+    //console.log(networkEnvironment + url, options)
     showLoading()
     return fetch(networkEnvironment + url, options)
       .then(response => checkStatus(response))
@@ -71,7 +73,7 @@ global.http = {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
       })
-     //console.log(networkEnvironment + url, options)
+    //console.log(networkEnvironment + url, options)
     return fetch(networkEnvironment + url, options)
       .then(response => checkStatus(response))
       .then(res => {
@@ -86,7 +88,7 @@ global.http = {
     for (var key in data) {
       body.append(key, data[key])
     }
-      showLoading()
+    showLoading()
     return fetch(networkEnvironment + url, {
       method: 'POST',
       headers: {
@@ -97,8 +99,8 @@ global.http = {
     })
       .then(response => checkStatus(response))
       .then(res => {
-          closeLoading()
-              return checkCode(res)
+        closeLoading()
+        return checkCode(res)
       }
       )
   },

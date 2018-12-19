@@ -4,15 +4,7 @@ import { StyleSheet, Text, View, Platform, TextInput, Dimensions, Image ,ScrollV
 // import { Button, CheckBox } from 'react-native-elements';
 import { StackActions, NavigationActions } from 'react-navigation';
 import { Toast } from 'antd-mobile-rn'
-
 import Btn from '../common/buttonplat'
-// import  KeyboardView from '../common/keyboard'
-const resetAction = (routerName) => NavigationActions.reset({
-  index: 0,
-  actions: [
-    NavigationActions.navigate(routerName),
-  ],
-});
 
 export default class Main extends Component {
 
@@ -71,10 +63,8 @@ export default class Main extends Component {
               rule:rule,
             })
             var routeName = (rule == 'ADMIN' || rule == "BUSM") ? "TabbarManager" : "TabbarStore"
-            this.props.navigation.dispatch(StackActions.reset({
-              index: 0,
-              actions: [NavigationActions.navigate({ routeName })],
-            }))
+         this.props.navigation.reset([NavigationActions.navigate({ routeName })],0)
+
           } else {
             Toast.fail('当前登录账号无效！', 1);
           }
@@ -93,9 +83,7 @@ export default class Main extends Component {
       })
     })
   }
-  _handleLogin2(){
-    console.log(111)
-  }
+
   render() {
     return (
       <ScrollView style={css.container} keyboardShouldPersistTaps={'handled'}>

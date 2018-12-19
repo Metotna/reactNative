@@ -1,6 +1,6 @@
 'use strict'
 
-export default {
+ const Base={
   Intranet:{
     url:'http://192.168.1.200:8082',
       //url:'http://192.168.1.133:8082',
@@ -20,7 +20,9 @@ export default {
     desc:'测试环境-XBT'
   },
   Internet:{
-    url:'http://192.168.1.250:9080',
+    url:'https://p.778668.cn:8086',
     desc:'线上环境'
   },
 }
+export default Base.Intranet
+// export default Base.Internet

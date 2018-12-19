@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, RefreshControl, ListView, ActivityIndicator, DeviceEventEmitter, FlatList, Dimensions, Modal, TouchableHighlight ,Image,Platform} from 'react-native';
+import { StyleSheet, Text, View, RefreshControl, ListView, ActivityIndicator, DeviceEventEmitter, FlatList, Dimensions, Modal, TouchableHighlight, Image, Platform } from 'react-native';
 import Echarts from '../../util/echart';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -8,6 +8,8 @@ import * as userActions from '../../util/redux/action/user';
 import { getXWeekDate, getweek } from '../../util/install'
 import ListHearder from '../tabbarHome/component/homeStoreListHearder'
 import DateTable from '../tabbarHome/component/dateTable'
+import { onlineOffShow, echartShowDetail } from "../../config"
+
 const DWidth = Dimensions.get('window').width
 
 @insertStyle('TabbarHomeStyle')
@@ -24,13 +26,14 @@ class Main extends Component {
         offline: [],
         xAxis: [],
         alls: [],
+        total: [],
       },
       xAxis: [],
       listStatus: 'Loading',
       listReqing: false,
       listPage: 1,
       dataSource: ds,
-      modalVisible: true,
+      modalVisible: false,
     };
     this._dataSource = [];
     this.listPageSize = 20;
@@ -70,9 +73,9 @@ class Main extends Component {
         }
         const eData = this._echartData(offline, online, xAxis)
         this.setState({
-          echart: true,
-          echartData: { online: eData.online, offline: eData.offline, xAxis: eData.xAxis, alls: eData.alls }
+          echartData: { online: eData.online, offline: eData.offline, xAxis: eData.xAxis, alls: eData.alls, total: eData.total }
         })
+        setTimeout(() => { this.setState({ echart: true }) })
         return http.post('/netbar/report/sellList', {
           timeLevel: 'DAY',
           pageNumber: 1,
@@ -144,10 +147,15 @@ class Main extends Component {
     let _online = [];
     let _xAxis = [];
     let _alls = []
+    let _total = [];
     for (var i = 0; i < 7; i++) {
       _offline[i] = offline[i] ? offline[i] : 0;
       _online[i] = online[i] ? online[i] : 0;
-      _alls[i] = _offline[i] + _online[i]
+      // _alls[i]=_offline[i] + _online[i]
+      let _a = (_offline[i] + _online[i]) * 1
+      _total[i] = _a;
+      _alls[i] = _a > 100000 ? ((_a / 10000).toFixed(1) + "w") : _a;
+
       if (xAxis[i]) {
         let r = xAxis[i].split('-')
         let res = getXWeekDate(r[0], r[1], 'MM.dd')
@@ -178,21 +186,24 @@ class Main extends Component {
     _online.reverse()
     _xAxis.reverse()
     _alls.reverse()
-
+    _total.reverse()
     return {
       offline: _offline,
       online: _online,
       xAxis: _xAxis,
-      alls: _alls
+      alls: _alls,
+      total: _total,
     }
   }
 
   _echartOption = () => {
+    // console.log(`echarts`)
     var _offline = this.state.echartData.offline;
     var _online = this.state.echartData.online;
     var _xAxis = this.state.echartData.xAxis;
     var _all = this.state.echartData.alls;
-    var option = {
+    var _total = this.state.echartData.total;
+    var option_1 = {
       title: {
         text: '销售周趋势图',
         textStyle: {
@@ -224,7 +235,7 @@ class Main extends Component {
       },
       grid: {
         // show:true,
-        top: '10%',
+        top: '15%',
         left: '5%',
         right: '5%',
         bottom: '18%',
@@ -237,6 +248,9 @@ class Main extends Component {
         data: _all,
         axisLabel: {
           fontSize: 14,
+          // formatter:function(params){
+          //   reutrn `1`
+          // }
           // interval: 0,
           // formatter: function (value, index) {
           //   let r = value.split('-')
@@ -344,18 +358,82 @@ class Main extends Component {
         end: 100,
       }]
     }
-    return option
+    var option_2 = {
+      title: {
+        text: '销售周趋势图',
+        textStyle: {
+          fontSize: 16,
+          fontWeight: 300,
+        },
+        // top: '5%',
+        left: '3%',
+      },
+      grid: {
+        top: '10%',
+        left: '5%',
+        right: '5%',
+        bottom: '18%',
+      },
+      xAxis: {
+        show: false,
+        type: 'category',
+        boundaryGap: true,
+        data: _all,
+        axisLabel: {
+          fontSize: 14,
+        }
+      },
+      yAxis: {
+        splitNumber: 4,
+        axisLabel: {
+          fontSize: 20,
+          color: '#666666',
+        },
+        show: false,
+        axisLine: {
+          lineStyle: {
+            width: 0
+          }
+        },
+        splitLine: {
+          lineStyle: {
+            width: 3
+          }
+        }
+      },
+      series: [
+        {
+          name: '总销售',
+          type: 'bar',
+          data: _total,
+          barCategoryGap: 20,
+          itemStyle: {
+            normal: {
+              color: 'rgba(61,175,177,.9)',
+              label: {
+                show: true,
+                position: 'top',
+                textStyle: {
+                  fontSize: 10,
+                  color: "#333"
+                },
+                formatter: (params) => {
+                  let i = params.dataIndex
+                  return params.name
+                },
+              }
+            }
+          },
+        },
+      ],
+    }
+    return echartShowDetail ? option_1 : option_2;
   }
 
-  _listViewScroll = (a, b, c) => {
-    console.log(a, b, c)
+  _hanleModal = () => {
+    this.setState({ modalVisible: false })
   }
 
-  _hanleModal=()=>{
-      
-      Storage.save("leadShow","true");
-      this.setState({ modalVisible: false })
-  }
   render() {
     const tForamt = (val, index) => {
       if (val) {
@@ -423,17 +501,17 @@ class Main extends Component {
           renderFooter={this._renderFooter}
         />
         <Modal
-          animationType="fade"
+          animationType="none"
           transparent={true}
           visible={this.state.modalVisible}
           onRequestClose={this._hanleModal}
         >
-          <View style={{ paddingTop: 138,paddingLeft:26,paddingRight:26,flex:1,backgroundColor:"rgba(0,0,0,0.50)", alignItems: 'center', }}>
-              <Image style={{height:263,width:323}} source={require('../../assets/image/my/lead.png')} />
-              <TouchableHighlight onPress={() => { Storage.save("leadShow","true");this.setState({ modalVisible: false }) }}>
-              <Image style={{height:30,width:150,marginTop:35}} source={require('../../assets/image/my/button.png')} />
-              </TouchableHighlight>
-              {/* <TouchableHighlight onPress={() => { this.setState({ modalVisible: false }) }}>
+          <View style={{ paddingTop: 138, paddingLeft: 26, paddingRight: 26, flex: 1, backgroundColor: "rgba(0,0,0,0.50)", alignItems: 'center', }}>
+            <Image style={{ height: 263, width: 323 }} source={require('../../assets/image/my/lead.png')} />
+            <TouchableHighlight onPress={() => { this.setState({ modalVisible: false }) }}>
+              <Image style={{ height: 30, width: 150, marginTop: 35 }} source={require('../../assets/image/my/button.png')} />
+            </TouchableHighlight>
+            {/* <TouchableHighlight onPress={() => { this.setState({ modalVisible: false }) }}>
                 <Text>Hide Modal</Text>
               </TouchableHighlight> */}
           </View>
@@ -449,9 +527,7 @@ class Main extends Component {
         this.props.navigation.setParams({ title: res.data.shopName })
       }
     })
-    Storage.get('leadShow').then(res => {
-      if(!res)this.setState({ modalVisible: true })
-    })
+
     this.Emitter = DeviceEventEmitter.addListener('refreshHomeStore', (data) => {
 
       if (data == 'refresh') {
@@ -460,6 +536,9 @@ class Main extends Component {
     });
   }
   componentDidMount() {
+    Storage.get('leadShow').then(res => {
+      if (!res) this.setState({ modalVisible: true })
+    })
     // console.time('firstRequest')
     http.loadingPost('/netbar/report/overView', {}).then(res => {
       this.setState({
@@ -484,9 +563,9 @@ class Main extends Component {
         }
         const eData = this._echartData(offline, online, xAxis)
         this.setState({
-          echart: true,
-          echartData: { online: eData.online, offline: eData.offline, xAxis: eData.xAxis, alls: eData.alls }
+          echartData: { online: eData.online, offline: eData.offline, xAxis: eData.xAxis, alls: eData.alls, total: eData.total }
         })
+        setTimeout(() => { this.setState({ echart: true }) })
       }
     })
 
@@ -505,6 +584,7 @@ class Main extends Component {
       }
     })
 
+    Storage.save("leadShow", "true");
     /* 组件渲染之后调用，只调用一次。 */
   }
   componentWillReceiveProps(nextProps) {

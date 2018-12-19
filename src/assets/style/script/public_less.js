@@ -154,73 +154,76 @@ module.exports = function({containerMargin}){
             width: 120
         },
         s44: {
-            fontFamily: "PingFangSC-Regular"
+            width: 130
         },
         s45: {
+            fontFamily: "PingFangSC-Regular"
+        },
+        s46: {
             backgroundColor: "#f2f3f5",
             flex: 1,
             flexDirection: "column"
         },
-        s46: {
+        s47: {
             fontSize: 12
         },
-        s47: {
+        s48: {
             fontSize: 18
         },
-        s48: {
+        s49: {
             color: "#666"
         },
-        s49: {
+        s50: {
             color: "#333"
         },
-        s50: {
+        s51: {
             color: "#999"
         },
-        s51: {
+        s52: {
             color: "#2073D3"
         },
-        s52: {
+        s53: {
             backgroundColor: "#fff"
         },
-        s53: {
+        s54: {
             height: 30,
             justifyContent: "center"
         },
-        s54: {
+        s55: {
             height: 25
         },
-        s55: {
+        s56: {
             height: 30
         },
-        s56: {
+        s57: {
             height: 17
         },
-        s57: {
+        s58: {
             height: 22
         },
-        s58: {
+        s59: {
             height: 24
         },
-        s59: {
+        s60: {
             height: 28
         },
-        s60: {
+        s61: {
             justifyContent: "center"
         },
-        s61: {
+        s62: {
             backgroundColor: "#FFF7DE"
         },
-        s62: {
+        s63: {
             paddingRight: 5
         },
-        s63: {
+        s64: {
             paddingRight: 10
         },
-        s64: {
+        s65: {
             paddingBottom: 6,
             paddingTop: 6
         },
-        s65: {
+        s66: {
             paddingBottom: 3
         }
     });
@@ -273,30 +276,31 @@ module.exports = function({containerMargin}){
             w90: allStyle.s41,
             w88: allStyle.s42,
             w120: allStyle.s43,
-            fFN: allStyle.s44,
-            container: allStyle.s45,
-            fontsize12: allStyle.s46,
+            w130: allStyle.s44,
+            fFN: allStyle.s45,
+            container: allStyle.s46,
+            fontsize12: allStyle.s47,
             fontsize14: allStyle.s37,
             fontsize16: allStyle.s36,
-            fontsize18: allStyle.s47,
-            col666: allStyle.s48,
-            col333: allStyle.s49,
-            col999: allStyle.s50,
-            coltheme: allStyle.s51,
-            bgfff: allStyle.s52,
-            h30JC: allStyle.s53,
-            h25: allStyle.s54,
-            h30: allStyle.s55,
-            h17: allStyle.s56,
-            h22: allStyle.s57,
-            h24: allStyle.s58,
-            h28: allStyle.s59,
-            JCC: allStyle.s60,
-            warning: allStyle.s61,
-            padR5: allStyle.s62,
-            padR10: allStyle.s63,
-            padTB6: allStyle.s64,
-            padB3: allStyle.s65
+            fontsize18: allStyle.s48,
+            col666: allStyle.s49,
+            col333: allStyle.s50,
+            col999: allStyle.s51,
+            coltheme: allStyle.s52,
+            bgfff: allStyle.s53,
+            h30JC: allStyle.s54,
+            h25: allStyle.s55,
+            h30: allStyle.s56,
+            h17: allStyle.s57,
+            h22: allStyle.s58,
+            h24: allStyle.s59,
+            h28: allStyle.s60,
+            JCC: allStyle.s61,
+            warning: allStyle.s62,
+            padR5: allStyle.s63,
+            padR10: allStyle.s64,
+            padTB6: allStyle.s65,
+            padB3: allStyle.s66
         }
     };
 };

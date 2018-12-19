@@ -144,7 +144,7 @@ export default class Main extends Component {
                                             })
                                         }}
                                         value={this.state.data.allSell}
-                                        keyboardType={"number-pad"}
+                                        keyboardType={"numeric"}
                                     />
                                 </View>
                             </View>
@@ -163,7 +163,7 @@ export default class Main extends Component {
                                             })
                                         }}
                                         value={this.state.data.offlineSell}
-                                        keyboardType={"number-pad"}
+                                        keyboardType={"numeric"}
                                     />
                                 </View>
                             </View>
@@ -182,7 +182,7 @@ export default class Main extends Component {
                                             })
                                         }}
                                         value={this.state.data.onlineSell}
-                                        keyboardType={"number-pad"}
+                                        keyboardType={"numeric"}
                                     />
                                 </View>
                             </View>
@@ -201,7 +201,7 @@ export default class Main extends Component {
                                             })
                                         }}
                                         value={this.state.data.jcSell}
-                                        keyboardType={"number-pad"}
+                                        keyboardType={"numeric"}
                                     />
                                 </View>
                             </View>
@@ -220,7 +220,7 @@ export default class Main extends Component {
                                             })
                                         }}
                                         value={this.state.data.allBonus}
-                                        keyboardType={"number-pad"}
+                                        keyboardType={"numeric"}
                                     />
                                 </View>
                             </View>
@@ -239,7 +239,7 @@ export default class Main extends Component {
                                             })
                                         }}
                                         value={this.state.data.offlineBonus}
-                                        keyboardType={"number-pad"}
+                                        keyboardType={"numeric"}
                                     />
                                 </View>
                             </View>
@@ -258,7 +258,7 @@ export default class Main extends Component {
                                             })
                                         }}
                                         value={this.state.data.onlineBonus}
-                                        keyboardType={"number-pad"}
+                                        keyboardType={"numeric"}
                                     />
                                 </View>
                             </View>
@@ -277,7 +277,7 @@ export default class Main extends Component {
                                             })
                                         }}
                                         value={this.state.data.cancel}
-                                        keyboardType={"number-pad"}
+                                        keyboardType={"numeric"}
                                     />
                                 </View>
                             </View>
@@ -296,7 +296,7 @@ export default class Main extends Component {
                                             })
                                         }}
                                         value={this.state.data.refund}
-                                        keyboardType={"number-pad"}
+                                        keyboardType={"numeric"}
                                     />
                                 </View>
                             </View>
@@ -315,7 +315,7 @@ export default class Main extends Component {
                                             })
                                         }}
                                         value={this.state.data.payment}
-                                        keyboardType={"number-pad"}
+                                        keyboardType={"numeric"}
                                     />
                                 </View>
                             </View>

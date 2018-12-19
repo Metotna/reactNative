@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet, ListView, RefreshControl, ActivityIndicator } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import { onlineOffShow } from "../../config"
 
 
 @insertStyle('netBarDetail')
@@ -16,15 +17,15 @@ class Main extends Component {
       listReqing: false,
     };
     const { navigation } = this.props;
-    this.shopId =navigation.getParam('shopId');
-    this.title=navigation.getParam('title');
+    this.shopId = navigation.getParam('shopId');
+    this.title = navigation.getParam('title');
     this.listPageSize = 20
     this._dataSource = [];
   }
 
   _EndListPush = () => {
     if (this.state.listStatus == 'noMore' || this.state.listReqing) return false
-    if(!this._dataSource.length)return
+    if (!this._dataSource.length) return
     this.setState({ listReqing: true })
     http.post('/netbar/report/sellList', {
       shopId: this.shopId,
@@ -49,13 +50,13 @@ class Main extends Component {
 
   _hanleFooter = () => {
     if (this.state.listStatus == "Loading") {
-    //   return <View style={{height:35,justifyContent:"center"}}>
-    //  <Text style={{  textAlign: "center", color: "#666" }}>加载中...</Text>
-    //   </View>
+      //   return <View style={{height:35,justifyContent:"center"}}>
+      //  <Text style={{  textAlign: "center", color: "#666" }}>加载中...</Text>
+      //   </View>
     } else if (this.state.listStatus == "noMore") {
-      return <View style={{height:35,justifyContent:"center"}}>
-      <Text style={{  textAlign: "center", color: "#666" }}>暂无更多数据</Text>
-       </View>
+      return <View style={{ height: 35, justifyContent: "center" }}>
+        <Text style={{ textAlign: "center", color: "#666" }}>暂无更多数据</Text>
+      </View>
     } else {
       return <ActivityIndicator style={{ height: 35 }} />
     }
@@ -72,7 +73,7 @@ class Main extends Component {
       pageNumber: 1,
       pageSize: this.listPageSize,
     }).then(res => {
-      console.log(res)
+      // console.log(res)
       if (res && res.status == 200) {
         var listStatus = this.state.listPage == res.data.totalPage ? "noMore" : "goOn";
         this._dataSource = res.data.entitys;
@@ -90,8 +91,8 @@ class Main extends Component {
       <View style="container">
         <View style={["flexrow", "content"]}>
           <Text style={["flex1", "f14h30", "tAlignL", "fblock3"]}>日期</Text>
-          <Text style={["flex1", "f14h30", "tAlignR", "fblock3"]}>线下销售额</Text>
           <Text style={["flex1", "f14h30", "tAlignR", "fblock3"]}>线上销售额</Text>
+          <Text style={["flex1", "f14h30", "tAlignR", "fblock3"]}>线下销售额</Text>
           <Text style={["flex1", "f14h30", "tAlignR", "fblock3"]}>总销售额</Text>
         </View>
         <View style="border10h" />
@@ -114,13 +115,13 @@ class Main extends Component {
             enableEmptySections={true}
             renderRow={(rowData, a, index) => (
               <View style={index % 2 ? ss.listCotOdd : ss.listCotEven}>
-                <Text style={[ss.flexText, ss.tul]} onPress={() => this.props.navigation.navigate('NetBarDay',{
+                <Text style={[ss.flexText, ss.tul]} onPress={() => this.props.navigation.navigate('NetBarDay', {
                   time: rowData.dateMemo,
-                  title:this.title,
-                  shopId:this.shopId
+                  title: this.title,
+                  shopId: this.shopId
                 })}>{rowData.dateMemo}</Text>
-                <Text style={[ss.flexText, ss.tAr, ss.tgreen]}>{rowData.onlineSell}</Text>
-                <Text style={[ss.flexText, ss.tAr, ss.tblue]}>{rowData.offlineSell}</Text>
+                <Text style={[ss.flexText, ss.tAr, ss.tgreen]}>{onlineOffShow?rowData.onlineSell:"--"}</Text>
+                <Text style={[ss.flexText, ss.tAr, ss.tblue]}>{onlineOffShow?rowData.offlineSell:"--"}</Text>
                 <Text style={[ss.flexText, ss.tAr]}>{rowData.allSell}</Text>
               </View>
             )} />
@@ -134,9 +135,9 @@ class Main extends Component {
     this._onRefresh()
     // console.log(`first Refresh`)
   }
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { navigation } = this.props;
-    this.shopId =navigation.getParam('shopId');
+    this.shopId = navigation.getParam('shopId');
     this._onRefresh()
   }
 }

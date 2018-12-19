@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TouchableHighlight, Image } from 'react-native';
 // import { Button, Tabs } from 'antd-mobile-rn'
 import { StackActions, NavigationActions } from 'react-navigation';
-import Button from '../common/button'
+import Button from '../common/buttonplat'
 @insertStyle('TabbarMineStyle')
 export default class PopupExample extends React.Component {
   constructor(props) {
@@ -14,16 +14,9 @@ export default class PopupExample extends React.Component {
     };
   }
 
-  onChange = (value) => {
-    console.log(value)
-    this.setState({ value });
-  }
   _hanleSignOut=()=>{
     Storage.delete("token")
-    this.props.navigation.dispatch(StackActions.reset({
-      index: 0,
-      actions: [NavigationActions.navigate({ routeName: 'login' })],
-    }))
+    this.props.navigation.reset([NavigationActions.navigate({ routeName: 'login' })], 0)
   }
 
   render() {
@@ -39,7 +32,7 @@ export default class PopupExample extends React.Component {
           <View style="border10h" />
         </View>
         <View style="outBtn">
-          <Button  onPress={this._hanleSignOut} textStyle={{fontSize:16,lineHeight:28,}}  title={'退出登录'}/>
+          <Button style={{height:35}} onPress={this._hanleSignOut} textStyle={{fontSize:16}}  title={'退出登录'}/>
         </View>
       </View>
     );

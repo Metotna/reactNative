@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, } from 'react-native';
 import { withNavigation } from 'react-navigation';
-
+import { onlineOffShow } from '../../../config'
 @insertStyle('netBarDetail')
  class Main extends Component {
   constructor(props) {
@@ -39,8 +39,8 @@ import { withNavigation } from 'react-navigation';
             : <View style={style.listColor}>
               <Text style={["flistText","tAlignL","tunderline"]} onPress={() => this.props.navigation.navigate('NetBarDay', {
             time: this.state.data.dateMemo})}>{this.state.data.dateMemo}</Text>
-              <Text style={["flistText","fgreen"]}>{this.state.data.onlineSell}</Text>
-              <Text style={["flistText","fblue"]}>{this.state.data.offlineSell}</Text>
+              <Text style={["flistText","fgreen"]}>{onlineOffShow?this.state.data.onlineSell:"--"}</Text>
+              <Text style={["flistText","fblue"]}>{onlineOffShow?this.state.data.offlineSell:"--"}</Text>
               <Text style={["flistText"]}>{this.state.data.allSell}</Text>
             </View>
         }

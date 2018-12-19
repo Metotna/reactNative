@@ -72,6 +72,7 @@ export default class filter {
   }
 
   static number(val){
+    // return val
     var re = /^[0-9]+.?[0-9]*$/;
     if(re.test(val)){
       if(val>100000){

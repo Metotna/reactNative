@@ -28,8 +28,9 @@ const headerStyleB={
 }
 const headerTitleStyleB={
   color: '#fff',
-  textAlign:"center",
-
+  // alignSelf:'center',
+  // textAlign: 'center',
+  // flex:1,
 }
 function comOption(title){
 return {

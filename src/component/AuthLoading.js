@@ -7,28 +7,17 @@ import SplashScreen from 'react-native-splash-screen'
 import { StackActions, NavigationActions } from 'react-navigation';
 import { Toast } from 'antd-mobile-rn'
 
-class AuthLoadingScreen extends React.Component {
+export default class AuthLoadingScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       unshow: true
     }
-    Storage.get('token').then(res => {
-      // console.log(`token:` + res)
-      // this.props.navigation.navigate('login')
-      if (res) {
-        this._bootstrapAsync();
-      } else {
-        // console.log(`token unexist`)
-        this.props.navigation.dispatch(StackActions.reset({
-          index: 0,
-          actions: [NavigationActions.navigate({ routeName: "login" })],
-        }))
-        SplashScreen.hide();
-      }
-    })
+
   }
   _bootstrapAsync = () => {
+    // console.log(this.props.navigation.state)
+    // return 
     http.post('/auth/my', {}).then(res => {
       // console.log(res)
       if (res) {
@@ -42,13 +31,13 @@ class AuthLoadingScreen extends React.Component {
             Toast.success('当前登录信息失效，请重新登录', 1);
             routeName = "login"
           }
+          this.props.navigation.reset([NavigationActions.navigate({ routeName })], 0)
         }
-        this.props.navigation.dispatch(StackActions.reset({
-          index: 0,
-          actions: [NavigationActions.navigate({ routeName })],
-        }))
-        // this.props.navigation.dispatch(StackActions.popToTop())
-        // console.log(routeName)
+        // console.log(this.props.navigation.state)
+        // this.props.navigation.navigate(routeName)
+        // this.props.navigation.Push(routeName)
+        // this.props.navigation.reset([NavigationActions.navigate({ routeName})], 0)
+
         // this.props.navigation.dispatch(StackActions.reset({
         //   index: 0,
         //   actions: [NavigationActions.navigate({ routeName })],
@@ -59,7 +48,23 @@ class AuthLoadingScreen extends React.Component {
       SplashScreen.hide();
     })
   };
+  componentDidMount() {
+    Storage.get('token').then(res => {
+      // console.log(`token:` + res)
+      // this.props.navigation.navigate('login')
+      if (res) {
+        this._bootstrapAsync();
+      } else {
+        // console.log(`token unexist`)
+        // this.props.navigation.replace("login")
+        this.props.navigation.reset([NavigationActions.navigate({ routeName: 'login' })],0)
+        SplashScreen.hide();
 
+      }
+    }).catch(err => {
+      console.log(err)
+    })
+  }
   // Render any loading content that you like here
   render() {
     const styles = {
@@ -82,9 +87,9 @@ class AuthLoadingScreen extends React.Component {
     );
   }
 }
-export default connect(
-  store => ({
-    store: store.userStore
-  }),
-  dispatch => bindActionCreators(userActions, dispatch)
-)(AuthLoadingScreen);
+// export default connect(
+//   store => ({
+//     store: store.userStore
+//   }),
+//   dispatch => bindActionCreators(userActions, dispatch)
+// )(AuthLoadingScreen);

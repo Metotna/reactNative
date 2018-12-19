@@ -142,7 +142,7 @@ export default class Main extends Component {
                                             })
                                         }}
                                         value={this.state.data.bankCharge}
-                                        keyboardType={"number-pad"}
+                                        keyboardType={"numeric"}
                                     />
                                 </View>
                             </View>
@@ -161,7 +161,7 @@ export default class Main extends Component {
                                             })
                                         }}
                                         value={this.state.data.aliCharge}
-                                        keyboardType={"number-pad"}
+                                        keyboardType={"numeric"}
                                     />
                                 </View>
                             </View>
@@ -180,7 +180,7 @@ export default class Main extends Component {
                                             })
                                         }}
                                         value={this.state.data.wxCharge}
-                                        keyboardType={"number-pad"}
+                                        keyboardType={"numeric"}
                                     />
                                 </View>
                             </View>
